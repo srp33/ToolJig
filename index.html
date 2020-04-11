@@ -3,8 +3,238 @@
 <head>
     <meta charset="UTF-8" />
     <title>Throughput: A tool for building simplified Common Workflow Language documents</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
 </head>
 <body>
+    
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+<div class="container">
+    <div id="cwl_app">
+        <h1>Throughput</h1>
+
+        <p>This is an introduction to the tool and high-level instructions...</p>
+
+        <h4>Manage metadata:</h4>
+        <div class="form-group">
+            <label for="tool_id">Tool identifier:</label>
+            <input v-model="tool_id" id="tool_id" type="text" placeholder="Please enter a unique identifier with only letters and numbers." class="form-control" />
+        </div>
+
+        <div class="form-group">
+            <label for="doc">Description:</label>
+            <textarea v-model="doc" id="doc" rows=5 cols=100 placeholder="Please enter a general description of this tool." class="form-control"></textarea>
+        </div>
+
+        <h4>Manage environment:</h4>
+        <div class="form-group">
+            <label for="dockerfile">Dockerfile contents:</label>
+            <textarea v-model="dockerfile" id="dockerfile" rows=5 cols=100 placeholder="Please enter the contents of the Dockerfile." class="form-control"></textarea>
+        </div>
+
+        <h4 class="card-title">Manage inputs:</h4>
+        <form v-on:submit.prevent="addInput">
+            <div class="form-group">
+                <label for="inputName">Name:</label>
+                <input v-model="newInputName" id="inputName" ref="newInputName" type="text" class="form-control" placeholder="Please enter a unique name for this input." />
+            </div>
+
+            <div class="form-group">
+                <label for="inputType">Type:</label>
+                <select v-model="newInputType" id="inputType" class="form-control" id="inputType">
+                    <option>string</option>
+                    <option>int</option>
+                    <option>File</option>
+                    <option>Directory</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="inputDoc">Description:</label>
+                <input v-model="newInputDoc" id="inputDoc" ref="newInputDoc" type="text" class="form-control" placeholder="Provide a short description of this input." />
+            </div>
+
+            <div class="form-group">
+                <button class="btn btn-info">Add</button>
+            </div>
+        </form>
+
+        <ol class="list-group">
+            <li v-for="input in inputs" class="list-group-item">{{ input.name }} - {{ input.type }}
+                <button v-on:click="editInput(input)" class="btn btn-default">
+                    <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+                </button>
+                <button v-on:click="deleteInput(input)" class="btn btn-default">
+                    <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                </button>
+            </li>
+        </ol>
+
+        <div class="form-group">
+            <label for="command_template">Command template:</label>
+            <textarea v-model="command_template" id="command_template" rows=5 cols=100 placeholder="Please enter the command template." class="form-control"></textarea>
+        </div>
+
+        <h4>CWL document:</h4>
+            <form v-on:submit.prevent="download">
+                <pre v-text="cwl"></pre><br />
+                <div class="form-group">
+                    <button class="btn btn-info" variant="outline-primary">Download</button>
+                </div>
+            </form>
+            <!--<a v-bind:href="encoded_cwl">Download</a>-->
+        </p>
+
+        <hr style="border: 1px solid black;border-radius: 1px;" />
+
+        <h4>Create job file:</h4>
+        <div
+            is="job-item"
+            v-for="(input, index) in inputs"
+            v-bind:name="input.name"
+            v-bind:type="input.type"
+            v-bind:doc="input.doc"
+        ></div>
+    </div>
+</div>
+
+<script>
+    Vue.component("job-item", {
+        props: ['name', 'type', 'doc'],
+        template: `
+            <p>{{ name }}:\
+                {{ type }} - {{ doc }}\
+            </p>\
+        `
+    });
+
+    new Vue({
+        el: "#cwl_app",
+
+        data: {
+            tool_id: "",
+            doc: "",
+            dockerfile: "",
+            newInputName: "",
+            newInputType: "string",
+            newInputDoc: "",
+            //inputs: [],
+            inputs: [{name: "a", type: "string", doc: "abc"}, {name: "b", type: "int", doc: "def"}],
+            command_template: ""
+        },
+
+        computed: {
+            cwl: function() {
+                return `cwlVersion: v1.1
+class: CommandLineTool
+${this.buildOptionalString("doc: |-\n", this.indent(2, this.doc))}
+requirements:
+  ShellCommandRequirement: {}
+${this.buildOptionalString(`  DockerRequirement:
+    dockerImageId: ${this.tool_id}
+    dockerFile: |-\n`, this.indent(6, this.dockerfile))}
+${this.parseInputs()}
+${this.buildOptionalString(`arguments:
+  - shellQuote: false
+    valueFrom: |-\n`, this.indent(6, this.command_template))}
+outputs:
+  output_file:
+    type: File
+    outputBinding:
+      glob: "$(inputs.output_file_name)"
+    doc: |-
+      Here we indicate that an output file matching the name specified in the inputs should be generated.
+  standard_output:
+    type: stdout
+  standard_error:
+    type: stderr
+stdout: output.txt
+stderr: error.txt
+            `.replace(/\n\n/g, "\n").replace(/\n\n/g, "\n").trim();
+            }
+            // encoded_cwl: function() {
+            //     return "data:text/plain;charset=utf-8," + encodeURIComponent(this.cwl);
+            // }
+        },
+
+        methods: {
+            addInput: function () {
+                this.inputs.push({
+                    name: this.newInputName,
+                    type: this.newInputType,
+                    doc: this.newInputDoc
+                });
+
+                this.newInputName = "";
+                this.newInputType = "string";
+                this.newInputType = "";
+            },
+            deleteInput: function (x) {
+                this.inputs = this.inputs.filter(function(value, index, arr) {
+                    return value.name != x.name;
+                })
+            },
+            editInput: function (x) {
+                this.deleteInput(x);
+                this.newInputName = x.name;
+                this.newInputType = x.type;
+                this.newInputDoc = x.doc;
+                this.$refs.newInputName.focus();
+            },
+            parseInputs: function() {
+                result = "";
+                if (this.inputs.length > 0)
+                    result = "inputs:\n"
+
+                for (i = 0; i<this.inputs.length; i++)
+                {
+                    result += "  " + this.inputs[i].name + ":\n";
+                    result += "    type: " + this.inputs[i].type + "\n";
+                    result += this.buildOptionalString("    doc: |-\n", this.indent(6, this.inputs[i].doc)); 
+                }
+
+                return result;
+            },
+            buildOptionalString: function(prefix, value) {
+                if (value == "")
+                    return "";
+                else
+                    return prefix + value;
+            },
+            indent: function(numSpaces, value) {
+                if (value == "")
+                    return "";
+
+                prefix = "";
+                for (i = 0; i < numSpaces; i++)
+                    prefix += " ";
+
+                lines = value.split("\n");
+                result = "";
+                for (i = 0; i < lines.length; i++)
+                {
+                    result += prefix + lines[i];
+                    if (i != (lines.length - 1))
+                        result += "\n";
+                }
+
+                return result;
+            },
+            download: function() {
+                var fileName = this.tool_id + ".cwl";
+
+                //https://ourcodeworld.com/articles/read/189/how-to-create-a-file-and-generate-a-download-with-javascript-in-the-browser-without-a-server
+                var element = document.createElement('a');
+                element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(this.cwl));
+                element.setAttribute('download', fileName);
+                element.style.display = 'none';
+                document.body.appendChild(element);
+                element.click();
+                document.body.removeChild(element);
+            }
+        }
+    });
+</script>
 
 </body>
 </html>
