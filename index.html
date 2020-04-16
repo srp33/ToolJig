@@ -30,7 +30,7 @@
 }
 </style>
 
-<div class="container">
+<div class="container" align="left">
     <div id="cwl_app">
         <h2>Throughput: A simple approach to building Common Workflow Language tool descriptions</h2>
 
@@ -214,7 +214,7 @@
         <pre v-text="job" v-if="job"></pre>
 
         <div class="form-group">
-            <button class="btn btn-info" variant="outline-primary" v-on:click="downloadJob" :disabled="download_job_errors.length > 0">Download job file</button>
+            <button class="btn btn-info" variant="outline-primary" v-on:click="downloadJob" :disabled="job.length == 0">Download job file</button>
         </div></p>
 
         <hr style="border: 1px solid black;border-radius: 1px;" v-if="cwl.length > 0 && job.length > 0" />
