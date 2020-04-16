@@ -1,130 +1,331 @@
+<!-- Author: Stephen R. Piccolo -->
+<!-- Contact: https://piccolo.byu.edu -->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
-    <title>Throughput: A tool for building simplified Common Workflow Language documents</title>
+    <title>Throughput: A simple approach to building Common Workflow Language tool descriptions</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
 </head>
 <body>
-    
-<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+<!--Here we import any JavaScript libraries that we need.-->
+<!--Dev version of Vue<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>-->
+<!--Production version of Vue--><script src="https://cdn.jsdelivr.net/npm/vue@2.6.11"></script>
+<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/js-yaml/3.13.1/js-yaml.min.js"></script>-->
+
+<!--Here we define any custom CSS attributes that we want to be used.-->
+<style>
+    .panel-default {
+        cursor: pointer;
+        background-color: #f7f2ef;
+        color:#000000;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        padding-left: 10px;
+        padding-right: 10px;
+        border-radius: 4px 4px 0px 0px;
+        border: 1px solid #f7f2ef;
+}
+</style>
 
 <div class="container">
     <div id="cwl_app">
-        <h1>Throughput</h1>
+        <h2>Throughput: A simple approach to building Common Workflow Language tool descriptions</h2>
 
-        <p>This is an introduction to the tool and high-level instructions...</p>
+        <p>The <a href="https://www.commonwl.org/">Common Workflow Language</a> (CWL) is an open specification for describing command-line tools and workflows. CWL documents are used in many scientific disciplines to ensure that tools and workflows can be executed in a manner that is portable across workflow engines and computer systems. <em>Throughput</em> facilitates creation of CWL tool descriptions and input-job files for those tools. Tool definitions created by Throughput are fully compatible with the <a href="https://commonwl.org/v1.1/CommandLineTool.html">CWL specification</a>. <b>Our goal is support <em>common</em> use cases for executing command-line tools and research analyses.</b> However, some options within the CWL specification are <em>not</em> supported; users should consult the specification if they wish to use other available features.</p>
+
+        <hr style="border: 1px solid black;border-radius: 1px;" />
+
+        <p>This section enables you to create a CWL tool description. Please fill in the information as requested below. Required field = <font color="red">*</font>.</p>
 
         <h4>Manage metadata:</h4>
         <div class="form-group">
-            <label for="tool_id">Tool identifier:</label>
-            <input v-model="tool_id" id="tool_id" type="text" placeholder="Please enter a unique identifier with only letters and numbers." class="form-control" />
+            <label for="tool_id">Tool identifier<sup><font color="red">*</font></sup>:</label>
+            <input v-model="tool_id" id="tool_id" type="text" placeholder="" class="form-control" aria-describedby="helpBlock" />
+            <small id="helpBlock" class="form-text text-muted">
+                Please enter a unique identifier. It must contain only letters, numbers, and underscores. This identifier will be used within the name of the CWL document.
+            </small>
         </div>
 
         <div class="form-group">
             <label for="doc">Description:</label>
-            <textarea v-model="doc" id="doc" rows=5 cols=100 placeholder="Please enter a general description of this tool." class="form-control"></textarea>
+            <textarea v-model="doc" id="doc" rows=5 cols=100 placeholder="" class="form-control" aria-describedby="helpBlock"></textarea>
+            <small id="helpBlock" class="form-text text-muted">
+                Please enter a general description of the tool. This description will inform users of the tool about its purpose and function.
+            </small>
         </div>
 
         <h4>Manage environment:</h4>
         <div class="form-group">
-            <label for="dockerfile">Dockerfile contents:</label>
-            <textarea v-model="dockerfile" id="dockerfile" rows=5 cols=100 placeholder="Please enter the contents of the Dockerfile." class="form-control"></textarea>
+            <label for="dockerfile">Dockerfile:</label>
+            <textarea v-model="dockerfile" id="dockerfile" rows=5 cols=100 placeholder="" class="form-control" style="font-family:monospace;" aria-describedby="helpBlock"></textarea>
+            <small id="helpBlock" class="form-text text-muted">
+                Please enter the contents of a <a href="https://docs.docker.com/develop/develop-images/dockerfile_best-practices/">Dockerfile</a>. A Dockerfile provides instructions for building a Docker image, which can be used as the operating-system environment for the tool. <a href="#" onclick="javascript:alert('TODO');return false;">This document</a> provides tips and examples for creating Dockerfiles.
+            </small>
         </div>
 
-        <h4 class="card-title">Manage inputs:</h4>
-        <form v-on:submit.prevent="addInput">
-            <div class="form-group">
-                <label for="inputName">Name:</label>
-                <input v-model="newInputName" id="inputName" ref="newInputName" type="text" class="form-control" placeholder="Please enter a unique name for this input." />
-            </div>
+        <div class="panel panel-default" ref="inputPanel">
+            <h4 class="card-title">Manage inputs<sup><font color="red">*</font></sup>:</h4>
 
-            <div class="form-group">
-                <label for="inputType">Type:</label>
-                <select v-model="newInputType" id="inputType" class="form-control" id="inputType">
-                    <option>string</option>
-                    <option>int</option>
-                    <option>File</option>
-                    <option>Directory</option>
-                </select>
-            </div>
+            <p>In this section, you can manage inputs. These are arguments that will be passed to the command-line tool. You must specify at least one regular input (string, int, File, or Directory) and at least one Output File. Technically, an "Output File" is not an input. However, when creating a CWL tool description, you can specify an <em>input</em> that is the name of an output file that the tool will create; then you must specify a corresponding <em>output</em> so the file will be collected after the tool executes. To make that simpler, we provide an "Output File" option that takes care of both of these steps.</p>
 
-            <div class="form-group">
-                <label for="inputDoc">Description:</label>
-                <input v-model="newInputDoc" id="inputDoc" ref="newInputDoc" type="text" class="form-control" placeholder="Provide a short description of this input." />
-            </div>
+            <form v-on:submit.prevent="addInput">
+                <div class="form-group">
+                    <label for="inputName">Name:</label>
+                    <input v-model="newInputName" id="inputName" ref="newInputName" type="text" class="form-control" placeholder="Please enter a unique name for this input. Only letters, numbers, and underscores are allowed." />
+                </div>
 
-            <div class="form-group">
-                <button class="btn btn-info">Add</button>
-            </div>
-        </form>
+                <div class="form-group">
+                    <label for="inputType">Type:</label>
+                    <select v-model="newInputType" id="inputType" class="form-control" id="inputType">
+                        <option>string</option>
+                        <option>int</option>
+                        <option>File</option>
+                        <option>Directory</option>
+                        <option>Output File</option>
+                    </select>
+                </div>
 
-        <ol class="list-group">
-            <li v-for="input in inputs" class="list-group-item">{{ input.name }} - {{ input.type }}
-                <button v-on:click="editInput(input)" class="btn btn-default">
-                    <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
-                </button>
-                <button v-on:click="deleteInput(input)" class="btn btn-default">
-                    <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-                </button>
-            </li>
-        </ol>
+                <div class="form-group">
+                    <label for="inputDoc">Description:</label>
+                    <input v-model="newInputDoc" id="inputDoc" ref="newInputDoc" type="text" class="form-control" placeholder="Provide a short description of this input." />
+                </div>
+
+                <p v-if="input_errors.length > 0"><font color="red">
+                    <b>Please correct the following error(s):</b>
+                    <ul>
+                      <li v-for="error in input_errors">{{ error }}</li>
+                    </ul>
+                    </font>
+                </p>
+
+                <div class="form-group">
+                    <button class="btn btn-info" :disabled="newInputName == '' || newInputDoc == ''">Add</button>
+                </div>
+            </form>
+
+            <p v-if="inputs.length > 0">Here you can edit or delete inputs that have been created. If you click on an Edit button (<span class="glyphicon glyphicon-edit" aria-hidden="true"></span>), it will delete the input and let you edit the values in the boxes above.</p>
+
+            <ol class="list-group">
+                <li v-for="input in inputs" class="list-group-item">{{ input.name }} - {{ input.type }}
+                    <button v-on:click="editInput(input)" class="btn btn-default">
+                        <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+                    </button>
+                    <button v-on:click="deleteInput(input)" class="btn btn-default">
+                        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                    </button>
+                </li>
+            </ol>
+        </div>
+
+        <div class="panel panel-default" ref="auxPanel">
+            <h4 class="card-title">Manage auxiliary files:</h4>
+
+            <p>In this section, you can manage auxiliary files (optional). Auxiliary files are stored within the execution environment and thus can be used in the command template (see below). Auxiliary files often include analysis scripts or configuration files (in CWL tool descriptions, they are stored under InitialWorkDirRequirement). <a href="#" onclick="javascript:alert('TODO');return false;">Here</a> you can find example CWL tools that use auxiliary files.</p>
+
+            <form v-on:submit.prevent="addAuxiliaryFile">
+                <div class="form-group">
+                    <label for="auxName">Name:</label>
+                    <input v-model="newAuxName" id="auxName" ref="newAuxName" type="text" class="form-control" placeholder="Please enter a unique name for this auxiliary file. Only letters, numbers, underscores, and periods are allowed." />
+                </div>
+
+                <div class="form-group">
+                    <label for="auxContents">Contents:</label>
+                    <textarea v-model="newAuxContents" id="auxContents" rows=10 cols=100 ref="newAuxContents" class="form-control" placeholder="Provide enter the file contents." style="font-family:monospace;"></textarea>
+                </div>
+
+                <p v-if="auxiliary_errors.length > 0"><font color="red">
+                    <b>Please correct the following error(s):</b>
+                    <ul>
+                      <li v-for="error in auxiliary_errors">{{ error }}</li>
+                    </ul>
+                    </font>
+                </p>
+
+                <div class="form-group">
+                    <button class="btn btn-info" :disabled="newAuxName == '' || newAuxContents == ''">Add</button>
+                </div>
+            </form>
+
+            <p v-if="auxiliary_files.length > 0">Here you can edit or delete inputs that have been created. If you click on an Edit button (<span class="glyphicon glyphicon-edit" aria-hidden="true"></span>), it will delete the input and let you edit the values in the boxes above.</p>
+
+            <ol class="list-group">
+                <li v-for="aux in auxiliary_files" class="list-group-item">{{ aux.name }}
+                    <button v-on:click="editAuxiliaryFile(aux)" class="btn btn-default">
+                        <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+                    </button>
+                    <button v-on:click="deleteAuxiliaryFile(aux)" class="btn btn-default">
+                        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                    </button>
+                </li>
+            </ol>
+        </div>
 
         <div class="form-group">
-            <label for="command_template">Command template:</label>
-            <textarea v-model="command_template" id="command_template" rows=5 cols=100 placeholder="Please enter the command template." class="form-control"></textarea>
+            <label for="command_template">Command template<sup><font color="red">*</font></sup>:</label>
+            <textarea v-model="command_template" id="command_template" rows=5 cols=100 placeholder="Please enter the command template." class="form-control" aria-describedby="helpBlock"></textarea>
+            <small id="helpBlock" class="form-text text-muted">
+                Here you specify a template for executing the tool at the command line within the execution environment. Each of the inputs must be specified at least once in the command template. <a href="#" onclick="javascript:alert('TODO');return false;">This document</a> provides tips and examples for creating command templates.
+            </small>
         </div>
 
         <h4>CWL document:</h4>
-            <form v-on:submit.prevent="download">
-                <pre v-text="cwl"></pre><br />
-                <div class="form-group">
-                    <button class="btn btn-info" variant="outline-primary">Download</button>
-                </div>
-            </form>
-            <!--<a v-bind:href="encoded_cwl">Download</a>-->
+
+        <p v-if="download_cwl_errors.length"><font color="red">
+            <b>Please correct the following error(s):</b>
+            <ul>
+              <li v-for="error in download_cwl_errors">{{ error }}</li>
+            </ul>
+            </font>
         </p>
+
+        <pre v-text="cwl" v-if="cwl"></pre>
+        
+        <p><div class="form-group">
+            <button class="btn btn-info" variant="outline-primary" v-on:click="downloadCwl" :disabled="download_cwl_errors.length > 0">Download CWL file</button>
+        <!--<a v-bind:href="encoded_cwl">Download</a>-->
+        </div></p>
 
         <hr style="border: 1px solid black;border-radius: 1px;" />
 
         <h4>Create job file:</h4>
-        <div
-            is="job-item"
-            v-for="(input, index) in inputs"
-            v-bind:name="input.name"
-            v-bind:type="input.type"
-            v-bind:doc="input.doc"
-        ></div>
+
+        Once you have created a valid CWL file, you can create an input-job file. The CWL file provides a generic description of the tool. The input-job file defines inputs that will be used in one particular instance when the tool is executed. The boxes below correspond to the inputs described in the CWL file.
+
+        <!--This defines how the dynamic input forms will be created.-->
+        <component 
+          v-for="(input, index) in inputs" 
+          :key="input.name"
+          :is="input.type"
+          v-bind="input"
+          v-model="inputs[index].value">
+        </component>
+
+        <p v-if="download_job_errors.length"><font color="red">
+            <b>Please correct the following error(s):</b>
+            <ul>
+              <li v-for="error in download_job_errors">{{ error }}</li>
+            </ul>
+            </font>
+        </p>
+
+        <pre v-text="job" v-if="job"></pre>
+
+        <div class="form-group">
+            <button class="btn btn-info" variant="outline-primary" v-on:click="downloadJob" :disabled="download_job_errors.length > 0">Download job file</button>
+        </div></p>
+
+        <hr style="border: 1px solid black;border-radius: 1px;" v-if="cwl.length > 0 && job.length > 0" />
+
+        <h4 v-if="cwl.length > 0 && job.length > 0">Example command to execute the tool:</h4>
+
+        <p  v-if="cwl.length > 0 && job.length > 0">First, you must install <a href="https://github.com/common-workflow-language/cwltool">cwltool</a>. Then you would execute the following command, assuming the CWL file and job file are in your current working directory. Alternatively, you could execute the tool using a variety of <a href="https://www.commonwl.org/#Implementations">other engines</a>.</p>
+
+        <pre v-text="example_command" v-if="cwl.length > 0 && job.length > 0"></pre>
     </div>
 </div>
 
+<!--This section contains the app's JavaScript logic.-->
 <script>
-    Vue.component("job-item", {
-        props: ['name', 'type', 'doc'],
-        template: `
-            <p>{{ name }}:\
-                {{ type }} - {{ doc }}\
-            </p>\
-        `
+    // These components define the dynamic behavior of the input boxes that are created.
+    // This part of the code could be more succinct, but I'm still learning about Vue components.
+    // From example at https://www.raymondcamden.com/2018/10/31/working-with-dynamic-components-in-vuejs
+    Vue.component("string", {
+        props: ['name', 'doc', 'value'],
+        template: `<div class="form-group"><label>{{ name }}<sup><font color="red">*</font></sup>:</label><input type="text" @input="updateVal" v-model="text" class="form-control" aria-describedby="helpBlock" /><span id="helpBlock" class="form-text text-muted">{{ doc }}</span></div>`,
+        data() { return { text:null } },
+        created() { this.text = this.value; },
+        methods:{ updateVal() { this.$emit('input', this.text); } }
+    });
+    Vue.component("int", {
+        props: ['name', 'doc', 'value'],
+        template: `<div class="form-group"><label>{{ name }}<sup><font color="red">*</font></sup>:</label><input type="text" @input="updateVal" v-model="text" class="form-control" aria-describedby="helpBlock" /><span id="helpBlock" class="form-text text-muted">{{ doc }}</span></div>`,
+        data() { return { text:null } },
+        created() { this.text = this.value; },
+        methods:{ updateVal() { this.$emit('input', this.text); } }
+    });
+    Vue.component("File", {
+        props: ['name', 'doc', 'value'],
+        template: `<div class="form-group"><label>{{ name }}<sup><font color="red">*</font></sup>:</label><input type="text" @input="updateVal" v-model="text" class="form-control" aria-describedby="helpBlock" /><span id="helpBlock" class="form-text text-muted">{{ doc }}</span></div>`,
+        data() { return { text:null } },
+        created() { this.text = this.value; },
+        methods:{ updateVal() { this.$emit('input', this.text); } }
+    });
+    Vue.component("Directory", {
+        props: ['name', 'doc', 'value'],
+        template: `<div class="form-group"><label>{{ name }}<sup><font color="red">*</font></sup>:</label><input type="text" @input="updateVal" v-model="text" class="form-control" aria-describedby="helpBlock" /><span id="helpBlock" class="form-text text-muted">{{ doc }}</span></div>`,
+        data() { return { text:null } },
+        created() { this.text = this.value; },
+        methods:{ updateVal() { this.$emit('input', this.text); } }
+    });
+    Vue.component("Output_File", {
+        props: ['name', 'doc', 'value'],
+        template: `<div class="form-group"><label>{{ name }}<sup><font color="red">*</font></sup>:</label><input type="text" @input="updateVal" v-model="text" class="form-control" aria-describedby="helpBlock" /><span id="helpBlock" class="form-text text-muted">{{ doc }}</span></div>`,
+        data() { return { text:null } },
+        created() { this.text = this.value; },
+        methods:{ updateVal() { this.$emit('input', this.text); } }
     });
 
+    // This is the main Vue app.
     new Vue({
         el: "#cwl_app",
 
+        // The data attribute stores data that will be rendered.
         data: {
+            input_errors: [],
+            auxiliary_errors: [],
+            download_cwl_errors: [],
+            download_job_errors: [],
+            //tool_id: "abc_tool",
             tool_id: "",
             doc: "",
             dockerfile: "",
             newInputName: "",
             newInputType: "string",
             newInputDoc: "",
-            //inputs: [],
-            inputs: [{name: "a", type: "string", doc: "abc"}, {name: "b", type: "int", doc: "def"}],
+            inputs: [],
+            //inputs: [{name: "a_string", type: "string", doc: "This is a very interesting string input.", value: ""}, {name: "an_integer", type: "int", doc: "This must be an integer.", value: ""}, {name: "a_data_file", type: "File", doc: "This is a path to a file that contains infinite wisdom.", value: ""}, {name: "some_directory", type: "Directory", doc: "This directory has hidden treasure.", value: ""}, {name: "an_output_file", type: "Output_File", doc: "This is a file that will be collected after the tool executes.", value: ""}],
+            newAuxName: "",
+            newAuxContents: "",
+            auxiliary_files: [],
             command_template: ""
+            //command_template: "$(inputs.a_string) $(inputs.an_integer) $(inputs.a_data_file) $(inputs.some_directory) $(inputs_an_output_file)"
         },
 
+        // Computed attributes build content dynamically for display in the app.
+        // In this app, we also perform input validation before returning cwl and job documents.
         computed: {
             cwl: function() {
+                this.download_cwl_errors = [];
+                if (this.tool_id.trim() == "")
+                    this.download_cwl_errors.push("Please specify a tool identifier.");
+                if (/[^A-Za-z0-9_]+/.test(this.tool_id))
+                    this.download_cwl_errors.push("The tool identifier must only container letters, numbers, and underscores.")
+                if (this.command_template.trim() == "")
+                    this.download_cwl_errors.push("Please specify a command template.");
+                output_file_count = 0;
+                var i;
+                for (i = 0; i < this.inputs.length; i++)
+                    if (this.inputs[i].type == "Output_File")
+                        output_file_count += 1;
+                input_count = this.inputs.length - output_file_count;
+                if (input_count == 0 || output_file_count == 0)
+                    this.download_cwl_errors.push("You must specify at least one input (of any type) and at least one output file.");
+                for (i = 0; i < this.inputs.length; i++) {
+                    re = new RegExp(`\\$\\(inputs.${this.inputs[i].name}\\)`);
+                    if (!re.test(this.command_template))
+                        this.download_cwl_errors.push(`All inputs must be used at least once in the command template: ${this.inputs[i].name} was not used. It should be specified in the command template as $(inputs.${this.inputs[i].name}).`);
+                }
+                for (i = 0; i<this.auxiliary_files.length; i++) {
+                    re = new RegExp(this.auxiliary_files[i].name.replace(/\./g, "\\."));
+                    if (!re.test(this.command_template))
+                        this.download_cwl_errors.push(`All auxiliary files must be used at least once in the command template: ${this.auxiliary_files[i].name} was not used.`)
+                }
+                if (this.download_cwl_errors.length > 0)
+                    return "";
+
                 return `cwlVersion: v1.1
 class: CommandLineTool
 ${this.buildOptionalString("doc: |-\n", this.indent(2, this.doc))}
@@ -133,17 +334,14 @@ requirements:
 ${this.buildOptionalString(`  DockerRequirement:
     dockerImageId: ${this.tool_id}
     dockerFile: |-\n`, this.indent(6, this.dockerfile))}
+${this.network_access}
+${this.parseAuxiliaryFiles()}
 ${this.parseInputs()}
 ${this.buildOptionalString(`arguments:
   - shellQuote: false
-    valueFrom: |-\n`, this.indent(6, this.command_template))}
+    valueFrom: |-\n`, this.indent(6, this.command_template.replace(/\n\n/g, "\n").replace(/\n/g, "\n\n")))}
 outputs:
-  output_file:
-    type: File
-    outputBinding:
-      glob: "$(inputs.output_file_name)"
-    doc: |-
-      Here we indicate that an output file matching the name specified in the inputs should be generated.
+${this.parseOutputs()}
   standard_output:
     type: stdout
   standard_error:
@@ -151,23 +349,77 @@ outputs:
 stdout: output.txt
 stderr: error.txt
             `.replace(/\n\n/g, "\n").replace(/\n\n/g, "\n").trim();
+            },
+            job: function() {
+                this.download_job_errors = [];
+                var i;
+                for (i = 0; i<this.inputs.length; i++) {
+                    if (this.inputs[i].value.trim() == "")
+                        this.download_job_errors.push("No value specified for " + this.inputs[i].name + ".");
+                    else if (this.inputs[i].type == "int" && /[^\d]/.test(this.inputs[i].value))
+                        this.download_job_errors.push("Must specify an integer for " + this.inputs[i].name + ".");
+                }
+                if (this.download_job_errors.length > 0)
+                    return "";
+
+                output = "";
+
+                var i;
+                for (i = 0; i<this.inputs.length; i++)
+                {
+                    if (this.inputs[i].type == "string" || this.inputs[i].type == "int")
+                        output += this.inputs[i].name + ": " + this.inputs[i].value + "\n";
+                    else {
+                        output += this.inputs[i].name + ":\n";
+                        output += "    class: " + this.inputs[i].type + "\n";
+                        output += "    path: " + this.inputs[i].value + "\n";
+                    }
+                }
+
+                return output;
+            },
+            network_access: function() {
+                if (this.dockerfile.trim().length > 0)
+                  return "  NetworkAccess:\n    class: NetworkAccess\n    networkAccess: true\n";
+                return "";
+            },
+            cwl_file_name: function() { return `${this.tool_id}.cwl`; },
+            job_file_name: function() { return `${this.tool_id}_job.cwl`; },
+            example_command: function() {
+                return `cwl-runner ${this.cwl_file_name} ${this.job_file_name}`;
             }
             // encoded_cwl: function() {
             //     return "data:text/plain;charset=utf-8," + encodeURIComponent(this.cwl);
             // }
         },
 
+        // These are functions to make the logic a bit more modular.
         methods: {
             addInput: function () {
+                this.input_errors = [];
+                if (/[^a-zA-Z_0-9]+/.test(this.newInputName))
+                    this.input_errors.push("Input names must only contain letters, numbers, and underscores.");
+                var i;
+                for (i = 0; i < this.inputs.length; i++)
+                    if (this.inputs[i].name == this.newInputName)
+                        this.input_errors.push("An input with name \"" + this.inputs[i].name + "\" already exists.");
+                if (this.input_errors.length > 0)
+                    return;
+
+                inputType = this.newInputType;
+                if (inputType == "Output File")
+                    inputType = "Output_File";
+
                 this.inputs.push({
                     name: this.newInputName,
-                    type: this.newInputType,
-                    doc: this.newInputDoc
+                    type: inputType,
+                    doc: this.newInputDoc,
+                    value: ""
                 });
 
                 this.newInputName = "";
                 this.newInputType = "string";
-                this.newInputType = "";
+                this.newInputDoc = "";
             },
             deleteInput: function (x) {
                 this.inputs = this.inputs.filter(function(value, index, arr) {
@@ -180,17 +432,88 @@ stderr: error.txt
                 this.newInputType = x.type;
                 this.newInputDoc = x.doc;
                 this.$refs.newInputName.focus();
+                this.$refs.inputPanel.scrollIntoView();
+            },
+            addAuxiliaryFile: function() {
+                this.auxiliary_errors = [];
+                if (/[^a-zA-Z_0-9\.]+/.test(this.newAuxName))
+                    this.auxiliary_errors.push("The names of auxiliary files must only contain letters, numbers, underscores, and periods.");
+                var i;
+                for (i = 0; i < this.auxiliary_files.length; i++)
+                    if (this.auxiliary_files[i].name == this.newAuxName)
+                        this.auxiliary_errors.push("An auxiliary file with name \"" + this.auxiliary_files[i].name + "\" already exists.");
+                if (this.auxiliary_errors.length > 0)
+                    return;
+
+                this.auxiliary_files.push({
+                    name: this.newAuxName,
+                    contents: this.newAuxContents
+                });
+
+                this.newAuxName = "";
+                this.newAuxContents = "";
+            },
+            deleteAuxiliaryFile: function(x) {
+                this.auxiliary_files = this.auxiliary_files.filter(function(value, index, arr) {
+                    return value.name != x.name;
+                })
+            },
+            editAuxiliaryFile: function(x) {
+                this.deleteAuxiliaryFile(x);
+                this.newAuxName = x.name;
+                this.newAuxContents = x.contents;
+                this.$refs.newAuxName.focus();
+                this.$refs.auxPanel.scrollIntoView();
             },
             parseInputs: function() {
                 result = "";
                 if (this.inputs.length > 0)
                     result = "inputs:\n"
 
+                var i;
                 for (i = 0; i<this.inputs.length; i++)
                 {
-                    result += "  " + this.inputs[i].name + ":\n";
+                    if (this.inputs[i].type == "Output_File")
+                        continue;
+
+                    result += "\n  " + this.inputs[i].name + ":\n";
                     result += "    type: " + this.inputs[i].type + "\n";
-                    result += this.buildOptionalString("    doc: |-\n", this.indent(6, this.inputs[i].doc)); 
+                    result += this.buildOptionalString("    doc: |-\n", this.indent(6, this.inputs[i].doc));
+                }
+
+                return result;
+            },
+            parseAuxiliaryFiles: function() {
+                result = "";
+                if (this.auxiliary_files.length > 0)
+                    result = "  InitialWorkDirRequirement:\n    listing:\n"
+
+                var i;
+                for (i = 0; i<this.auxiliary_files.length; i++)
+                {
+                    result += `    - entryname: ${this.auxiliary_files[i].name}\n`
+                    result += "      entry: |-\n"
+                    result += this.indent(8, this.auxiliary_files[i].contents);
+                }
+
+                return result;
+            },
+            parseOutputs: function() {
+                result = "";
+                var output_count = 0;
+                var i;
+                for (i = 0; i<this.inputs.length; i++)
+                {
+                    if (this.inputs[i].type != "Output_File")
+                        continue;
+
+                    output_count += 1;
+                    result += "  output_" + output_count + ":\n";
+                    result += "    type: File\n";
+                    result += "    outputBinding:\n";
+                    result += "      glob: \"$(inputs." + this.inputs[i].name + ")\"\n";
+                    result += "    doc: |-\n";
+                    result += "      " + this.inputs[i].doc + "\n";
                 }
 
                 return result;
@@ -206,11 +529,13 @@ stderr: error.txt
                     return "";
 
                 prefix = "";
+                var i;
                 for (i = 0; i < numSpaces; i++)
                     prefix += " ";
 
                 lines = value.split("\n");
                 result = "";
+
                 for (i = 0; i < lines.length; i++)
                 {
                     result += prefix + lines[i];
@@ -220,12 +545,16 @@ stderr: error.txt
 
                 return result;
             },
-            download: function() {
-                var fileName = this.tool_id + ".cwl";
-
+            downloadCwl: function() {
+                this.downloadFile(this.cwl_file_name, this.cwl);
+            },
+            downloadJob: function() {
+                this.downloadFile(this.job_file_name, this.job);
+            },
+            downloadFile: function(fileName, contents) {
                 //https://ourcodeworld.com/articles/read/189/how-to-create-a-file-and-generate-a-download-with-javascript-in-the-browser-without-a-server
                 var element = document.createElement('a');
-                element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(this.cwl));
+                element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(contents));
                 element.setAttribute('download', fileName);
                 element.style.display = 'none';
                 document.body.appendChild(element);
