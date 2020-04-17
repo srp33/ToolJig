@@ -314,9 +314,16 @@
                 if (input_count == 0 || output_file_count == 0)
                     this.download_cwl_errors.push("You must specify at least one input (of any type) and at least one output file.");
                 for (i = 0; i < this.inputs.length; i++) {
-                    re = new RegExp(`\\$\\(inputs.${this.inputs[i].name}\\)`);
-                    if (!re.test(this.command_template))
-                        this.download_cwl_errors.push(`All inputs must be used at least once in the command template: ${this.inputs[i].name} was not used. It should be specified in the command template as $(inputs.${this.inputs[i].name}).`);
+                    if (this.inputs[i].type == "File" || this.inputs[i].type == "Directory") {
+                        re = new RegExp(`\\$\\(inputs\\.${this.inputs[i].name}\\.path\\)`);
+                        if (!re.test(this.command_template))
+                            this.download_cwl_errors.push(`All inputs must be used at least once in the command template: ${this.inputs[i].name} was not used. It should be specified in the command template as $(inputs.${this.inputs[i].name}.path).`);
+                    }
+                    else {
+                        re = new RegExp(`\\$\\(inputs\\.${this.inputs[i].name}\\)`);
+                        if (!re.test(this.command_template))
+                            this.download_cwl_errors.push(`All inputs must be used at least once in the command template: ${this.inputs[i].name} was not used. It should be specified in the command template as $(inputs.${this.inputs[i].name}).`);
+                    }
                 }
                 for (i = 0; i<this.auxiliary_files.length; i++) {
                     re = new RegExp(this.auxiliary_files[i].name.replace(/\./g, "\\."));

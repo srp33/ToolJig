@@ -1,0 +1,4 @@
+input_file_url: https://raw.githubusercontent.com/srp33/Throughput.js/master/examples/biometric_data.tsv
+weight_column_name: Weight
+height_column_name: Height
+output_file_name: biometric_data_with_bmi.tsv
