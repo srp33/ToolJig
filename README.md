@@ -4,4 +4,4 @@ This is a serverless Javascript application that enables researchers to create C
 
 You can try the app <a href="https://srp33.github.io/ToolJig/">here</a>.
 
-Image credit: [Orsolya Vékony](s://unsplash.com/@vekonyorsi?utm_medium=referral&amp;utm_campaign=photographer-credit&amp;utm_content=creditBadge)
+Image credit: [Orsolya Vékony](https://unsplash.com/@vekonyorsi?utm_medium=referral&amp;utm_campaign=photographer-credit&amp;utm_content=creditBadge)
