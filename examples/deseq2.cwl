@@ -8,7 +8,7 @@ requirements:
     dockerImageId: deseq2
     dockerFile: |-
       FROM bioconductor/bioconductor_docker:RELEASE_3_10
-
+      
       RUN R -e 'install.packages(c("dplyr", "readr"))'
       RUN R -e 'BiocManager::install("DESeq2")'
   NetworkAccess:
@@ -21,35 +21,35 @@ requirements:
         library(dplyr)
         library(readr)
         library(DESeq2)
-
+        
         read_counts_url = commandArgs()[8]
         phenotypes_url = commandArgs()[9]
         design_formula = commandArgs()[10]
         out_file_name = commandArgs()[11]
-
+        
         # Read the data
         count_data = read_tsv(read_counts_url)
         phenotypes_data = read_tsv(phenotypes_url)
-
+        
         # The readr package doesn't allow row names, so we pull those from the first column.
         # The readr package assigns a column name of X1 when the first column name is missing.
         count_row_names = pull(count_data, X1)
         count_data = select(count_data, -X1)
         count_data = as.matrix(count_data)
         rownames(count_data) = count_row_names
-
+        
         phenotypes_row_names = pull(phenotypes_data, X1)
         phenotypes_data = select(phenotypes_data, -X1)
         phenotypes_data = as.data.frame(phenotypes_data)
         rownames(phenotypes_data) = phenotypes_row_names
-
+        
         # These are the analysis steps.
         dds <- DESeqDataSetFromMatrix(countData = count_data,
                               colData = phenotypes_data,
                               design = as.formula(design_formula))
         dds <- DESeq(dds)
         res <- results(dds)
-
+        
         # Now save the results, sorted by adjusted P-value.
         write.table(res[order(res$padj),], out_file_name, sep="\t", row.names=TRUE, col.names=NA, quote=FALSE)
 inputs:
@@ -74,12 +74,12 @@ arguments:
     valueFrom: |-
       Rscript run_deseq2_analysis.R "$(inputs.read_counts_url)" "$(inputs.phenotypes_url)" "$(inputs.design_formula)" "$(inputs.output_file_name)"
 outputs:
-  output_file:
+  output_1:
     type: File
     outputBinding:
       glob: "$(inputs.output_file_name)"
     doc: |-
-      Here we indicate that an output file matching the name specified in the inputs should be generated.
+      An output file matching the value specified in the "output_file_name" input should be generated.
   standard_output:
     type: stdout
   standard_error:

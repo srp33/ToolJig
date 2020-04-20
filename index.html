@@ -294,7 +294,7 @@
             newAuxContents: "",
             auxiliary_files: [],
             command_template: ""
-            //command_template: "$(inputs.a_string) $(inputs.an_integer) $(inputs.a_data_file) $(inputs.some_directory) $(inputs_an_output_file)"
+            //command_template: "$(inputs.a_string) $(inputs.an_integer) $(inputs.a_data_file.path) $(inputs.some_directory.path) $(inputs.an_output_file)"
         },
 
         // Computed attributes build content dynamically for display in the app.
@@ -483,11 +483,12 @@ stderr: error.txt
                 var i;
                 for (i = 0; i<this.inputs.length; i++)
                 {
-                    if (this.inputs[i].type == "Output_File")
-                        continue;
+                    input_type = this.inputs[i].type;
+                    if (input_type == "Output_File")
+                        input_type = "string";
 
                     result += "\n  " + this.inputs[i].name + ":\n";
-                    result += "    type: " + this.inputs[i].type + "\n";
+                    result += "    type: " + input_type + "\n";
                     result += this.buildOptionalString("    doc: |-\n", this.indent(6, this.inputs[i].doc));
                 }
 
@@ -523,7 +524,7 @@ stderr: error.txt
                     result += "    outputBinding:\n";
                     result += "      glob: \"$(inputs." + this.inputs[i].name + ")\"\n";
                     result += "    doc: |-\n";
-                    result += "      " + this.inputs[i].doc + "\n";
+                    result += `      An output file matching the value specified in the "${this.inputs[i].name}" input should be generated.\n`
                 }
 
                 return result;
