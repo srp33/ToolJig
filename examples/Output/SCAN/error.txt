@@ -1,0 +1,421 @@
+Bioconductor version 3.10 (BiocManager 1.30.10), ?BiocManager::install for help
+Loading required package: Biobase
+Loading required package: BiocGenerics
+Loading required package: parallel
+
+Attaching package: ‘BiocGenerics’
+
+The following objects are masked from ‘package:parallel’:
+
+    clusterApply, clusterApplyLB, clusterCall, clusterEvalQ,
+    clusterExport, clusterMap, parApply, parCapply, parLapply,
+    parLapplyLB, parRapply, parSapply, parSapplyLB
+
+The following objects are masked from ‘package:stats’:
+
+    IQR, mad, sd, var, xtabs
+
+The following objects are masked from ‘package:base’:
+
+    anyDuplicated, append, as.data.frame, basename, cbind, colnames,
+    dirname, do.call, duplicated, eval, evalq, Filter, Find, get, grep,
+    grepl, intersect, is.unsorted, lapply, Map, mapply, match, mget,
+    order, paste, pmax, pmax.int, pmin, pmin.int, Position, rank,
+    rbind, Reduce, rownames, sapply, setdiff, sort, table, tapply,
+    union, unique, unsplit, which, which.max, which.min
+
+Welcome to Bioconductor
+
+    Vignettes contain introductory material; view with
+    'browseVignettes()'. To cite Bioconductor, see
+    'citation("Biobase")', and for packages 'citation("pkgname")'.
+
+Loading required package: oligo
+Loading required package: oligoClasses
+Welcome to oligoClasses version 1.48.0
+Loading required package: Biostrings
+Loading required package: S4Vectors
+Loading required package: stats4
+
+Attaching package: ‘S4Vectors’
+
+The following object is masked from ‘package:base’:
+
+    expand.grid
+
+Loading required package: IRanges
+Loading required package: XVector
+
+Attaching package: ‘Biostrings’
+
+The following object is masked from ‘package:base’:
+
+    strsplit
+
+No methods found in package ‘RSQLite’ for request: ‘dbListFields’ when loading ‘oligo’
+================================================================================
+Welcome to oligo version 1.50.0
+================================================================================
+Loading required package: GEOquery
+Setting options('download.file.method.GEOquery'='auto')
+Setting options('GEOquery.inmemory.gpl'=FALSE)
+Loading required package: affy
+
+Attaching package: ‘affy’
+
+The following objects are masked from ‘package:oligo’:
+
+    intensity, MAplot, mm, mm<-, mmindex, pm, pm<-, pmindex,
+    probeNames, rma
+
+The following object is masked from ‘package:oligoClasses’:
+
+    list.celfiles
+
+Loading required package: affyio
+Loading required package: foreach
+Parallel computing support for 'oligo/crlmm': Disabled
+     - Load 'ff'
+     - Load and register a 'foreach' adaptor
+        Example - Using 'multicore' for 2 cores:
+             library(doMC)
+             registerDoMC(2)
+================================================================================
+Loading required package: sva
+Loading required package: mgcv
+Loading required package: nlme
+
+Attaching package: ‘nlme’
+
+The following object is masked from ‘package:Biostrings’:
+
+    collapse
+
+The following object is masked from ‘package:IRanges’:
+
+    collapse
+
+This is mgcv 1.8-31. For overview type 'help("mgcv-package")'.
+Loading required package: genefilter
+Loading required package: BiocParallel
+Downloading GSE1000 directly from GEO to /tmp/Rtmpw7sgQt.
+trying URL 'https://ftp.ncbi.nlm.nih.gov/geo/series/GSE1nnn/GSE1000/suppl//GSE1000_RAW.tar?tool=geoquery'
+Content type 'application/x-tar' length 35307520 bytes (33.7 MB)
+==================================================
+downloaded 33.7 MB
+
+Loading required package: pd.hg.u133a
+Attempting to obtain 'pd.hg.u133a' from BioConductor website.
+Checking to see if your internet connection works...
+trying URL 'https://bioconductor.org/packages/3.10/data/annotation/src/contrib/pd.hg.u133a_3.12.0.tar.gz'
+Content type 'application/x-gzip' length 9851796 bytes (9.4 MB)
+==================================================
+downloaded 9.4 MB
+
+Bioconductor version 3.10 (BiocManager 1.30.10), ?BiocManager::install for help
+* installing *source* package ‘pd.hg.u133a’ ...
+** using staged installation
+** R
+** data
+** inst
+** byte-compile and prepare package for lazy loading
+** help
+*** installing help indices
+** building package indices
+** testing if installed package can be loaded from temporary location
+** testing if installed package can be loaded from final location
+** testing if installed package keeps a record of temporary installation path
+* DONE (pd.hg.u133a)
+
+The downloaded source packages are in
+	‘/tmp/Rtmpw7sgQt/downloaded_packages’
+Loading required package: pd.hg.u133a
+Loading required package: RSQLite
+Loading required package: DBI
+Platform design info loaded.
+Starting EM
+Attempting to converge...iteration 1, c = 28.92536
+Attempting to converge...iteration 2, c = 2.675752
+Attempting to converge...iteration 3, c = 2.865996
+Attempting to converge...iteration 4, c = 1.391334
+Attempting to converge...iteration 5, c = 0.515757
+Attempting to converge...iteration 6, c = 0.564585
+Attempting to converge...iteration 7, c = 0.220895
+Attempting to converge...iteration 8, c = 0.584967
+Attempting to converge...iteration 9, c = 0.193553
+Attempting to converge...iteration 10, c = 0.309218
+Attempting to converge...iteration 11, c = 0.150701
+Attempting to converge...iteration 12, c = 0.105259
+Attempting to converge...iteration 13, c = 0.088257
+Attempting to converge...iteration 14, c = 0.055807
+Attempting to converge...iteration 15, c = 0.014556
+Attempting to converge...iteration 16, c = 0.027292
+Attempting to converge...iteration 17, c = 0.017061
+Attempting to converge...iteration 18, c = 0.074202
+Attempting to converge...iteration 19, c = 0.023013
+Attempting to converge...iteration 20, c = 0.018921
+Attempting to converge...iteration 21, c = 0.012422
+Attempting to converge...iteration 22, c = 0.010705
+Attempting to converge...iteration 23, c = 0.035282
+Attempting to converge...iteration 24, c = 0.013661
+Attempting to converge...iteration 25, c = 0.013061
+Attempting to converge...iteration 26, c = 0.00976
+Converged in 26 iterations. Proportion of background probes: 0.607453
+Platform design info loaded.
+Starting EM
+Attempting to converge...iteration 1, c = 27.001142
+Attempting to converge...iteration 2, c = 2.118156
+Attempting to converge...iteration 3, c = 3.97273
+Attempting to converge...iteration 4, c = 2.5216
+Attempting to converge...iteration 5, c = 0.64121
+Attempting to converge...iteration 6, c = 0.774966
+Attempting to converge...iteration 7, c = 1.54002
+Attempting to converge...iteration 8, c = 0.480339
+Attempting to converge...iteration 9, c = 0.447886
+Attempting to converge...iteration 10, c = 0.187827
+Attempting to converge...iteration 11, c = 0.095813
+Attempting to converge...iteration 12, c = 0.142289
+Attempting to converge...iteration 13, c = 0.056876
+Attempting to converge...iteration 14, c = 0.065185
+Attempting to converge...iteration 15, c = 0.020219
+Attempting to converge...iteration 16, c = 0.038591
+Attempting to converge...iteration 17, c = 0.008467
+Converged in 17 iterations. Proportion of background probes: 0.631566
+Platform design info loaded.
+Starting EM
+Attempting to converge...iteration 1, c = 25.923781
+Attempting to converge...iteration 2, c = 2.68157
+Attempting to converge...iteration 3, c = 6.80752
+Attempting to converge...iteration 4, c = 0.485608
+Attempting to converge...iteration 5, c = 0.431076
+Attempting to converge...iteration 6, c = 0.609712
+Attempting to converge...iteration 7, c = 1.520405
+Attempting to converge...iteration 8, c = 0.134878
+Attempting to converge...iteration 9, c = 0.028427
+Attempting to converge...iteration 10, c = 0.077877
+Attempting to converge...iteration 11, c = 0.065515
+Attempting to converge...iteration 12, c = 0.083155
+Attempting to converge...iteration 13, c = 0.034394
+Attempting to converge...iteration 14, c = 0.047379
+Attempting to converge...iteration 15, c = 0.022916
+Attempting to converge...iteration 16, c = 0.018715
+Attempting to converge...iteration 17, c = 0.012868
+Attempting to converge...iteration 18, c = 0.022902
+Attempting to converge...iteration 19, c = 0.015479
+Attempting to converge...iteration 20, c = 0.009973
+Converged in 20 iterations. Proportion of background probes: 0.602321
+Platform design info loaded.
+Starting EM
+Attempting to converge...iteration 1, c = 38.298058
+Attempting to converge...iteration 2, c = 9.561836
+Attempting to converge...iteration 3, c = 7.075327
+Attempting to converge...iteration 4, c = 0.457315
+Attempting to converge...iteration 5, c = 0.237424
+Attempting to converge...iteration 6, c = 3.593952
+Attempting to converge...iteration 7, c = 0.566384
+Attempting to converge...iteration 8, c = 0.229875
+Attempting to converge...iteration 9, c = 0.11599
+Attempting to converge...iteration 10, c = 0.115356
+Attempting to converge...iteration 11, c = 0.015019
+Attempting to converge...iteration 12, c = 1.160444
+Attempting to converge...iteration 13, c = 0.050758
+Attempting to converge...iteration 14, c = 0.011768
+Attempting to converge...iteration 15, c = 0.13614
+Attempting to converge...iteration 16, c = 0.185242
+Attempting to converge...iteration 17, c = 0.005329
+Converged in 17 iterations. Proportion of background probes: 0.67344
+Platform design info loaded.
+Starting EM
+Attempting to converge...iteration 1, c = 33.513082
+Attempting to converge...iteration 2, c = 2.844548
+Attempting to converge...iteration 3, c = 1.812481
+Attempting to converge...iteration 4, c = 0.624503
+Attempting to converge...iteration 5, c = 1.032509
+Attempting to converge...iteration 6, c = 0.339756
+Attempting to converge...iteration 7, c = 0.13513
+Attempting to converge...iteration 8, c = 0.321328
+Attempting to converge...iteration 9, c = 21.873501
+Attempting to converge...iteration 10, c = 0.123006
+Attempting to converge...iteration 11, c = 0.115691
+Attempting to converge...iteration 12, c = 0.342515
+Attempting to converge...iteration 13, c = 0.094281
+Attempting to converge...iteration 14, c = 1.105078
+Attempting to converge...iteration 15, c = 0.012983
+Attempting to converge...iteration 16, c = 1.007039
+Attempting to converge...iteration 17, c = 0.007265
+Converged in 17 iterations. Proportion of background probes: 0.642739
+Platform design info loaded.
+Starting EM
+Attempting to converge...iteration 1, c = 25.967778
+Attempting to converge...iteration 2, c = 2.814473
+Attempting to converge...iteration 3, c = 4.406519
+Attempting to converge...iteration 4, c = 0.511675
+Attempting to converge...iteration 5, c = 0.98529
+Attempting to converge...iteration 6, c = 0.446709
+Attempting to converge...iteration 7, c = 0.357758
+Attempting to converge...iteration 8, c = 0.220679
+Attempting to converge...iteration 9, c = 0.051252
+Attempting to converge...iteration 10, c = 0.10037
+Attempting to converge...iteration 11, c = 0.104147
+Attempting to converge...iteration 12, c = 0.093196
+Attempting to converge...iteration 13, c = 0.100235
+Attempting to converge...iteration 14, c = 0.058878
+Attempting to converge...iteration 15, c = 0.056851
+Attempting to converge...iteration 16, c = 0.040459
+Attempting to converge...iteration 17, c = 0.027855
+Attempting to converge...iteration 18, c = 0.049932
+Attempting to converge...iteration 19, c = 0.042783
+Attempting to converge...iteration 20, c = 0.026431
+Attempting to converge...iteration 21, c = 0.024952
+Attempting to converge...iteration 22, c = 0.021954
+Attempting to converge...iteration 23, c = 0.022952
+Attempting to converge...iteration 24, c = 0.01038
+Attempting to converge...iteration 25, c = 0.007403
+Converged in 25 iterations. Proportion of background probes: 0.551276
+Platform design info loaded.
+Starting EM
+Attempting to converge...iteration 1, c = 32.591553
+Attempting to converge...iteration 2, c = 1.596801
+Attempting to converge...iteration 3, c = 15.729103
+Attempting to converge...iteration 4, c = 4.358674
+Attempting to converge...iteration 5, c = 0.856675
+Attempting to converge...iteration 6, c = 2.231142
+Attempting to converge...iteration 7, c = 0.388255
+Attempting to converge...iteration 8, c = 0.22599
+Attempting to converge...iteration 9, c = 0.217148
+Attempting to converge...iteration 10, c = 0.028612
+Attempting to converge...iteration 11, c = 0.018693
+Attempting to converge...iteration 12, c = 0.019161
+Attempting to converge...iteration 13, c = 0.021288
+Attempting to converge...iteration 14, c = 0.02306
+Attempting to converge...iteration 15, c = 0.03168
+Attempting to converge...iteration 16, c = 0.022677
+Attempting to converge...iteration 17, c = 0.024949
+Attempting to converge...iteration 18, c = 0.028078
+Attempting to converge...iteration 19, c = 0.014692
+Attempting to converge...iteration 20, c = 0.007839
+Converged in 20 iterations. Proportion of background probes: 0.626865
+Platform design info loaded.
+Starting EM
+Attempting to converge...iteration 1, c = 26.57375
+Attempting to converge...iteration 2, c = 2.483804
+Attempting to converge...iteration 3, c = 0.520974
+Attempting to converge...iteration 4, c = 0.413617
+Attempting to converge...iteration 5, c = 0.242556
+Attempting to converge...iteration 6, c = 0.117857
+Attempting to converge...iteration 7, c = 0.054595
+Attempting to converge...iteration 8, c = 0.032814
+Attempting to converge...iteration 9, c = 0.02098
+Attempting to converge...iteration 10, c = 0.023476
+Attempting to converge...iteration 11, c = 0.012126
+Attempting to converge...iteration 12, c = 0.008646
+Converged in 12 iterations. Proportion of background probes: 0.659831
+Platform design info loaded.
+Starting EM
+Attempting to converge...iteration 1, c = 31.676959
+Attempting to converge...iteration 2, c = 6.685148
+Attempting to converge...iteration 3, c = 20.279526
+Attempting to converge...iteration 4, c = 0.673284
+Attempting to converge...iteration 5, c = 0.421913
+Attempting to converge...iteration 6, c = 2.241375
+Attempting to converge...iteration 7, c = 0.482125
+Attempting to converge...iteration 8, c = 0.136484
+Attempting to converge...iteration 9, c = 0.158064
+Attempting to converge...iteration 10, c = 0.161404
+Attempting to converge...iteration 11, c = 0.233149
+Attempting to converge...iteration 12, c = 0.512526
+Attempting to converge...iteration 13, c = 0.747673
+Attempting to converge...iteration 14, c = 1.696942
+Attempting to converge...iteration 15, c = 0.126055
+Attempting to converge...iteration 16, c = 0.159414
+Attempting to converge...iteration 17, c = 0.046956
+Attempting to converge...iteration 18, c = 0.02138
+Attempting to converge...iteration 19, c = 0.087479
+Attempting to converge...iteration 20, c = 0.091063
+Attempting to converge...iteration 21, c = 0.102791
+Attempting to converge...iteration 22, c = 0.240649
+Attempting to converge...iteration 23, c = 0.174806
+Attempting to converge...iteration 24, c = 0.122433
+Attempting to converge...iteration 25, c = 0.131447
+Attempting to converge...iteration 26, c = 0.147105
+Attempting to converge...iteration 27, c = 0.133973
+Attempting to converge...iteration 28, c = 0.118242
+Attempting to converge...iteration 29, c = 0.11262
+Attempting to converge...iteration 30, c = 0.033873
+Attempting to converge...iteration 31, c = 0.021311
+Attempting to converge...iteration 32, c = 0.181124
+Attempting to converge...iteration 33, c = 0.01131
+Attempting to converge...iteration 34, c = 0.589475
+Attempting to converge...iteration 35, c = 0.425253
+Attempting to converge...iteration 36, c = 0.24789
+Attempting to converge...iteration 37, c = 0.463654
+Attempting to converge...iteration 38, c = 0.455293
+Attempting to converge...iteration 39, c = 0.277823
+Attempting to converge...iteration 40, c = 0.233006
+Attempting to converge...iteration 41, c = 1.112885
+Attempting to converge...iteration 42, c = 0.234196
+Attempting to converge...iteration 43, c = 0.539448
+Attempting to converge...iteration 44, c = 0.0239
+Attempting to converge...iteration 45, c = 0.244001
+Attempting to converge...iteration 46, c = 0.488247
+Attempting to converge...iteration 47, c = 0.024446
+Attempting to converge...iteration 48, c = 0.291225
+Attempting to converge...iteration 49, c = 0.046196
+Attempting to converge...iteration 50, c = 0.384191
+Attempting to converge...iteration 51, c = 0.606188
+Attempting to converge...iteration 52, c = 2.684588
+Attempting to converge...iteration 53, c = 0.221775
+Attempting to converge...iteration 54, c = 0.378536
+Attempting to converge...iteration 55, c = 0.249995
+Attempting to converge...iteration 56, c = 0.324064
+Attempting to converge...iteration 57, c = 0.172459
+Attempting to converge...iteration 58, c = 0.096887
+Attempting to converge...iteration 59, c = 0.13457
+Attempting to converge...iteration 60, c = 0.177756
+Attempting to converge...iteration 61, c = 0.152875
+Attempting to converge...iteration 62, c = 0.055318
+Attempting to converge...iteration 63, c = 0.374641
+Attempting to converge...iteration 64, c = 0.517376
+Attempting to converge...iteration 65, c = 0.393842
+Attempting to converge...iteration 66, c = 0.320679
+Attempting to converge...iteration 67, c = 0.076302
+Attempting to converge...iteration 68, c = 0.346028
+Attempting to converge...iteration 69, c = 0.167808
+Attempting to converge...iteration 70, c = 0.361422
+Attempting to converge...iteration 71, c = 0.521051
+Attempting to converge...iteration 72, c = 1.28719
+Attempting to converge...iteration 73, c = 0.0075
+Converged in 73 iterations. Proportion of background probes: 0.571353
+Platform design info loaded.
+Starting EM
+Attempting to converge...iteration 1, c = 33.582137
+Attempting to converge...iteration 2, c = 2.590455
+Attempting to converge...iteration 3, c = 2.438574
+Attempting to converge...iteration 4, c = 1.499509
+Attempting to converge...iteration 5, c = 0.643808
+Attempting to converge...iteration 6, c = 1.080501
+Attempting to converge...iteration 7, c = 0.240819
+Attempting to converge...iteration 8, c = 0.239633
+Attempting to converge...iteration 9, c = 0.222028
+Attempting to converge...iteration 10, c = 0.103206
+Attempting to converge...iteration 11, c = 0.091587
+Attempting to converge...iteration 12, c = 0.030458
+Attempting to converge...iteration 13, c = 0.088503
+Attempting to converge...iteration 14, c = 0.053648
+Attempting to converge...iteration 15, c = 0.018387
+Attempting to converge...iteration 16, c = 0.014201
+Attempting to converge...iteration 17, c = 0.057689
+Attempting to converge...iteration 18, c = 0.015458
+Attempting to converge...iteration 19, c = 0.010055
+Attempting to converge...iteration 20, c = 0.010177
+Attempting to converge...iteration 21, c = 0.016007
+Attempting to converge...iteration 22, c = 0.023746
+Attempting to converge...iteration 23, c = 0.01154
+Attempting to converge...iteration 24, c = 0.010283
+Attempting to converge...iteration 25, c = 0.042404
+Attempting to converge...iteration 26, c = 0.02378
+Attempting to converge...iteration 27, c = 0.008958
+Converged in 27 iterations. Proportion of background probes: 0.663655
+Saved output to GSE1000_normalized.tsv
+Warning message:
+executing %dopar% sequentially: no parallel backend registered 

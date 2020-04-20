@@ -1,0 +1,4 @@
+read_counts_url: https://osf.io/9vbhe/download
+phenotypes_url: https://osf.io/9wnj2/download
+design_formula: ~ strain
+output_file_name: deseq2_results.tsv
