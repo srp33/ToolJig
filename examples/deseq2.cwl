@@ -8,9 +8,10 @@ requirements:
     dockerImageId: deseq2
     dockerFile: |-
       FROM bioconductor/bioconductor_docker:RELEASE_3_10
-      
-      RUN R -e 'install.packages(c("dplyr", "readr"))'
-      RUN R -e 'BiocManager::install("DESeq2")'
+
+      RUN R -e 'BiocManager::install(c("DESeq2"))'
+
+      RUN R -e "install.packages(c('dplyr', 'readr'), repos='https://cloud.r-project.org')"
   NetworkAccess:
     class: NetworkAccess
     networkAccess: true

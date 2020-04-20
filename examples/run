@@ -5,5 +5,5 @@
 #cwl-runner --outdir Output/BMI bmi_calculator.cwl bmi_calculator_job.yml
 #cwl-runner --outdir Output/BMI_url bmi_calculator_url.cwl bmi_calculator_url_job.yml
 
-cwl-runner --outdir Output/SCAN scan_normalize.cwl scan_normalize_job.yml
-#cwl-runner --outdir Output/DESeq2 deseq2.cwl deseq2_job.yml
+#cwl-runner --outdir Output/SCAN scan_normalize.cwl scan_normalize_job.yml
+cwl-runner --outdir Output/DESeq2 deseq2.cwl deseq2_job.yml
