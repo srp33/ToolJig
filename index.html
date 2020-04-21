@@ -72,7 +72,7 @@
         <div class="panel panel-default" ref="inputPanel">
             <h4 class="card-title">Manage inputs<sup><font color="red">*</font></sup>:</h4>
 
-            <p>In this section, you can manage inputs. These are arguments that will be passed to the command-line tool. You must specify at least one regular input (string, int, File, or Directory) and at least one Output File. Technically, an "Output File" is not an input. However, when creating a CWL tool description, you can specify an <em>input</em> that is the name of an output file that the tool will create; then you must specify a corresponding <em>output</em> so the file will be collected after the tool executes. To make that simpler, we provide an "Output File" option that takes care of both of these steps.</p>
+            <p>In this section, you can manage inputs. These are arguments that will be passed to the command-line tool. You must specify at least one regular input (string, int, File, or Directory). Technically, an "Output File" is not an input. However, when creating a CWL tool description, you can specify an <em>input</em> that is the name of an output file that the tool will create; then you must specify a corresponding <em>output</em> so the file will be collected after the tool executes. To make that simpler, we provide an "Output File" option that takes care of both of these steps.</p>
 
             <form v-on:submit.prevent="addInput">
                 <div class="form-group">
@@ -308,14 +308,13 @@
                     this.download_cwl_errors.push("The tool identifier must only container letters, numbers, and underscores.")
                 if (this.command_template.trim() == "")
                     this.download_cwl_errors.push("Please specify a command template.");
-                output_file_count = 0;
+                input_count = 0;
                 var i;
                 for (i = 0; i < this.inputs.length; i++)
-                    if (this.inputs[i].type == "Output_File")
-                        output_file_count += 1;
-                input_count = this.inputs.length - output_file_count;
-                if (input_count == 0 || output_file_count == 0)
-                    this.download_cwl_errors.push("You must specify at least one input (of any type) and at least one output file.");
+                    if (this.inputs[i].type != "Output_File")
+                        input_count += 1;
+                if (input_count == 0)
+                    this.download_cwl_errors.push("You must specify at least one input (string, int, File, Directory).");
                 for (i = 0; i < this.inputs.length; i++) {
                     if (this.inputs[i].type == "File" || this.inputs[i].type == "Directory") {
                         re = new RegExp(`\\$\\(inputs\\.${this.inputs[i].name}\\.path\\)`);
@@ -394,7 +393,7 @@ stderr: error.txt
                 return "";
             },
             cwl_file_name: function() { return `${this.tool_id}.cwl`; },
-            job_file_name: function() { return `${this.tool_id}_job.cwl`; },
+            job_file_name: function() { return `${this.tool_id}_job.yml`; },
             example_command: function() {
                 return `cwl-runner ${this.cwl_file_name} ${this.job_file_name}`;
             }
@@ -524,7 +523,7 @@ stderr: error.txt
                     result += "    outputBinding:\n";
                     result += "      glob: \"$(inputs." + this.inputs[i].name + ")\"\n";
                     result += "    doc: |-\n";
-                    result += `      An output file matching the value specified in the "${this.inputs[i].name}" input should be generated.\n`
+                    result += `      Output file(s) matching the value specified in the "${this.inputs[i].name}" input should be generated.\n`
                 }
 
                 return result;
