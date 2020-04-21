@@ -1,3 +1,5 @@
+## Examples and terms of use
+
 This directory contains example CWL tool descriptions and input-job files. The `run` script illustrates how to execute them.
 
 The somatic-variant examples use data from the Texas Cancer Research Biobank (http://txcrb.org). You can read more about the data here: https://www.nature.com/articles/sdata201610. In these examples, the data are downloaded from the Sequence Read Archive (https://trace.ncbi.nlm.nih.gov/Traces/sra/?run=SRR2187293 and https://trace.ncbi.nlm.nih.gov/Traces/sra/?run=SRR2187298) where they are publicly accessible. However, the data are subject to the data-use restrictions listed below. By downloading or utilizing any part of this dataset, you must agree to the following conditions of use:
