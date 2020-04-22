@@ -51,5 +51,5 @@ outputs:
     type: stdout
   standard_error:
     type: stderr
-stdout: output.txt
-stderr: error.txt
+stdout: scan_output.txt
+stderr: scan_error.txt

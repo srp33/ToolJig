@@ -224,7 +224,7 @@
 
         <h4 v-if="cwl.length > 0 && job.length > 0">Example command to execute the tool:</h4>
 
-        <p  v-if="cwl.length > 0 && job.length > 0">First, you must install <a href="https://github.com/common-workflow-language/cwltool">cwltool</a>. Then you would execute the following command, assuming the CWL file and job file are in your current working directory. Alternatively, you could execute the tool using a variety of <a href="https://www.commonwl.org/#Implementations">other engines</a>.</p>
+        <p  v-if="cwl.length > 0 && job.length > 0">First, you must install <a href="https://github.com/common-workflow-language/cwltool">cwltool</a>. Then you could execute the following command, assuming the CWL file and job file are in your current working directory. Alternatively, you could execute the tool using a variety of <a href="https://www.commonwl.org/#Implementations">other engines</a>.</p>
 
         <pre v-text="example_command" v-if="cwl.length > 0 && job.length > 0"></pre>
     </div>
@@ -395,7 +395,7 @@ stderr: error.txt
             cwl_file_name: function() { return `${this.tool_id}.cwl`; },
             job_file_name: function() { return `${this.tool_id}_job.yml`; },
             example_command: function() {
-                return `cwl-runner ${this.cwl_file_name} ${this.job_file_name}`;
+                return `cwltool ${this.cwl_file_name} ${this.job_file_name}`;
             }
             // encoded_cwl: function() {
             //     return "data:text/plain;charset=utf-8," + encodeURIComponent(this.cwl);
@@ -523,7 +523,7 @@ stderr: error.txt
                     result += "    outputBinding:\n";
                     result += "      glob: \"$(inputs." + this.inputs[i].name + ")\"\n";
                     result += "    doc: |-\n";
-                    result += `      Output file(s) matching the value specified in the "${this.inputs[i].name}" input should be generated.\n`
+                    result += `      Output file matching the name specified in the "${this.inputs[i].name}" input.\n`
                 }
 
                 return result;

@@ -1,11 +1,17 @@
 cwlVersion: v1.1
 class: CommandLineTool
 doc: |-
-  This tool demonstrates a way to process an input data file using an embedded Python script. The script requires as input a data file with tab-separated values. Two of the columns in this file must represent weights and heights of human individuals. The script calculates the individuals' body mass index (BMI) values, stores them in a new column in the file, and writes the file to the output directory. We use a container image from Docker Hub that is based on the "buster" release (version 10.3) of the Debian Linux operating system and includes version 3.8.2 of the Python interpreter.
+  This tool is similar to bmi_calculator.cwl, but it retrieves the data file from a web server rather than from a local file.
 requirements:
   ShellCommandRequirement: {}
   DockerRequirement:
-    dockerPull: python:3.8.2-slim-buster
+    dockerImageId: bmi_calculator
+    dockerFile: |-
+      FROM python:3.8.2-slim-buster
+      RUN apt-get update && apt-get -y install wget
+  NetworkAccess:
+    class: NetworkAccess
+    networkAccess: true
   InitialWorkDirRequirement:
     listing:
     - entryname: calculate_bmi.py
@@ -36,27 +42,33 @@ requirements:
 
         print("Calculations were completed successfully!")
 inputs:
-  input_file:
-    type: File
-    streamable: true
+  input_file_url:
+    type: string
     doc: |-
-      A tab-separated data file with biometric measurements for human individuals. The first line in the file should contain column names. One column should contain measurements representing each individual's weight (in kilograms). One column should contain measurements representing each individual's height (in centimeters).
+      The URL of a tab-separated data file with biometric measurements for human individuals. The first line in the file should contain column names. One column should contain measurements representing each individual's weight (in kilograms). One column should contain measurements representing each individual's height (in centimeters). This URL must be accessible without a password.
   weight_column_name:
     type: string
     doc: |-
-      Name of the column in input_file that contains weight measurements.
+      Name of the column in input_file_url that contains weight measurements.
   height_column_name:
     type: string
     doc: |-
-      Name of the column in input_file that contains height measurements.
+      Name of the column in input_file_url that contains height measurements.
   output_file_name:
     type: string
     doc: |-
-      Name of the output file that will be created. This file will contain the same contents as input_file, augmented with an additional column (labeled "BMI") that indicates each person's body mass index (BMI).
+      Name of the output file that will be created. This file will contain the same contents as input_file_url, augmented with an additional column (labeled "BMI") that indicates each person's body mass index (BMI).
 arguments:
     - shellQuote: false
       valueFrom: |-
-        python calculate_bmi.py "$(inputs.input_file.path)" "$(inputs.weight_column_name)" "$(inputs.height_column_name)" "$(inputs.output_file_name)"
+        # Create a variable with a path to a temporary file that will be created
+        temp_file=/tmp/input_file_url
+
+        # Download the file to the temporary location
+        wget -O $temp_file "$(inputs.input_file_url)"
+
+        # Invoke the Python script
+        python calculate_bmi.py $temp_file "$(inputs.weight_column_name)" "$(inputs.height_column_name)" "$(inputs.output_file_name)"
 outputs:
   output_file:
     type: File
@@ -68,5 +80,5 @@ outputs:
     type: stdout
   standard_error:
     type: stderr
-stdout: output.txt
-stderr: error.txt
+stdout: 02_output.txt
+stderr: 02_error.txt

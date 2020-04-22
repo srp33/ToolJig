@@ -1,9 +1,11 @@
 cwlVersion: v1.1
 class: CommandLineTool
 doc: |-
-  This simple example tool says hello to a person by name. It uses the arguments property to construct the command from the inputs, thus providing more flexibility for constructing the command (we can easily put an exclamation point at the end of the greeting). Note also that we do not need to specify "position" input bindings. (This script will only execute successfully on operating systems that provide an implementation of the "echo" command.)
+  This simple example tool says hello to a person by name. This example is identical to hello2.cwl, except that the tool is executed within a container environment. We use a container image pulled from Docker Hub that consists of the "buster" release (version 10.3) of the Debian Linux operating system. It is a "slim" version of the operating system, meaning that it provides only essential components.
 requirements:
   ShellCommandRequirement: {}
+  DockerRequirement:
+    dockerPull: debian:buster-slim
 inputs:
   given_name:
     type: string
@@ -24,4 +26,4 @@ arguments:
 outputs:
   standard_output:
     type: stdout
-stdout: output.txt
+stdout: 03_output.txt

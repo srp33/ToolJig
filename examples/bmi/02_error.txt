@@ -1,11 +1,11 @@
---2020-04-17 20:35:06--  https://raw.githubusercontent.com/srp33/Throughput.js/master/examples/biometric_data.tsv
+--2020-04-21 12:22:06--  https://raw.githubusercontent.com/srp33/Throughput.js/master/examples/biometric_data.tsv
 Resolving raw.githubusercontent.com (raw.githubusercontent.com)... 151.101.68.133
 Connecting to raw.githubusercontent.com (raw.githubusercontent.com)|151.101.68.133|:443... connected.
 HTTP request sent, awaiting response... 200 OK
 Length: 109 [text/plain]
 Saving to: ‘/tmp/input_file_url’
 
-     0K                                                       100%  643K=0s
+     0K                                                       100%  720K=0s
 
-2020-04-17 20:35:06 (643 KB/s) - ‘/tmp/input_file_url’ saved [109/109]
+2020-04-21 12:22:07 (720 KB/s) - ‘/tmp/input_file_url’ saved [109/109]
 

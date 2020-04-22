@@ -1,7 +1,7 @@
 cwlVersion: v1.1
 class: CommandLineTool
 doc: |-
-  This tool demonstrates how to perform a differential-expression analysis using the Bioconductor DESeq2 package. We use a container image that provides core Bioconductor components (release version 3.10) and use R code to install the DESeq2 package.
+  This tool demonstrates how to perform a differential-expression analysis using the Bioconductor DESeq2 package. We use a container image that provides core Bioconductor components (release version 3.10) and use R code to install the DESeq2 packages as well as two helper packages.
 requirements:
   ShellCommandRequirement: {}
   DockerRequirement:
@@ -85,5 +85,5 @@ outputs:
     type: stdout
   standard_error:
     type: stderr
-stdout: output.txt
-stderr: error.txt
+stdout: deseq2_output.txt
+stderr: deseq2_error.txt

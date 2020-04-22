@@ -19,4 +19,4 @@ inputs:
 outputs:
   standard_output:
     type: stdout
-stdout: output.txt
+stdout: 01_output.txt

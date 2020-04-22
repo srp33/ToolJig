@@ -1,0 +1,2 @@
+cwltool scan_normalize.cwl scan_normalize_job.yml
+cwltool deseq2.cwl deseq2_job.yml

@@ -1,4 +1,4 @@
-## Examples and terms of use
+## Terms of use
 
 This directory contains example CWL tool descriptions and input-job files. The `run` script illustrates how to execute them.
 

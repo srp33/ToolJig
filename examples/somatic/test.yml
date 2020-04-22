@@ -1,0 +1,5 @@
+srr_id: SRR11180057
+fastq_file_name_1: SRR11180057_1.fastq.gz
+fastq_file_name_2: SRR11180057_2.fastq.gz
+small_fastq_file_name_1: SRR11180057_1_small.fastq.gz
+small_fastq_file_name_2: SRR11180057_2_small.fastq.gz
