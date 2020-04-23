@@ -1,11 +1,4 @@
-# Some of these examples use very large files. This can fill up your temporary directory.
-# Optionally, you can use settings like these to avoid your temporary directory filling up.
-#SETTINGS="--tmpdir-prefix Temp/cwltool --tmp-outdir-prefix Temp/cwltool_tmpoutdir"
-# Otherwise, default settings are used.
+#cwltool 01_trim_fastq.cwl 01_normal_job.yml
+#cwltool 01_trim_fastq.cwl 01_tumor_job.yml
 
-# Download FASTQ files from SRA
-#cwltool $SETTINGS 01_sra.cwl test.yml
-#cwltool $SETTINGS 01_sra.cwl normal.yml
-#cwltool $SETTINGS 01_sra.cwl tumor.yml
-
-cwltool $SETTINGS 02_head.cwl test.yml
+cwltool --outdir ref_genome 02_prep_ref_genome.cwl 02_job.yml
