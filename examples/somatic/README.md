@@ -2,6 +2,8 @@
 
 The FASTQ files in this example were obtained from the Texas Cancer Research Biobank (http://txcrb.org). We used the first 10,000,000 reads for the normal and tumor samples (lane 2 only) from sample TCRBOA7. Because these are only subsets of the reads, you cannot really trust variant calls made from the data. These files are still quite large, so we do not include them in this repository. We have uploaded them to a repository on the Open Science Framework. In addition, we don't include in this repository data files resulting from each tool. But you can re-generate them if you execute the tools.
 
+These example scripts take several hours to process.
+
 ## Terms of use
 
 These examples use data from the Texas Cancer Research Biobank (http://txcrb.org). You can read more about the data here: https://www.nature.com/articles/sdata201610. The data are subject to the data-use restrictions listed below. By downloading or utilizing any part of this dataset, you must agree to the following conditions of use:

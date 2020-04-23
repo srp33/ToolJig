@@ -1,4 +1,16 @@
 #cwltool 01_trim_fastq.cwl 01_normal_job.yml
 #cwltool 01_trim_fastq.cwl 01_tumor_job.yml
 
-cwltool --outdir ref_genome 02_prep_ref_genome.cwl 02_job.yml
+#cwltool --outdir ref_genome 02_prep_ref_genome.cwl 02_job.yml
+
+#cwltool 03_align_bwa_mem.cwl 03_normal_job.yml
+#cwltool 03_align_bwa_mem.cwl 03_tumor_job.yml
+
+#cwltool 04_sort_bam.cwl 04_normal_job.yml
+#cwltool 04_sort_bam.cwl 04_tumor_job.yml
+
+#cwltool 05_index_bam.cwl 05_normal_job.yml
+#cwltool 05_index_bam.cwl 05_tumor_job.yml
+
+cwltool 06_mark_dups.cwl 06_normal_job.yml
+cwltool 06_mark_dups.cwl 06_tumor_job.yml

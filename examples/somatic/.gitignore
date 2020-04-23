@@ -1,2 +1,6 @@
 *.fastq.gz
 ref_genome
+*_error.txt
+*_output.txt
+*.bam
+*.bam.bai
