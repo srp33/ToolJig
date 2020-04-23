@@ -7,6 +7,9 @@ requirements:
     dockerImageId: 06_mark_dups
     dockerFile: |-
       FROM quay.io/biocontainers/sambamba:0.7.1--h148d290_2
+  NetworkAccess:
+    class: NetworkAccess
+    networkAccess: true
 inputs:
   bam_file:
     type: File

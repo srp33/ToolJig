@@ -7,6 +7,9 @@ requirements:
     dockerImageId: 04_sort_bam
     dockerFile: |-
       FROM quay.io/biocontainers/samtools:1.3--h0592bc0_3
+  NetworkAccess:
+    class: NetworkAccess
+    networkAccess: true
 inputs:
   bam_file:
     type: File

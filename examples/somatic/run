@@ -12,5 +12,9 @@
 #cwltool 05_index_bam.cwl 05_normal_job.yml
 #cwltool 05_index_bam.cwl 05_tumor_job.yml
 
-cwltool 06_mark_dups.cwl 06_normal_job.yml
-cwltool 06_mark_dups.cwl 06_tumor_job.yml
+#cwltool 06_mark_dups.cwl 06_normal_job.yml
+#cwltool 06_mark_dups.cwl 06_tumor_job.yml
+
+#cwltool 07_prep_recal.cwl 07_1000G_job.yml
+cwltool 07_prep_recal.cwl 07_dbsnp_job.yml
+cwltool 07_prep_recal.cwl 07_indels_job.yml

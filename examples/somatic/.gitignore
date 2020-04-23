@@ -4,3 +4,4 @@ ref_genome
 *_output.txt
 *.bam
 *.bam.bai
+*.vcf
