@@ -20,21 +20,23 @@ inputs:
     type: int
     doc: |-
       The number of threads that samtools should use when sorting.
-  output_file_name:
+  sorted_bam_file:
     type: string
     doc: |-
-      Name of the BAM file that will be created.
+      Name of the sorted BAM file that will be created.
 arguments:
     - shellQuote: false
       valueFrom: |-
         samtools sort -@ $(inputs.threads) -o "$(inputs.output_file_name)" "$(inputs.bam_file.path)"
+
+        sambamba index -@ $(inputs.threads) "$(inputs.output_file_name)"
 outputs:
-  output_file:
-    type: File
+  output_files:
+    type:
+      type: array
+      items: File
     outputBinding:
-      glob: "$(inputs.output_file_name)"
-    doc: |-
-      Here we indicate that an output file matching the name specified in the inputs should be generated.
+      glob: "$(inputs.sorted_bam_file)*"
   standard_output:
     type: stdout
   standard_error:

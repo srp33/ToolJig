@@ -1,7 +1,7 @@
 cwlVersion: v1.1
 class: CommandLineTool
 doc: |-
-  Trim adapter sequences and low-quality bases from FASTQ files using the atropos software. Only paired-end reads are supported. atropos: https://github.com/jdidion/atropos
+  Download the FASTQ files from an online repository and trim adapter sequences and low-quality bases from FASTQ files using the atropos software. Only paired-end reads are supported. atropos: https://github.com/jdidion/atropos
 requirements:
   ShellCommandRequirement: {}
   DockerRequirement:
@@ -12,14 +12,14 @@ requirements:
     class: NetworkAccess
     networkAccess: true
 inputs:
-  fastq_file_1:
+  fastq_url_1:
     type: File
     doc: |-
-      FASTQ file for the first ends of paired-end reads.
-  fastq_file_2:
+      URL of FASTQ file for the first ends of paired-end reads.
+  fastq_url_2:
     type: File
     doc: |-
-      FASTQ file for the second ends of paired-end reads.
+      URL of FASTQ file for the second ends of paired-end reads.
   args:
     type: string
     doc: |-
