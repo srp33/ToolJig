@@ -1,0 +1,5 @@
+bam_file:
+    class: File
+    path: SortedMarked.TCRBOA7-N.bam
+threads: 8
+output_file_name: SortedMarked.TCRBOA7-N.bam.bai

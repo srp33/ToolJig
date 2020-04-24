@@ -8,3 +8,4 @@ ref_genome
 *.bqsr.table
 *.fastq.gz
 *.vcf
+.DS_Store

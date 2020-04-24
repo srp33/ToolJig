@@ -2,4 +2,4 @@ bam_file:
     class: File
     path: Sorted.TCRBOA7-T.bam
 threads: 8
-output_file_name: SortedMarked.TCRBOA7-T.bam
+output_file_name: Sorted.TCRBOA7-T.bam.bai
