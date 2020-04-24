@@ -1,0 +1,4 @@
+vcf_file:
+    class: File
+    path: known_sites/dbsnp_146.hg38.vcf
+output_file_name: dbsnp_146.hg38.vcf.idx

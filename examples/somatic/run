@@ -1,20 +1,27 @@
-#cwltool 01_trim_fastq.cwl 01_normal_job.yml
-#cwltool 01_trim_fastq.cwl 01_tumor_job.yml
+#cwltool 01_trim_fastq.cwl job_files/01_normal_job.yml
+#cwltool 01_trim_fastq.cwl job_files/01_tumor_job.yml
 
-#cwltool --outdir ref_genome 02_prep_ref_genome.cwl 02_job.yml
+#cwltool --outdir ref_genome 02_prep_ref_genome.cwl job_files/02_job.yml
 
-#cwltool 03_align_bwa_mem.cwl 03_normal_job.yml
-#cwltool 03_align_bwa_mem.cwl 03_tumor_job.yml
+#cwltool 03_align_bwa_mem.cwl job_files/03_normal_job.yml
+#cwltool 03_align_bwa_mem.cwl job_files/03_tumor_job.yml
 
-#cwltool 04_sort_bam.cwl 04_normal_job.yml
-#cwltool 04_sort_bam.cwl 04_tumor_job.yml
+#cwltool 04_sort_bam.cwl job_files/04_normal_job.yml
+#cwltool 04_sort_bam.cwl job_files/04_tumor_job.yml
 
-#cwltool 05_index_bam.cwl 05_normal_job.yml
-#cwltool 05_index_bam.cwl 05_tumor_job.yml
+#cwltool 05_index_bam.cwl job_files/05_normal_job.yml
+#cwltool 05_index_bam.cwl job_files/05_tumor_job.yml
 
-#cwltool 06_mark_dups.cwl 06_normal_job.yml
-#cwltool 06_mark_dups.cwl 06_tumor_job.yml
+#cwltool 06_mark_dups.cwl job_files/06_normal_job.yml
+#cwltool 06_mark_dups.cwl job_files/06_tumor_job.yml
 
-#cwltool 07_prep_recal.cwl 07_1000G_job.yml
-cwltool 07_prep_recal.cwl 07_dbsnp_job.yml
-cwltool 07_prep_recal.cwl 07_indels_job.yml
+#cwltool --outdir known_sites 07_prep_recal.cwl job_files/07_1000G_job.yml
+#cwltool --outdir known_sites 07_prep_recal.cwl job_files/07_dbsnp_job.yml
+#cwltool --outdir known_sites 07_prep_recal.cwl job_files/07_indels_job.yml
+
+#cwltool --outdir known_sites 08_index_recal.cwl job_files/08_1000G_job.yml
+#cwltool --outdir known_sites 08_index_recal.cwl job_files/08_dbsnp_job.yml
+#cwltool --outdir known_sites 08_index_recal.cwl job_files/08_indels_job.yml
+
+cwltool 09_calculate_bqsr.cwl job_files/09_normal_job.yml
+#cwltool 09_calculate_bqsr.cwl job_files/09_tumor_job.yml

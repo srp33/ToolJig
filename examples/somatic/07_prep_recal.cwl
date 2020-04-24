@@ -76,6 +76,11 @@ outputs:
     outputBinding:
       glob: "$(inputs.output_file_name)"
     doc: Here we indicate that an output file matching the name specified in the inputs should be generated.
+  output_index_file:
+    type: File
+    outputBinding:
+      glob: "$(inputs.output_file_name).tbi"
+    doc: This is an index file associated with the output VCF file.
   standard_output:
     type: stdout
   standard_error:

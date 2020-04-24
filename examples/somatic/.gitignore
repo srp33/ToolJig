@@ -1,7 +1,8 @@
-*.fastq.gz
+known_sites
 ref_genome
 *_error.txt
 *_output.txt
 *.bam
 *.bam.bai
+*.fastq.gz
 *.vcf
