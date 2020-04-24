@@ -28,14 +28,14 @@ arguments:
 
       samtools faidx $(inputs.ref_genome_version).fa
 
-      picard -Xms128m -Xmx2g CreateSequenceDictionary REFERENCE=$(inputs.ref_genome_version).fa OUTPUT=$(inputs.ref_genome_version).fa.dict
+      picard -Xms128m -Xmx2g CreateSequenceDictionary REFERENCE=$(inputs.ref_genome_version).fa OUTPUT=$(inputs.ref_genome_version).dict
 outputs:
   output_file:
     type: 
       type: array
       items: File
     outputBinding:
-      glob: "$(inputs.ref_genome_version).fa*"
+      glob: "$(inputs.ref_genome_version)*"
     doc: |-
       FASTA file
   standard_output:

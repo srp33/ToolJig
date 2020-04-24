@@ -1,0 +1,12 @@
+ref_genome_dir:
+    class: Directory
+    path: ref_genome
+ref_genome_fasta_name: hg38.fa
+normal_bam_file:
+    class: File
+    path: Final.TCRBOA7-N.bam
+tumor_bam_file:
+    class: File
+    path: Final.TCRBOA7-T.bam
+exclude_template_url: https://raw.githubusercontent.com/dellytools/delly/master/excludeTemplates/human.hg38.excl.tsv
+output_file_name: TCRBOA7.sv.vcf

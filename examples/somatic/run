@@ -1,27 +1,41 @@
-#cwltool 01_trim_fastq.cwl job_files/01_normal_job.yml
-#cwltool 01_trim_fastq.cwl job_files/01_tumor_job.yml
+#cwltool 01_trim_fastq.cwl 01_normal_job.yml
+#cwltool 01_trim_fastq.cwl 01_tumor_job.yml
 
-#cwltool --outdir ref_genome 02_prep_ref_genome.cwl job_files/02_job.yml
+#cwltool --outdir ref_genome 02_prep_ref_genome.cwl 02_job.yml
 
-#cwltool 03_align_bwa_mem.cwl job_files/03_normal_job.yml
-#cwltool 03_align_bwa_mem.cwl job_files/03_tumor_job.yml
+#cwltool 03_align_bwa_mem.cwl 03_normal_job.yml
+#cwltool 03_align_bwa_mem.cwl 03_tumor_job.yml
 
-#cwltool 04_sort_bam.cwl job_files/04_normal_job.yml
-#cwltool 04_sort_bam.cwl job_files/04_tumor_job.yml
+#cwltool 04_sort_bam.cwl 04_normal_job.yml
+#cwltool 04_sort_bam.cwl 04_tumor_job.yml
 
-#cwltool 05_index_bam.cwl job_files/05_normal_job.yml
-#cwltool 05_index_bam.cwl job_files/05_tumor_job.yml
+#cwltool 05_index_bam.cwl 05_normal_job.yml
+#cwltool 05_index_bam.cwl 05_tumor_job.yml
 
-#cwltool 06_mark_dups.cwl job_files/06_normal_job.yml
-#cwltool 06_mark_dups.cwl job_files/06_tumor_job.yml
+#cwltool 06_mark_dups.cwl 06_normal_job.yml
+#cwltool 06_mark_dups.cwl 06_tumor_job.yml
 
-#cwltool --outdir known_sites 07_prep_recal.cwl job_files/07_1000G_job.yml
-#cwltool --outdir known_sites 07_prep_recal.cwl job_files/07_dbsnp_job.yml
-#cwltool --outdir known_sites 07_prep_recal.cwl job_files/07_indels_job.yml
+# In step 7, we use the same tool as step 5, but we use different job files
+#cwltool 05_index_bam.cwl 07_normal_job.yml
+#cwltool 05_index_bam.cwl 07_tumor_job.yml
 
-#cwltool --outdir known_sites 08_index_recal.cwl job_files/08_1000G_job.yml
-#cwltool --outdir known_sites 08_index_recal.cwl job_files/08_dbsnp_job.yml
-#cwltool --outdir known_sites 08_index_recal.cwl job_files/08_indels_job.yml
+#cwltool --outdir known_sites 08_prep_recal.cwl 08_1000G_job.yml
+#cwltool --outdir known_sites 08_prep_recal.cwl 08_dbsnp_job.yml
+#cwltool --outdir known_sites 08_prep_recal.cwl 08_indels_job.yml
 
-cwltool 09_calculate_bqsr.cwl job_files/09_normal_job.yml
-#cwltool 09_calculate_bqsr.cwl job_files/09_tumor_job.yml
+#cwltool --outdir known_sites 09_index_recal.cwl 09_1000G_job.yml
+#cwltool --outdir known_sites 09_index_recal.cwl 09_dbsnp_job.yml
+#cwltool --outdir known_sites 09_index_recal.cwl 09_indels_job.yml
+
+#cwltool 10_calculate_bqsr.cwl 10_normal_job.yml
+#cwltool 10_calculate_bqsr.cwl 10_tumor_job.yml
+
+#cwltool 11_apply_bqsr.cwl 11_normal_job.yml
+#cwltool 11_apply_bqsr.cwl 11_tumor_job.yml
+
+# In step 12, we use the same tool as step 5, but we use different job files
+#cwltool 05_index_bam.cwl 12_normal_job.yml
+#cwltool 05_index_bam.cwl 12_tumor_job.yml
+
+#cwltool 13_call_small_variants.cwl 13_job.yml
+cwltool 14_call_structural_variants.cwl 14_job.yml

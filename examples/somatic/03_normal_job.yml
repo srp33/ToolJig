@@ -9,6 +9,6 @@ fastq_file_2:
     class: File
     path: Trimmed.TCRBOA7-N.2.fastq.gz
 threads: 8
-read_group_string: "@RG\tID:TCRBOA7-N\tPL:ILLUMINA\tPU:TCRBOA7-N\tLB:TCRBOA7-N\tSM:TCRBOA7"
+read_group_string: "@RG\tID:TCRBOA7.N.lane2\tPL:ILLUMINA\tLB:TCRBOA7-N\tSM:TCRBOA7-N"
 args: "-k 15"
 output_file_name: TCRBOA7-N.bam

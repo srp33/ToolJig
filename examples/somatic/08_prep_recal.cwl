@@ -1,10 +1,11 @@
 cwlVersion: v1.1
 class: CommandLineTool
-doc: Download a recalibration VCF file from the GATK FTP server and perform some preprocessing so the VCF file will work properly, even if the reference genome was sorted differently than the VCF file.
+doc: |-
+  Download a recalibration VCF file from the GATK FTP server and perform some preprocessing so the VCF file will work properly, even if the reference genome was sorted differently than the VCF file.
 requirements:
   ShellCommandRequirement: {}
   DockerRequirement:
-    dockerImageId: 07_prep_recal
+    dockerImageId: 08_prep_recal
     dockerFile: |-
       FROM quay.io/biocontainers/picard:2.22.3--0
   NetworkAccess:
@@ -44,23 +45,23 @@ requirements:
 inputs:
   vcf_url:
     type: string
-    doc: |
+    doc: |-
       URL for a recalibration VCF file. Example value: ftp://gsapubftp-anonymous@ftp.broadinstitute.org/bundle/hg38/dbsnp_146.hg38.vcf.gz.
   ref_genome_dir:
     type: Directory
-    doc: |
+    doc: |-
       Directory containing reference genome FASTA file and index files.
   ref_genome_fasta_name:
     type: string
-    doc: |
+    doc: |-
       Name of the FASTA file containing the reference genome.
   output_file_name:
     type: string
-    doc: |
+    doc: |-
       Name of the output VCF file (non-gzipped). Example value: dbsnp_146.hg38.vcf.
 arguments:
     - shellQuote: false
-      valueFrom: >
+      valueFrom: |-
         wget "$(inputs.vcf_url)"
 
         gunzip "`basename $(inputs.vcf_url)`"
@@ -75,15 +76,11 @@ outputs:
     type: File
     outputBinding:
       glob: "$(inputs.output_file_name)"
-    doc: Here we indicate that an output file matching the name specified in the inputs should be generated.
-  output_index_file:
-    type: File
-    outputBinding:
-      glob: "$(inputs.output_file_name).tbi"
-    doc: This is an index file associated with the output VCF file.
+    doc: |-
+      Here we indicate that an output file matching the name specified in the inputs should be generated.
   standard_output:
     type: stdout
   standard_error:
     type: stderr
-stdout: 07_output.txt
-stderr: 07_error.txt
+stdout: 08_output.txt
+stderr: 08_error.txt
