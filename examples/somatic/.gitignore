@@ -1,8 +1,8 @@
 known_sites
 nohup.out
 ref_genome
-*_error.txt
-*_output.txt
+*error.txt
+*output.txt
 *.bam
 *.bam.bai
 *.bqsr.table

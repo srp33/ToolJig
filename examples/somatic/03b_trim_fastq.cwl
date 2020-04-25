@@ -35,6 +35,8 @@ inputs:
 arguments:
   - shellQuote: false
     valueFrom: |-
+      
+
       atropos $(inputs.args) -pe1 $(inputs.fastq_file_1.path) -pe2 $(inputs.fastq_file_2.path) -o $(inputs.out_fastq_file_name_1) -p $(inputs.out_fastq_file_name_2)
 outputs:
   output_1:
