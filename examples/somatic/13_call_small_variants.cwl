@@ -65,5 +65,5 @@ outputs:
     type: stdout
   standard_error:
     type: stderr
-stdout: 13_output.txt
-stderr: 13_error.txt
+stdout: output.txt
+stderr: error.txt

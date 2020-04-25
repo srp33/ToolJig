@@ -42,5 +42,5 @@ outputs:
     type: stdout
   standard_error:
     type: stderr
-stdout: 02_output.txt
-stderr: 02_error.txt
+stdout: output.txt
+stderr: error.txt

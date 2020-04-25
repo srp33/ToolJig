@@ -82,5 +82,5 @@ outputs:
     type: stdout
   standard_error:
     type: stderr
-stdout: 08_output.txt
-stderr: 08_error.txt
+stdout: output.txt
+stderr: error.txt

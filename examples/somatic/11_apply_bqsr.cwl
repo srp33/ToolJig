@@ -53,5 +53,5 @@ outputs:
     type: stdout
   standard_error:
     type: stderr
-stdout: 11_output.txt
-stderr: 11_error.txt
+stdout: output.txt
+stderr: error.txt
