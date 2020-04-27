@@ -1,5 +1,6 @@
-cwltool --basedir . --outdir ref_genome 01_prep_ref_genome.cwl jobs/01.yml
+cwltool --basedir . --outdir ref_genome download_file.cwl jobs/hg38_fasta.yml
 exit
+cwltool --basedir . --outdir ref_genome 01_prep_ref_genome.cwl jobs/01.yml
 
 cwltool --basedir . --outdir known_sites 02_prep_recalibration_vcf.cwl jobs/02_1000G.yml
 cwltool --basedir . --outdir known_sites 02_prep_recalibration_vcf.cwl jobs/02_dbsnp.yml
