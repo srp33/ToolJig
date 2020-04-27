@@ -5,7 +5,7 @@ doc: |-
 requirements:
   ShellCommandRequirement: {}
   DockerRequirement:
-    dockerImageId: 06_mark_dups
+    dockerImageId: mark_dups_bam
     dockerFile: |-
       FROM quay.io/biocontainers/sambamba:0.7.1--h148d290_2
   NetworkAccess:
@@ -47,5 +47,5 @@ outputs:
     type: stdout
   standard_error:
     type: stderr
-stdout: output.txt
-stderr: error.txt
+stdout: mark_dups_bam_output.txt
+stderr: mark_dups_bam_error.txt

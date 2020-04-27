@@ -5,7 +5,7 @@ doc: |-
 requirements:
   ShellCommandRequirement: {}
   DockerRequirement:
-    dockerImageId: 14_call_structural_variants
+    dockerImageId: call_structural_variants
     dockerFile: |-
       FROM biocontainers/biocontainers:v1.0.0_cv4
       RUN conda install -c bioconda/label/cf201901 delly bcftools -y
@@ -60,5 +60,5 @@ outputs:
     type: stdout
   standard_error:
     type: stderr
-stdout: output.txt
-stderr: error.txt
+stdout: call_structural_variants_output.txt
+stderr: call_structural_variants_error.txt

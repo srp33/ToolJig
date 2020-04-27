@@ -1,31 +1,32 @@
-#cwltool --basedir . --outdir ref_genome 01_prep_ref_genome.cwl jobs/01.yml
+cwltool --basedir . --outdir ref_genome 01_prep_ref_genome.cwl jobs/01.yml
+exit
 
-#cwltool --basedir . --outdir known_sites 02_prep_recal.cwl jobs/02_1000G.yml
-#cwltool --basedir . --outdir known_sites 02_prep_recal.cwl jobs/02_dbsnp.yml
-#cwltool --basedir . --outdir known_sites 02_prep_recal.cwl jobs/02_indels.yml
+cwltool --basedir . --outdir known_sites 02_prep_recalibration_vcf.cwl jobs/02_1000G.yml
+cwltool --basedir . --outdir known_sites 02_prep_recalibration_vcf.cwl jobs/02_dbsnp.yml
+cwltool --basedir . --outdir known_sites 02_prep_recalibration_vcf.cwl jobs/02_indels.yml
 
-#cwltool --basedir . 03_download_file.cwl jobs/03_normal_1.yml
-#cwltool --basedir . 03_download_file.cwl jobs/03_normal_2.yml
-#cwltool --basedir . 03_download_file.cwl jobs/03_tumor_1.yml
-#cwltool --basedir . 03_download_file.cwl jobs/03_tumor_2.yml
+cwltool --basedir . 03_download_file.cwl jobs/03_normal_1.yml
+cwltool --basedir . 03_download_file.cwl jobs/03_normal_2.yml
+cwltool --basedir . 03_download_file.cwl jobs/03_tumor_1.yml
+cwltool --basedir . 03_download_file.cwl jobs/03_tumor_2.yml
 
-#cwltool --basedir . 04_trim.cwl jobs/04_normal.yml
-#cwltool --basedir . 04_trim.cwl jobs/04_tumor.yml
+#cwltool --basedir . 04_trim_fastq.cwl jobs/04_normal.yml
+#cwltool --basedir . 04_trim_fastq.cwl jobs/04_tumor.yml
 
-#cwltool --basedir . 05_align.cwl jobs/05_normal.yml
-#cwltool --basedir . 05_align.cwl jobs/05_tumor.yml
+#cwltool --basedir . 05_align_fastq.cwl jobs/05_normal.yml
+#cwltool --basedir . 05_align_fastq.cwl jobs/05_tumor.yml
 
 #cwltool --basedir . 06_sort_bam.cwl jobs/06_normal.yml
 #cwltool --basedir . 06_sort_bam.cwl jobs/06_tumor.yml
 
-#cwltool --basedir . 07_mark_dups.cwl jobs/07_normal.yml
-#cwltool --basedir . 07_mark_dups.cwl jobs/07_tumor.yml
+#cwltool --basedir . 07_mark_dups_bam.cwl jobs/07_normal.yml
+#cwltool --basedir . 07_mark_dups_bam.cwl jobs/07_tumor.yml
 
-#cwltool --basedir . 08_calculate_bqsr.cwl jobs/08_normal.yml
-#cwltool --basedir . 08_calculate_bqsr.cwl jobs/08_tumor.yml
+#cwltool --basedir . 08_calculate_bqsr_bam.cwl jobs/08_normal.yml
+#cwltool --basedir . 08_calculate_bqsr_bam.cwl jobs/08_tumor.yml
 
-#cwltool --basedir . 09_apply_bqsr.cwl jobs/09_normal.yml
-#cwltool --basedir . 09_apply_bqsr.cwl jobs/09_tumor.yml
+#cwltool --basedir . 09_apply_bqsr_bam.cwl jobs/09_normal.yml
+#cwltool --basedir . 09_apply_bqsr_bam.cwl jobs/09_tumor.yml
 
 #cwltool --basedir . 10_call_small_variants.cwl jobs/10.yml
 #cwltool --basedir . 11_call_structural_variants.cwl jobs/11.yml

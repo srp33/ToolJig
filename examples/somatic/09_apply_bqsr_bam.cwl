@@ -5,7 +5,7 @@ doc: |-
 requirements:
   ShellCommandRequirement: {}
   DockerRequirement:
-    dockerImageId: 11_apply_bqsr
+    dockerImageId: apply_bqsr_bam
     dockerFile: |-
       FROM broadinstitute/gatk3:3.8-1
 
@@ -63,5 +63,5 @@ outputs:
     type: stdout
   standard_error:
     type: stderr
-stdout: output.txt
-stderr: error.txt
+stdout: apply_bqsr_bam_output.txt
+stderr: apply_bqsr_bam_error.txt

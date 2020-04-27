@@ -5,7 +5,7 @@ doc: |-
 requirements:
   ShellCommandRequirement: {}
   DockerRequirement:
-    dockerImageId: 08_prep_recal
+    dockerImageId: prep_recalibration_vcf
     dockerFile: |-
       FROM quay.io/biocontainers/picard:2.22.3--0
   NetworkAccess:
@@ -82,5 +82,5 @@ outputs:
     type: stdout
   standard_error:
     type: stderr
-stdout: output.txt
-stderr: error.txt
+stdout: prep_recalibration_vcf_output.txt
+stderr: prep_recalibration_vcf_error.txt

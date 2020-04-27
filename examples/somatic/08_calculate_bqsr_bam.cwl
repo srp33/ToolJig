@@ -5,7 +5,7 @@ doc: |-
 requirements:
   ShellCommandRequirement: {}
   DockerRequirement:
-    dockerImageId: 10_calculate_bqsr
+    dockerImageId: calculate_bqsr_bam
     dockerFile: |-
       FROM broadinstitute/gatk3:3.8-1
   NetworkAccess:
@@ -55,5 +55,5 @@ outputs:
     type: stdout
   standard_error:
     type: stderr
-stdout: output.txt
-stderr: error.txt
+stdout: calculate_bqsr_bam_output.txt
+stderr: calculate_bqsr_bam_error.txt

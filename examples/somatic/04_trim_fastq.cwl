@@ -5,7 +5,7 @@ doc: |-
 requirements:
   ShellCommandRequirement: {}
   DockerRequirement:
-    dockerImageId: 01_trim_fastq
+    dockerImageId: trim_fastq
     dockerFile: |-
       FROM quay.io/biocontainers/atropos:1.1.25--py36h516909a_0
   NetworkAccess:
@@ -55,5 +55,5 @@ outputs:
     type: stdout
   standard_error:
     type: stderr
-stdout: output.txt
-stderr: error.txt
+stdout: trim_fastq_output.txt
+stderr: trim_fastq_error.txt

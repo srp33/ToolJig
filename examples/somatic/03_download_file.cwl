@@ -5,7 +5,7 @@ doc: |-
 requirements:
   ShellCommandRequirement: {}
   DockerRequirement:
-    dockerImageId: download_fastq
+    dockerImageId: download_file
     dockerFile: |-
       FROM biocontainers/biocontainers:v1.0.0_cv4
   NetworkAccess:
@@ -35,5 +35,5 @@ outputs:
     type: stdout
   standard_error:
     type: stderr
-stdout: output.txt
-stderr: error.txt
+stdout: download_file_output.txt
+stderr: download_file_error.txt

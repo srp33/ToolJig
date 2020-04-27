@@ -5,7 +5,7 @@ doc: |-
 requirements:
   ShellCommandRequirement: {}
   DockerRequirement:
-    dockerImageId: 02_prep_ref_genome
+    dockerImageId: prep_ref_genome
     dockerFile: |-
       FROM biocontainers/biocontainers:v1.0.0_cv4
       RUN conda install -c bioconda/label/cf201901 bwa samtools picard -y
@@ -30,17 +30,22 @@ arguments:
 
       picard -Xms128m -Xmx2g CreateSequenceDictionary REFERENCE=$(inputs.ref_genome_version).fa OUTPUT=$(inputs.ref_genome_version).dict
 outputs:
-  output_file:
-    type: 
-      type: array
-      items: File
+  output_file_1:
+    type: File
     outputBinding:
-      glob: "$(inputs.ref_genome_version)*"
+      glob: "$(inputs.ref_genome_version).fa"
+    secondaryFiles:
+      - .amb
+      - .ann
+      - .bwt
+      - .fai
+      - .pac
+      - .sa
     doc: |-
-      FASTA file
+      FASTA file and associated index files.
   standard_output:
     type: stdout
   standard_error:
     type: stderr
-stdout: output.txt
-stderr: error.txt
+stdout: prep_ref_genome_output.txt
+stderr: prep_ref_genome_error.txt

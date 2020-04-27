@@ -5,7 +5,7 @@ doc: |-
 requirements:
   ShellCommandRequirement: {}
   DockerRequirement:
-    dockerImageId: 03_align_bwa_mem
+    dockerImageId: align_fastq
     dockerFile: |-
       FROM biocontainers/biocontainers:v1.0.0_cv4
       RUN conda install -c bioconda/label/cf201901 bwa samtools -y
@@ -60,5 +60,5 @@ outputs:
     type: stdout
   standard_error:
     type: stderr
-stdout: output.txt
-stderr: error.txt
+stdout: align_fastq_output.txt
+stderr: align_fastq_error.txt

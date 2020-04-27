@@ -5,7 +5,7 @@ doc: |-
 requirements:
   ShellCommandRequirement: {}
   DockerRequirement:
-    dockerImageId: 13_call_somatic_variants
+    dockerImageId: call_small_variants
     dockerFile: |-
       FROM broadinstitute/gatk:4.1.6.0
   NetworkAccess:
@@ -65,5 +65,5 @@ outputs:
     type: stdout
   standard_error:
     type: stderr
-stdout: output.txt
-stderr: error.txt
+stdout: call_small_variants_output.txt
+stderr: call_small_variants_error.txt

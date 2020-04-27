@@ -5,7 +5,7 @@ doc: |-
 requirements:
   ShellCommandRequirement: {}
   DockerRequirement:
-    dockerImageId: 04_sort_bam
+    dockerImageId: sort_bam
     dockerFile: |-
       FROM quay.io/biocontainers/samtools:1.3--h0592bc0_3
   NetworkAccess:
@@ -41,5 +41,5 @@ outputs:
     type: stdout
   standard_error:
     type: stderr
-stdout: output.txt
-stderr: error.txt
+stdout: sort_bam_output.txt
+stderr: sort_bam_error.txt

@@ -1,5 +1,5 @@
 known_sites
-nohup.out
+nohup*.out
 ref_genome
 *error.txt
 *output.txt
