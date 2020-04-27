@@ -1,4 +1,0 @@
-vcf_file:
-    class: File
-    path: known_sites/1000G_phase1.snps.high_confidence.hg38.vcf
-output_file_name: 1000G_phase1.snps.high_confidence.hg38.vcf.idx

@@ -2,11 +2,11 @@ ref_genome_dir:
     class: Directory
     path: ref_genome
 ref_genome_fasta_name: hg38.fa
-known_sites_dir:
-    class: Directory
-    path: known_sites
+bqsr_table_file:
+    class: File
+    path: TCRBOA7-N.bqsr.table
 bam_file:
     class: File
     path: SortedMarked.TCRBOA7-N.bam
 threads: 8
-output_file_name: TCRBOA7-N.bqsr.table
+output_file_name: Final.TCRBOA7-N.bam

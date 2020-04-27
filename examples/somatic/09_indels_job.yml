@@ -1,4 +1,0 @@
-vcf_file:
-    class: File
-    path: known_sites/Mills_and_1000G_gold_standard.indels.hg38.vcf
-output_file_name: Mills_and_1000G_gold_standard.indels.hg38.vcf.idx
