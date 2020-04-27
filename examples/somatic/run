@@ -34,9 +34,5 @@ cwltool 03a_download_file.cwl 03a_tumor_2_job.yml
 #cwltool 11_apply_bqsr.cwl 11_normal_job.yml
 #cwltool 11_apply_bqsr.cwl 11_tumor_job.yml
 
-# In step 12, we use the same tool as step 5, but we use different job files
-#cwltool 05_index_bam.cwl 12_normal_job.yml
-#cwltool 05_index_bam.cwl 12_tumor_job.yml
-
 #cwltool 13_call_small_variants.cwl 13_job.yml
 #cwltool 14_call_structural_variants.cwl 14_job.yml

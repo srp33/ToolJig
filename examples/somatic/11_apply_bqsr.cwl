@@ -8,6 +8,8 @@ requirements:
     dockerImageId: 11_apply_bqsr
     dockerFile: |-
       FROM broadinstitute/gatk3:3.8-1
+
+      RUN apt-get install samtools
   NetworkAccess:
     class: NetworkAccess
     networkAccess: true
@@ -42,13 +44,21 @@ arguments:
     - shellQuote: false
       valueFrom: |-
         java -Xms128m -Xmx2g -jar /usr/GenomeAnalysisTK.jar -T PrintReads -R "$(inputs.ref_genome_dir.path)/$(inputs.ref_genome_fasta_name)" -BQSR "$(inputs.bqsr_table_file.path)" -I "$(inputs.bam_file.path)" -o "$(inputs.output_file_name)" -nct $(inputs.threads)
+
+        samtools index -@ $(inputs.threads) "$(inputs.output_file_name)"
 outputs:
-  output_file:
+  output_file_1:
     type: File
     outputBinding:
       glob: "$(inputs.output_file_name)"
     doc: |-
-      Here we indicate that an output file matching the name specified in the inputs should be generated.
+      Adjusted BAM file.
+  output_file_2:
+    type: File
+    outputBinding:
+      glob: "$(inputs.output_file_name).bai"
+    doc: |-
+      Index for adjusted BAM file.
   standard_output:
     type: stdout
   standard_error:

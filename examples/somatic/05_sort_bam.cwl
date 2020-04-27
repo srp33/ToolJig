@@ -29,14 +29,14 @@ arguments:
       valueFrom: |-
         samtools sort -@ $(inputs.threads) -o "$(inputs.output_file_name)" "$(inputs.bam_file.path)"
 
-        sambamba index -@ $(inputs.threads) "$(inputs.output_file_name)"
+        samtools index -@ $(inputs.threads) "$(inputs.output_file_name)"
 outputs:
-  output_files:
-    type:
-      type: array
-      items: File
+  output_file_1:
+    type: File
     outputBinding:
-      glob: "$(inputs.sorted_bam_file)*"
+      glob: "$(inputs.sorted_bam_file)"
+    secondaryFiles:
+      - .bai
   standard_output:
     type: stdout
   standard_error:

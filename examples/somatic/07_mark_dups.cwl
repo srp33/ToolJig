@@ -1,7 +1,7 @@
 cwlVersion: v1.1
 class: CommandLineTool
 doc: |-
-  Mark duplicate reads in a BAM file.
+  Mark duplicate reads in a BAM file. It also indexes the file.
 requirements:
   ShellCommandRequirement: {}
   DockerRequirement:
@@ -27,14 +27,22 @@ inputs:
 arguments:
     - shellQuote: false
       valueFrom: |-
-        sambamba markdup -t $(inputs.threads) $(inputs.bam_file.path) $(inputs.output_file_name)
+        sambamba markdup -t $(inputs.threads) $(inputs.bam_file.path) "$(inputs.output_file_name)"
+
+        sambamba index -t $(inputs.threads) "$(inputs.output_file_name)" 
 outputs:
-  output_file:
+  output_file_1:
     type: File
     outputBinding:
       glob: "$(inputs.output_file_name)"
     doc: |-
-      Here we indicate that an output file matching the name specified in the inputs should be generated.
+      Duplicate-marked BAM file.
+  output_file_2:
+    type: File
+    outputBinding:
+      glob: "$(inputs.output_file_name).bai"
+    doc: |-
+      Index of duplicate-marked BAM file.
   standard_output:
     type: stdout
   standard_error:
