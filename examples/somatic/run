@@ -21,11 +21,11 @@
 #cwltool 07_mark_dups.cwl 07_normal_job.yml
 #cwltool 07_mark_dups.cwl 07_tumor_job.yml
 
-#cwltool 00_calculate_bqsr.cwl 10_normal_job.yml
-#cwltool 10_calculate_bqsr.cwl 10_tumor_job.yml
+#cwltool 08_calculate_bqsr.cwl 08_normal_job.yml
+#cwltool 08_calculate_bqsr.cwl 08_tumor_job.yml
 
-#cwltool 11_apply_bqsr.cwl 11_normal_job.yml
-#cwltool 11_apply_bqsr.cwl 11_tumor_job.yml
+#cwltool 09_apply_bqsr.cwl 09_normal_job.yml
+#cwltool 09_apply_bqsr.cwl 09_tumor_job.yml
 
-#cwltool 13_call_small_variants.cwl 13_job.yml
-#cwltool 14_call_structural_variants.cwl 14_job.yml
+#cwltool 10_call_small_variants.cwl 10_job.yml
+#cwltool 11_call_structural_variants.cwl 11_job.yml
