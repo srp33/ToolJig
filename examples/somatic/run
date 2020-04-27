@@ -4,31 +4,24 @@
 #cwltool --outdir known_sites 02_prep_recal.cwl 02_dbsnp_job.yml
 #cwltool --outdir known_sites 02_prep_recal.cwl 02_indels_job.yml
 
-#cwltool 03a_download_file.cwl 03a_normal_1_job.yml
-#cwltool 03a_download_file.cwl 03a_normal_2_job.yml
-cwltool 03a_download_file.cwl 03a_tumor_1_job.yml
-cwltool 03a_download_file.cwl 03a_tumor_2_job.yml
+#cwltool 03_download_file.cwl 03_normal_1_job.yml
+#cwltool 03_download_file.cwl 03_normal_2_job.yml
+#cwltool 03_download_file.cwl 03_tumor_1_job.yml
+#cwltool 03_download_file.cwl 03_tumor_2_job.yml
 
-#cwltool 03_download_trim_fastq.cwl 03_normal_job.yml
-#cwltool 03_download_trim_fastq.cwl 03_tumor_job.yml
+#cwltool 04_trim.cwl 04_normal_job.yml
+#cwltool 04_trim.cwl 04_tumor_job.yml
 
-#cwltool 03_align_bwa_mem.cwl 03_normal_job.yml
-#cwltool 03_align_bwa_mem.cwl 03_tumor_job.yml
+#cwltool 05_align.cwl 05_normal_job.yml
+#cwltool 05_align.cwl 05_tumor_job.yml
 
-#cwltool 04_sort_bam.cwl 04_normal_job.yml
-#cwltool 04_sort_bam.cwl 04_tumor_job.yml
+#cwltool 06_sort_bam.cwl 06_normal_job.yml
+#cwltool 06_sort_bam.cwl 06_tumor_job.yml
 
-#cwltool 05_index_bam.cwl 05_normal_job.yml
-#cwltool 05_index_bam.cwl 05_tumor_job.yml
+#cwltool 07_mark_dups.cwl 07_normal_job.yml
+#cwltool 07_mark_dups.cwl 07_tumor_job.yml
 
-#cwltool 06_mark_dups.cwl 06_normal_job.yml
-#cwltool 06_mark_dups.cwl 06_tumor_job.yml
-
-# In step 7, we use the same tool as step 5, but we use different job files
-#cwltool 05_index_bam.cwl 07_normal_job.yml
-#cwltool 05_index_bam.cwl 07_tumor_job.yml
-
-#cwltool 10_calculate_bqsr.cwl 10_normal_job.yml
+#cwltool 00_calculate_bqsr.cwl 10_normal_job.yml
 #cwltool 10_calculate_bqsr.cwl 10_tumor_job.yml
 
 #cwltool 11_apply_bqsr.cwl 11_normal_job.yml
