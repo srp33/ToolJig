@@ -1,14 +1,5 @@
-ref_genome_dir:
-    class: Directory
-    path: ref_genome
-ref_genome_fasta_name: hg38.fa
-fastq_file_1:
+bam_file:
     class: File
-    path: Trimmed.TCRBOA7-N.1.fastq.gz
-fastq_file_2:
-    class: File
-    path: Trimmed.TCRBOA7-N.2.fastq.gz
+    path: TCRBOA7-N.bam
 threads: 8
-read_group_string: "@RG\tID:TCRBOA7.N.lane2\tPL:ILLUMINA\tLB:TCRBOA7-N\tSM:TCRBOA7-N"
-args: "-k 15"
-output_file_name: TCRBOA7-N.bam
+output_file_name: Sorted.TCRBOA7-N.bam

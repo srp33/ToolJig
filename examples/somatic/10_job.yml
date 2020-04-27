@@ -8,5 +8,7 @@ normal_bam_file:
 tumor_bam_file:
     class: File
     path: Final.TCRBOA7-T.bam
-exclude_template_url: https://raw.githubusercontent.com/dellytools/delly/master/excludeTemplates/human.hg38.excl.tsv
-output_file_name: TCRBOA7.sv.vcf
+normal_sample_id: TCRBOA7-N
+tumor_sample_id: TCRBOA7-T
+threads: 8
+output_file_name: TCRBOA7.snp_indels.vcf

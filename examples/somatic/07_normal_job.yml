@@ -1,5 +1,5 @@
 bam_file:
     class: File
-    path: TCRBOA7-N.bam
+    path: Sorted.TCRBOA7-N.bam
 threads: 8
-output_file_name: Sorted.TCRBOA7-N.bam
+output_file_name: SortedMarked.TCRBOA7-N.bam
