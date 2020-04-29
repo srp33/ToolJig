@@ -3,6 +3,7 @@ class: CommandLineTool
 doc: |-
   Apply base quality score recalibration to a BAM file.
 requirements:
+  InlineJavascriptRequirement: {}
   ShellCommandRequirement: {}
   DockerRequirement:
     dockerImageId: apply_bqsr_bam
@@ -14,14 +15,10 @@ requirements:
     class: NetworkAccess
     networkAccess: true
 inputs:
-  ref_genome_dir:
-    type: Directory
+  fasta_file:
+    type: File
     doc: |-
-      Directory containing reference genome FASTA file and index files.
-  ref_genome_fasta_name:
-    type: string
-    doc: |-
-      Name of the FASTA file containing the reference genome.
+      FASTA file for reference genome.
   bqsr_table_file:
     type: File
     doc: |-
@@ -43,22 +40,19 @@ inputs:
 arguments:
     - shellQuote: false
       valueFrom: |-
-        java -Xms128m -Xmx2g -jar /usr/GenomeAnalysisTK.jar -T PrintReads -R "$(inputs.ref_genome_dir.path)/$(inputs.ref_genome_fasta_name)" -BQSR "$(inputs.bqsr_table_file.path)" -I "$(inputs.bam_file.path)" -o "$(inputs.output_file_name)" -nct $(inputs.threads)
+        java -Xms128m -Xmx2g -jar /usr/GenomeAnalysisTK.jar -T PrintReads -R "$(inputs.fasta_file.path)" -BQSR "$(inputs.bqsr_table_file.path)" -I "$(inputs.bam_file.path)" -o "$(inputs.output_file_name)" -nct $(inputs.threads)
 
+        # We use samtools rather than sambamba because can install it more easily here.
         samtools index -@ $(inputs.threads) "$(inputs.output_file_name)"
 outputs:
-  output_file_1:
-    type: File
-    outputBinding:
-      glob: "$(inputs.output_file_name)"
-    doc: |-
-      Adjusted BAM file.
-  output_file_2:
-    type: File
-    outputBinding:
-      glob: "$(inputs.output_file_name).bai"
-    doc: |-
-      Index for adjusted BAM file.
+#  output_file_1:
+#    type: File
+#    outputBinding:
+#      glob: "$(inputs.output_file_name)"
+#    secondaryFiles:
+#      - .bai
+#    doc: |-
+#      Adjusted BAM file.
   standard_output:
     type: stdout
   standard_error:

@@ -3,6 +3,7 @@ class: CommandLineTool
 doc: |-
   Calls somatic variants using Mutect2 (GATK) for a tumor/normal pair.
 requirements:
+  InlineJavascriptRequirement: {}
   ShellCommandRequirement: {}
   DockerRequirement:
     dockerImageId: call_small_variants

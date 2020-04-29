@@ -1,6 +1,5 @@
 vcf_url: ftp://gsapubftp-anonymous@ftp.broadinstitute.org/bundle/hg38/1000G_phase1.snps.high_confidence.hg38.vcf.gz
-ref_genome_dir:
-    class: Directory
-    path: ref_genome
-ref_genome_fasta_name: hg38.fa
+fasta_file:
+    class: File
+    path: ref_genome/hg38.fa
 output_file_name: 1000G_phase1.snps.high_confidence.hg38.vcf

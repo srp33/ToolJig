@@ -3,6 +3,7 @@ class: CommandLineTool
 doc: |-
   Download a file from an online location.
 requirements:
+  InlineJavascriptRequirement: {}
   ShellCommandRequirement: {}
   DockerRequirement:
     dockerImageId: download_file
@@ -29,8 +30,6 @@ outputs:
     type: File
     outputBinding:
       glob: "$(inputs.out_file_name)"
-    doc: |-
-      Output file matching the name specified in the "out_file_name" input.
   standard_output:
     type: stdout
   standard_error:

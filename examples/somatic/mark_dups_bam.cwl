@@ -3,6 +3,7 @@ class: CommandLineTool
 doc: |-
   Mark duplicate reads in a BAM file. It also indexes the file.
 requirements:
+  InlineJavascriptRequirement: {}
   ShellCommandRequirement: {}
   DockerRequirement:
     dockerImageId: mark_dups_bam
@@ -35,14 +36,8 @@ outputs:
     type: File
     outputBinding:
       glob: "$(inputs.output_file_name)"
-    doc: |-
-      Duplicate-marked BAM file.
-  output_file_2:
-    type: File
-    outputBinding:
-      glob: "$(inputs.output_file_name).bai"
-    doc: |-
-      Index of duplicate-marked BAM file.
+    secondaryFiles:
+      - .bai
   standard_output:
     type: stdout
   standard_error:

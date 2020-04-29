@@ -3,6 +3,7 @@ class: CommandLineTool
 doc: |-
   Call structural variants using Delly for a tumor/normal pair.
 requirements:
+  InlineJavascriptRequirement: {}
   ShellCommandRequirement: {}
   DockerRequirement:
     dockerImageId: call_structural_variants

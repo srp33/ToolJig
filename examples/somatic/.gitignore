@@ -9,3 +9,11 @@ ref_genome
 *.fastq.gz
 *.vcf
 .DS_Store
+raw_fastq
+fastq
+bam1
+bam2
+bam3
+bam4
+bqsr
+vcf

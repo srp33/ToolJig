@@ -1,6 +1,5 @@
 vcf_url: ftp://gsapubftp-anonymous@ftp.broadinstitute.org/bundle/hg38/Mills_and_1000G_gold_standard.indels.hg38.vcf.gz
-ref_genome_dir:
-    class: Directory
-    path: ref_genome
-ref_genome_fasta_name: hg38.fa
+fasta_file:
+    class: File
+    path: ref_genome/hg38.fa
 output_file_name: Mills_and_1000G_gold_standard.indels.hg38.vcf

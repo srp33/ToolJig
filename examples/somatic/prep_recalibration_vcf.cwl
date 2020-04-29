@@ -3,6 +3,7 @@ class: CommandLineTool
 doc: |-
   Download a recalibration VCF file from the GATK FTP server and perform some preprocessing so the VCF file will work properly, even if the reference genome was sorted differently than the VCF file.
 requirements:
+  InlineJavascriptRequirement: {}
   ShellCommandRequirement: {}
   DockerRequirement:
     dockerImageId: prep_recalibration_vcf
@@ -47,14 +48,12 @@ inputs:
     type: string
     doc: |-
       URL for a recalibration VCF file. Example value: ftp://gsapubftp-anonymous@ftp.broadinstitute.org/bundle/hg38/dbsnp_146.hg38.vcf.gz.
-  ref_genome_dir:
-    type: Directory
+  fasta_file:
+    type: File
+    secondaryFiles:
+      - .dict
     doc: |-
-      Directory containing reference genome FASTA file and index files.
-  ref_genome_fasta_name:
-    type: string
-    doc: |-
-      Name of the FASTA file containing the reference genome.
+      Reference genome FASTA file.
   output_file_name:
     type: string
     doc: |-
@@ -66,18 +65,20 @@ arguments:
 
         gunzip "`basename $(inputs.vcf_url)`"
 
-        DICT_FILE=$(inputs.ref_genome_dir.path)/$(inputs.ref_genome_fasta_name).dict
+        DICT_FILE="$(inputs.fasta_file.path)".dict
 
         python reconcile_vcf_with_dict.py "$(inputs.output_file_name)" "$DICT_FILE"
 
         picard -Xms128m -Xmx2g SortVcf I="$(inputs.output_file_name)" O="$(inputs.output_file_name)" SEQUENCE_DICTIONARY="$DICT_FILE" CREATE_INDEX=true
+
+        ls -al $(inputs.output_file_name)*
 outputs:
-  output_file:
+  output_file_1:
     type: File
     outputBinding:
       glob: "$(inputs.output_file_name)"
-    doc: |-
-      Here we indicate that an output file matching the name specified in the inputs should be generated.
+    secondaryFiles:
+      - .idx
   standard_output:
     type: stdout
   standard_error:

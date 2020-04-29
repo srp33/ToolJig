@@ -1,13 +1,14 @@
 cwlVersion: v1.1
 class: CommandLineTool
 doc: |-
-  Sort a BAM file.
+  Sort and index a BAM file.
 requirements:
+  InlineJavascriptRequirement: {}
   ShellCommandRequirement: {}
   DockerRequirement:
     dockerImageId: sort_bam
     dockerFile: |-
-      FROM quay.io/biocontainers/samtools:1.3--h0592bc0_3
+      FROM quay.io/biocontainers/sambamba:0.7.1--h148d290_2
   NetworkAccess:
     class: NetworkAccess
     networkAccess: true
@@ -20,21 +21,21 @@ inputs:
     type: int
     doc: |-
       The number of threads that samtools should use when sorting.
-  sorted_bam_file:
+  output_file_name:
     type: string
     doc: |-
       Name of the sorted BAM file that will be created.
 arguments:
     - shellQuote: false
       valueFrom: |-
-        samtools sort -@ $(inputs.threads) -o "$(inputs.output_file_name)" "$(inputs.bam_file.path)"
+        sambamba sort -t $(inputs.threads) -o "$(inputs.output_file_name)" "$(inputs.bam_file.path)"
 
-        samtools index -@ $(inputs.threads) "$(inputs.output_file_name)"
+        sambamba index -t $(inputs.threads) "$(inputs.output_file_name)"
 outputs:
   output_file_1:
     type: File
     outputBinding:
-      glob: "$(inputs.sorted_bam_file)"
+      glob: "$(inputs.output_file_name)"
     secondaryFiles:
       - .bai
   standard_output:

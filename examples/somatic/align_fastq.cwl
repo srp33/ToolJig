@@ -3,6 +3,7 @@ class: CommandLineTool
 doc: |-
   Align FASTQ files to a reference genome using the Burrows-Wheeler Aligner software (bwa mem). This is designed for paired-end reads stored in two separate FASTQ files.
 requirements:
+  InlineJavascriptRequirement: {}
   ShellCommandRequirement: {}
   DockerRequirement:
     dockerImageId: align_fastq
@@ -13,14 +14,17 @@ requirements:
     class: NetworkAccess
     networkAccess: true
 inputs:
-  ref_genome_dir:
-    type: Directory
+  fasta_file:
+    type: File
     doc: |-
-      Directory containing reference genome FASTA file and index files.
-  ref_genome_fasta_name:
-    type: string
-    doc: |-
-      Name of the FASTA file containing the reference genome.
+      Reference genome FASTA file.
+    secondaryFiles:
+      - .amb
+      - .ann
+      - .bwt
+      - .fai
+      - .pac
+      - .sa
   fastq_file_1:
     type: File
     doc: |-
@@ -48,14 +52,12 @@ inputs:
 arguments:
     - shellQuote: false
       valueFrom: |-
-        bwa mem -t $(inputs.threads) $(inputs.args) -R "$(inputs.read_group_string)" "$(inputs.ref_genome_dir.path)/$(inputs.ref_genome_fasta_name)" "$(inputs.fastq_file_1.path)" "$(inputs.fastq_file_2.path)" | samtools view -b > "$(inputs.output_file_name)"
+        bwa mem -t $(inputs.threads) $(inputs.args) -R "$(inputs.read_group_string)" "$(inputs.fasta_file.path)" "$(inputs.fastq_file_1.path)" "$(inputs.fastq_file_2.path)" | samtools view -b > "$(inputs.output_file_name)"
 outputs:
   output_file:
     type: File
     outputBinding:
       glob: "$(inputs.output_file_name)"
-    doc: |-
-      Here we indicate that an output file matching the name specified in the inputs should be generated.
   standard_output:
     type: stdout
   standard_error:

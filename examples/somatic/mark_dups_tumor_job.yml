@@ -1,0 +1,5 @@
+bam_file:
+    class: File
+    path: bam2/TCRBOA7-T.bam
+threads: 8
+output_file_name: TCRBOA7-T.bam

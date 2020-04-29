@@ -1,0 +1,11 @@
+fasta_file:
+    class: File
+    path: ref_genome/hg38.fa
+known_sites_dir:
+    class: Directory
+    path: known_sites
+bam_file:
+    class: File
+    path: bam3/TCRBOA7-N.bam
+threads: 8
+output_file_name: TCRBOA7-N.table

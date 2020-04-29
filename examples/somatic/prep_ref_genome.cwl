@@ -1,8 +1,9 @@
 cwlVersion: v1.1
 class: CommandLineTool
 doc: |-
-  Prepare a reference genome for variant calling.
+  Prepare a reference genome for read alignment and variant calling. This tool also prepares index files and a dictionary for the reference sequence.
 requirements:
+  InlineJavascriptRequirement: {}
   ShellCommandRequirement: {}
   DockerRequirement:
     dockerImageId: prep_ref_genome
@@ -28,7 +29,7 @@ arguments:
 
       samtools faidx $(inputs.ref_genome_version).fa
 
-      picard -Xms128m -Xmx2g CreateSequenceDictionary REFERENCE=$(inputs.ref_genome_version).fa OUTPUT=$(inputs.ref_genome_version).dict
+      picard -Xms128m -Xmx2g CreateSequenceDictionary REFERENCE=$(inputs.ref_genome_version).fa OUTPUT=$(inputs.ref_genome_version).fa.dict
 outputs:
   output_file_1:
     type: File
@@ -41,8 +42,7 @@ outputs:
       - .fai
       - .pac
       - .sa
-    doc: |-
-      FASTA file and associated index files.
+      - .dict
   standard_output:
     type: stdout
   standard_error:

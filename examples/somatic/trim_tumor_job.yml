@@ -1,0 +1,7 @@
+fastq_file_1:
+    class: File
+    path: raw_fastq/TCRBOA7-T.1.fastq.gz
+fastq_file_2:
+    class: File
+    path: raw_fastq/TCRBOA7-T.2.fastq.gz
+args: "-q 20 -Q 20 --minimum-length 40 --threads 8"
