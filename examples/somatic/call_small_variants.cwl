@@ -13,14 +13,13 @@ requirements:
     class: NetworkAccess
     networkAccess: true
 inputs:
-  ref_genome_dir:
-    type: Directory
+  fasta_file:
+    type: File
+    secondaryFiles:
+      - .fai
+      - .dict
     doc: |-
-      Directory containing reference genome FASTA file and index files.
-  ref_genome_fasta_name:
-    type: string
-    doc: |-
-      Name of the FASTA file containing the reference genome.
+      FASTA file containing reference genome.
   normal_bam_file:
     type: File
     secondaryFiles:
@@ -52,16 +51,23 @@ inputs:
 arguments:
     - shellQuote: false
       valueFrom: |-
-        gatk Mutect2 -R "$(inputs.ref_genome_dir.path)/$(inputs.ref_genome_fasta_name)" --input $(inputs.normal_bam_file.path) --input $(inputs.tumor_bam_file.path) --output unfiltered.vcf -normal $(inputs.normal_sample_id) -tumor $(inputs.tumor_sample_id) --native-pair-hmm-threads $(inputs.threads)
+        # There must be a better way around this, but this tool looks for the
+        # sequence dictionary file without .fa in the name. This is a workaround.
+        ln -s "$(inputs.fasta_file.path)" .
 
-        gatk FilterMutectCalls -R "$(inputs.ref_genome_dir.path)/$(inputs.ref_genome_fasta_name)" -V unfiltered.vcf -O "$(inputs.output_file_name)"
+        ln -s "$(inputs.fasta_file.path)".fai .
+
+        # This line uses a JavaScript expression.
+        ln -s "$(inputs.fasta_file.path).dict" "$(inputs.fasta_file.basename.replace('.fa', '.dict'))"
+
+        gatk Mutect2 -R "$(inputs.fasta_file.basename)" --input $(inputs.normal_bam_file.path) --input $(inputs.tumor_bam_file.path) --output unfiltered.vcf -normal $(inputs.normal_sample_id) -tumor $(inputs.tumor_sample_id) --native-pair-hmm-threads $(inputs.threads)
+
+        #gatk FilterMutectCalls -R "$(inputs.fasta_file.basename)" -V unfiltered.vcf -O "$(inputs.output_file_name)"
 outputs:
-  output_file:
-    type: File
-    outputBinding:
-      glob: "$(inputs.output_file_name)"
-    doc: |-
-      Here we indicate that an output file matching the name specified in the inputs should be generated.
+#  output_file:
+#    type: File
+#    outputBinding:
+#      glob: "$(inputs.output_file_name)"
   standard_output:
     type: stdout
   standard_error:

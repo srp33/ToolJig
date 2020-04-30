@@ -12,19 +12,6 @@ requirements:
   NetworkAccess:
     class: NetworkAccess
     networkAccess: true
-  InitialWorkDirRequirement:
-    listing:
-    - entryname: copy_dict_file.py
-      entry: |-
-        import shutil
-        import sys
-
-        fasta_file_path = sys.argv[1]
-
-        new_file_path = fasta_file_path.replace(".fa", ".dict")
-        shutil.copyfile(current_file_path, new_file_path)
-
-        print("Copied to {}".format(new_file_path))
 inputs:
   fasta_file:
     type: File
@@ -41,7 +28,6 @@ inputs:
     type: File
     secondaryFiles:
       - .bai
-      - .dict
     doc: |-
       The BAM file to be analyzed.
   threads:

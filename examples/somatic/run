@@ -27,5 +27,5 @@
 cwltool --outdir bam4 apply_bqsr_bam.cwl apply_bqsr_normal_job.yml
 #cwltool --outdir bam4 apply_bqsr_bam.cwl apply_bqsr_tumor_job.yml
 
-#cwltool --outdir vcf 10_call_small_variants.cwl 10_job.yml
-#cwltool --outdir vcf 11_call_structural_variants.cwl 11_job.yml
+#cwltool --outdir vcf call_small_variants.cwl call_small_variants_job.yml
+#cwltool --outdir vcf call_structural_variants.cwl call_structural_variants_job.yml

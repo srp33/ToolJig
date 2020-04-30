@@ -14,14 +14,12 @@ requirements:
     class: NetworkAccess
     networkAccess: true
 inputs:
-  ref_genome_dir:
-    type: Directory
+  fasta_file:
+    type: File
+    secondaryFiles:
+      - .fai
     doc: |-
-      Directory containing reference genome FASTA file and index files.
-  ref_genome_fasta_name:
-    type: string
-    doc: |-
-      Name of the FASTA file containing the reference genome.
+      FASTA file containing reference genome.
   normal_bam_file:
     type: File
     secondaryFiles:
@@ -47,7 +45,7 @@ arguments:
       valueFrom: |-
         wget $(inputs.exclude_template_url)
 
-        delly call -x `basename "$(inputs.exclude_template_url)"` -o output.bcf -g "$(inputs.ref_genome_dir.path)/$(inputs.ref_genome_fasta_name)" "$(inputs.tumor_bam_file.path)" "$(inputs.normal_bam_file.path)"
+        delly call -x `basename "$(inputs.exclude_template_url)"` -o output.bcf -g "$(inputs.fasta_file.path)" "$(inputs.tumor_bam_file.path)" "$(inputs.normal_bam_file.path)"
 
         bcftools view output.bcf > "$(inputs.output_file_name)"
 outputs:
@@ -55,8 +53,6 @@ outputs:
     type: File
     outputBinding:
       glob: "$(inputs.output_file_name)"
-    doc: |-
-      Here we indicate that an output file matching the name specified in the inputs should be generated.
   standard_output:
     type: stdout
   standard_error:

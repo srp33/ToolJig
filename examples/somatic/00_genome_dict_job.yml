@@ -1,4 +1,0 @@
-fasta_file:
-    class: File
-    path: ref_genome/hg38.fa
-output_file_name: hg38.dict
