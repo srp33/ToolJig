@@ -62,12 +62,12 @@ arguments:
 
         gatk Mutect2 -R "$(inputs.fasta_file.basename)" --input $(inputs.normal_bam_file.path) --input $(inputs.tumor_bam_file.path) --output unfiltered.vcf -normal $(inputs.normal_sample_id) -tumor $(inputs.tumor_sample_id) --native-pair-hmm-threads $(inputs.threads)
 
-        #gatk FilterMutectCalls -R "$(inputs.fasta_file.basename)" -V unfiltered.vcf -O "$(inputs.output_file_name)"
+        gatk FilterMutectCalls -R "$(inputs.fasta_file.basename)" -V unfiltered.vcf -O "$(inputs.output_file_name)"
 outputs:
-#  output_file:
-#    type: File
-#    outputBinding:
-#      glob: "$(inputs.output_file_name)"
+  output_file:
+    type: File
+    outputBinding:
+      glob: "$(inputs.output_file_name)"
   standard_output:
     type: stdout
   standard_error:

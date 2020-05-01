@@ -3,9 +3,9 @@ fasta_file:
     path: ref_genome/hg38.fa
 normal_bam_file:
     class: File
-    path: Final.TCRBOA7-N.bam
+    path: bam4/TCRBOA7-N.bam
 tumor_bam_file:
     class: File
-    path: Final.TCRBOA7-T.bam
+    path: bam4/TCRBOA7-T.bam
 exclude_template_url: https://raw.githubusercontent.com/dellytools/delly/master/excludeTemplates/human.hg38.excl.tsv
 output_file_name: TCRBOA7.sv.vcf

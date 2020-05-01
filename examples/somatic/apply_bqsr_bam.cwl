@@ -54,11 +54,8 @@ arguments:
 
         java -Xms128m -Xmx2g -jar /usr/GenomeAnalysisTK.jar -T PrintReads -R "$(inputs.fasta_file.basename)" -BQSR "$(inputs.bqsr_table_file.path)" -I "$(inputs.bam_file.path)" -o "$(inputs.output_file_name)" -nct $(inputs.threads)
 
-        # We use samtools rather than sambamba because can install it more easily here.
-        samtools index -@ $(inputs.threads) "$(inputs.output_file_name)"
-
-        # samtools is not including the .bai extension so we rename it
-        mv *.bai "$(inputs.output_file_name).bai
+        # We use samtools rather than sambamba because we can install it more easily in this image.
+        samtools index "$(inputs.output_file_name)"
 outputs:
   output_file_1:
     type: File
