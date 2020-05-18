@@ -22,7 +22,7 @@ inputs:
 arguments:
     - shellQuote: false
       valueFrom: |-
-        echo Hello, $(inputs.given_name) $(inputs.surname)! You are $(inputs.age) years old.
+        echo "Hello, $(inputs.given_name) $(inputs.surname)! You are $(inputs.age) years old."
 outputs:
   standard_output:
     type: stdout
