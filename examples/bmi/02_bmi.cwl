@@ -5,10 +5,7 @@ doc: |-
 requirements:
   ShellCommandRequirement: {}
   DockerRequirement:
-    dockerImageId: bmi_calculator
-    dockerFile: |-
-      FROM python:3.8.2-slim-buster
-      RUN apt-get update && apt-get -y install wget
+    dockerPull: python:3.8.2-slim-buster
   NetworkAccess:
     class: NetworkAccess
     networkAccess: true
