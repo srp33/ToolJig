@@ -21,8 +21,8 @@ cwltool --outdir bam2 sort_bam.cwl sort_tumor_job.yml
 cwltool --outdir bam3 mark_dups_bam.cwl mark_dups_normal_job.yml
 cwltool --outdir bam3 mark_dups_bam.cwl mark_dups_tumor_job.yml
 
-cwltool --outdir bqsr calculate_bqsr_bam.cwl calculate_bqsr_normal_job.yml
-cwltool --outdir bqsr calculate_bqsr_bam.cwl calculate_bqsr_tumor_job.yml
+cwltool --outdir bqsr calculate_bqsr_table.cwl calculate_bqsr_normal_job.yml
+cwltool --outdir bqsr calculate_bqsr_table.cwl calculate_bqsr_tumor_job.yml
 
 cwltool --outdir bam4 apply_bqsr_bam.cwl apply_bqsr_normal_job.yml
 cwltool --outdir bam4 apply_bqsr_bam.cwl apply_bqsr_tumor_job.yml

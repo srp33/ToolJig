@@ -17,13 +17,17 @@ requirements:
     - entryname: calculate_bmi.py
       entry: |-
         from sys import argv
+        import urllib.request
 
-        input_file_path = argv[1]
+        input_file_url = argv[1]
         weight_column_name = argv[2]
         height_column_name = argv[3]
         output_file_name = argv[4]
 
-        with open(input_file_path) as input_file:
+        temp_file_path = "/tmp/biometric_data.tsv"
+        urllib.request.urlretrieve(input_file_url, temp_file_path)
+
+        with open(temp_file_path) as input_file:
             with open(output_file_name, "w") as output_file:
                 header_items = input_file.readline().rstrip("\n").split("\t")
                 weight_i = header_items.index(weight_column_name)
@@ -61,14 +65,7 @@ inputs:
 arguments:
     - shellQuote: false
       valueFrom: |-
-        # Create a variable with a path to a temporary file that will be created
-        temp_file=/tmp/input_file_url
-
-        # Download the file to the temporary location
-        wget -O $temp_file "$(inputs.input_file_url)"
-
-        # Invoke the Python script
-        python calculate_bmi.py $temp_file "$(inputs.weight_column_name)" "$(inputs.height_column_name)" "$(inputs.output_file_name)"
+        python calculate_bmi.py "$(inputs.input_file_url)" "$(inputs.weight_column_name)" "$(inputs.height_column_name)" "$(inputs.output_file_name)"
 outputs:
   output_file:
     type: File
