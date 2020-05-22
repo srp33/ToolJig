@@ -9,6 +9,7 @@ requirements:
     dockerImageId: align_fastq
     dockerFile: |-
       FROM biocontainers/biocontainers:v1.0.0_cv4
+      
       RUN conda install -c bioconda/label/cf201901 bwa samtools -y
   NetworkAccess:
     class: NetworkAccess

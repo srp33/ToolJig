@@ -6,7 +6,7 @@ requirements:
   InlineJavascriptRequirement: {}
   ShellCommandRequirement: {}
   DockerRequirement:
-    dockerImageId: calculate_bqsr_bam
+    dockerImageId: calculate_bqsr_table
     dockerFile: |-
       FROM broadinstitute/gatk3:3.8-1
   NetworkAccess:

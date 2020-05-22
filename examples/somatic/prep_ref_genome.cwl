@@ -9,6 +9,7 @@ requirements:
     dockerImageId: prep_ref_genome
     dockerFile: |-
       FROM biocontainers/biocontainers:v1.0.0_cv4
+      
       RUN conda install -c bioconda/label/cf201901 bwa samtools picard -y
   NetworkAccess:
     class: NetworkAccess
