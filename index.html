@@ -11,8 +11,8 @@
 <body>
 
 <!--Here we import any JavaScript libraries that we need.-->
-<!--Dev version of Vue<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>-->
-<!--Production version of Vue--><script src="https://cdn.jsdelivr.net/npm/vue@2.6.11"></script>
+<!--Dev version of Vue<script--><script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<!--Production version of Vue<script src="https://cdn.jsdelivr.net/npm/vue@2.6.11"></script>-->
 <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/js-yaml/3.13.1/js-yaml.min.js"></script>-->
 
 <!--Here we define any custom CSS attributes that we want to be used.-->
@@ -92,8 +92,13 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="inputDoc">Description:</label>
+                    <label for="inputDoc">Documentation:</label>
                     <input v-model="newInputDoc" id="inputDoc" ref="newInputDoc" type="text" class="form-control" placeholder="Provide a short description of this input." />
+                </div>
+
+                <div class="form-group" v-if="newInputType=='File'">
+                    <label for="inputSecondary">Secondary file(s):</label>
+                    <input v-model="newInputSecondary" id="inputSecondary" ref="newInputSecondary" type="text" class="form-control" placeholder="Indicate any secondary files (separated by commas) that should accompany this file (example: .ann,.bwt). Spaces will be removed." />
                 </div>
 
                 <p v-if="input_errors.length > 0"><font color="red">
@@ -230,7 +235,7 @@
     </div>
 </div>
 
-<!--This section contains the app's JavaScript logic.-->
+<!--This section provides the app's JavaScript logic.-->
 <script>
     // These components define the dynamic behavior of the input boxes that are created.
     // This part of the code could be more succinct, but I'm still learning about Vue components.
@@ -250,7 +255,7 @@
         methods:{ updateVal() { this.$emit('input', this.text); } }
     });
     Vue.component("File", {
-        props: ['name', 'doc', 'value'],
+        props: ['name', 'doc', 'secondary', 'value'],
         template: `<div class="form-group"><label>{{ name }}<sup><font color="red">*</font></sup>:</label><input type="text" @input="updateVal" v-model="text" class="form-control" aria-describedby="helpBlock" /><span id="helpBlock" class="form-text text-muted">{{ doc }}</span></div>`,
         data() { return { text:null } },
         created() { this.text = this.value; },
@@ -281,20 +286,21 @@
             auxiliary_errors: [],
             download_cwl_errors: [],
             download_job_errors: [],
-            //tool_id: "abc_tool",
-            tool_id: "",
+            tool_id: "abc_tool",
+            //TODO: tool_id: "",
             doc: "",
             dockerfile: "",
             newInputName: "",
             newInputType: "string",
             newInputDoc: "",
-            inputs: [],
-            //inputs: [{name: "a_string", type: "string", doc: "This is a very interesting string input.", value: ""}, {name: "an_integer", type: "int", doc: "This must be an integer.", value: ""}, {name: "a_data_file", type: "File", doc: "This is a path to a file that contains infinite wisdom.", value: ""}, {name: "some_directory", type: "Directory", doc: "This directory has hidden treasure.", value: ""}, {name: "an_output_file", type: "Output_File", doc: "This is a file that will be collected after the tool executes.", value: ""}],
+            newInputSecondary: "",
+            //TODO: inputs: [],
+            inputs: [{name: "a_string", type: "string", doc: "This is a very interesting string input.", value: ""}, {name: "an_integer", type: "int", doc: "This must be an integer.", value: ""}, {name: "a_data_file", type: "File", doc: "This is a path to a file that contains infinite wisdom.", secondary: ".abc,.def", value: ""}, {name: "some_directory", type: "Directory", doc: "This directory has hidden treasure.", value: ""}, {name: "an_output_file", type: "Output_File", doc: "This is a file that will be collected after the tool executes.", value: ""}],
             newAuxName: "",
             newAuxContents: "",
             auxiliary_files: [],
-            command_template: ""
-            //command_template: "$(inputs.a_string) $(inputs.an_integer) $(inputs.a_data_file.path) $(inputs.some_directory.path) $(inputs.an_output_file)"
+            //TODO: command_template: ""
+            command_template: "$(inputs.a_string) $(inputs.an_integer) $(inputs.a_data_file.path) $(inputs.some_directory.path) $(inputs.an_output_file)"
         },
 
         // Computed attributes build content dynamically for display in the app.
@@ -302,31 +308,38 @@
         computed: {
             cwl: function() {
                 this.download_cwl_errors = [];
+
                 if (this.tool_id.trim() == "")
                     this.download_cwl_errors.push("Please specify a tool identifier.");
+
                 if (/[^A-Za-z0-9_]+/.test(this.tool_id))
                     this.download_cwl_errors.push("The tool identifier must only container letters, numbers, and underscores.")
+
                 if (this.command_template.trim() == "")
                     this.download_cwl_errors.push("Please specify a command template.");
+
                 input_count = 0;
                 var i;
                 for (i = 0; i < this.inputs.length; i++)
                     if (this.inputs[i].type != "Output_File")
                         input_count += 1;
+
                 if (input_count == 0)
                     this.download_cwl_errors.push("You must specify at least one input (string, int, File, Directory).");
+
                 for (i = 0; i < this.inputs.length; i++) {
                     if (this.inputs[i].type == "File" || this.inputs[i].type == "Directory") {
                         re = new RegExp(`\\$\\(inputs\\.${this.inputs[i].name}\\.path\\)`);
                         if (!re.test(this.command_template))
-                            this.download_cwl_errors.push(`All inputs must be used at least once in the command template: ${this.inputs[i].name} was not used. It should be specified in the command template as $(inputs.${this.inputs[i].name}.path).`);
+                            this.download_cwl_errors.push(`All inputs must be used at least once in the command template: ${this.inputs[i].name} was not used. It can be specified in the command template as $(inputs.${this.inputs[i].name}.path).`);
                     }
                     else {
                         re = new RegExp(`\\$\\(inputs\\.${this.inputs[i].name}\\)`);
                         if (!re.test(this.command_template))
-                            this.download_cwl_errors.push(`All inputs must be used at least once in the command template: ${this.inputs[i].name} was not used. It should be specified in the command template as $(inputs.${this.inputs[i].name}).`);
+                            this.download_cwl_errors.push(`All inputs must be used at least once in the command template: ${this.inputs[i].name} was not used. It can be specified in the command template as $(inputs.${this.inputs[i].name}).`);
                     }
                 }
+
                 for (i = 0; i<this.auxiliary_files.length; i++) {
                     re = new RegExp(this.auxiliary_files[i].name.replace(/\./g, "\\."));
                     if (!re.test(this.command_template))
@@ -402,16 +415,30 @@ stderr: error.txt
             // }
         },
 
-        // These are functions to make the logic a bit more modular.
+        // These are functions to make the logic a bit modular.
         methods: {
             addInput: function () {
                 this.input_errors = [];
+
                 if (/[^a-zA-Z_0-9]+/.test(this.newInputName))
                     this.input_errors.push("Input names must only contain letters, numbers, and underscores.");
+
                 var i;
                 for (i = 0; i < this.inputs.length; i++)
+                    // Make sure no duplicates
                     if (this.inputs[i].name == this.newInputName)
                         this.input_errors.push("An input with name \"" + this.inputs[i].name + "\" already exists.");
+
+                // Make sure secondaryFiles, if specified, follow correct format
+                this.newInputSecondary = this.newInputSecondary.replace(/ /g, "");
+                if (this.newInputSecondary != "") {
+                    var j;
+                    var secondaryValues = this.newInputSecondary.split(",");
+                    for (j = 0; j < secondaryValues.length; j++)
+                        if (!secondaryValues[j].startsWith("."))
+                            this.input_errors.push("Secondary files must start with a period and be separated by commas.");
+                }
+
                 if (this.input_errors.length > 0)
                     return;
 
@@ -423,12 +450,14 @@ stderr: error.txt
                     name: this.newInputName,
                     type: inputType,
                     doc: this.newInputDoc,
+                    secondary: this.newInputSecondary,
                     value: ""
                 });
 
                 this.newInputName = "";
                 this.newInputType = "string";
                 this.newInputDoc = "";
+                this.newInputSecondary = "";
             },
             deleteInput: function (x) {
                 this.inputs = this.inputs.filter(function(value, index, arr) {
@@ -440,6 +469,7 @@ stderr: error.txt
                 this.newInputName = x.name;
                 this.newInputType = x.type;
                 this.newInputDoc = x.doc;
+                this.newInputSecondary = x.secondary;
                 this.$refs.newInputName.focus();
                 this.$refs.inputPanel.scrollIntoView();
             },
@@ -488,7 +518,15 @@ stderr: error.txt
 
                     result += "\n  " + this.inputs[i].name + ":\n";
                     result += "    type: " + input_type + "\n";
-                    result += this.buildOptionalString("    doc: |-\n", this.indent(6, this.inputs[i].doc));
+                    result += this.buildOptionalString("    doc: |-\n", this.indent(6, this.inputs[i].doc)) + "\n";
+
+                    if (this.inputs[i].type == "File" && this.inputs[i].secondary != "") {
+                        result += "    secondaryFiles:\n";
+                        var j;
+                        var secondaryFiles = this.inputs[i].secondary.split(",");
+                        for (j = 0; j < secondaryFiles.length; j++)
+                            result += this.indent(6, "- " + secondaryFiles[j]) + "\n";
+                    }
                 }
 
                 return result;
