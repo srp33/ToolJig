@@ -179,6 +179,22 @@
             </small>
         </div>
 
+        <div class="panel panel-default" ref="inputPanel">
+            <h4 class="card-title">Manage outputs<sup><font color="red">*</font></sup>:</h4>
+
+            <p>After a tool executes successfully, you can collect three kinds of output. Standard output typically consists of messages or data printed to the console. Standard error typically consists of errors, warnings, or diagnostic information printed to the console. In addition, many command-line tools produce new data files that have resulted from execution of the tool. In this section, you can specify which outputs should be collected.</p>
+
+            <div class="form-group">
+                <label for="stdout_file_name">Standard output file name:</label>
+                <input v-model="stdout_file_name" id="stdout_file_name" ref="stdout_file_name" type="text" class="form-control" placeholder="Here you can enter a file name in which standard output will be stored after the tool executes." />
+            </div>
+
+            <div class="form-group">
+                <label for="stderr_file_name">Standard error file name:</label>
+                <input v-model="stderr_file_name" id="stderr_file_name" ref="stderr_file_name" type="text" class="form-control" placeholder="Here you can enter a file name in which standard error will be stored after the tool executes." />
+            </div>
+        </div>
+
         <h4>CWL document:</h4>
 
         <p v-if="download_cwl_errors.length"><font color="red">
@@ -300,7 +316,9 @@
             newAuxContents: "",
             auxiliary_files: [],
             //TODO: command_template: ""
-            command_template: "$(inputs.a_string) $(inputs.an_integer) $(inputs.a_data_file.path) $(inputs.some_directory.path) $(inputs.an_output_file)"
+            command_template: "$(inputs.a_string) $(inputs.an_integer) $(inputs.a_data_file.path) $(inputs.some_directory.path) $(inputs.an_output_file)",
+            stdout_file_name: "stdout.txt",
+            stderr_file_name: "stderr.txt"
         },
 
         // Computed attributes build content dynamically for display in the app.
@@ -364,12 +382,7 @@ ${this.buildOptionalString(`arguments:
     valueFrom: |-\n`, this.indent(6, this.command_template.replace(/\n\n/g, "\n").replace(/\n/g, "\n\n")))}
 outputs:
 ${this.parseOutputs()}
-  standard_output:
-    type: stdout
-  standard_error:
-    type: stderr
-stdout: output.txt
-stderr: error.txt
+${this.parseStandardMessages()}
             `.replace(/\n\n/g, "\n").replace(/\n\n/g, "\n").trim();
             },
             job: function() {
@@ -563,6 +576,23 @@ stderr: error.txt
                     result += "    doc: |-\n";
                     result += `      Output file matching the name specified in the "${this.inputs[i].name}" input.\n`
                 }
+
+                return result;
+            },
+            parseStandardMessages: function() {
+                result = "";
+
+                stdout_value = this.stdout_file_name.trim();
+                stderr_value = this.stderr_file_name.trim();
+
+                if (stdout_value != "")
+                    result += "  standard_output:\n    type: stdout\n";
+                if (stderr_value != "")
+                    result += "  standard_error:\n    type: stderr\n";
+                if (stdout_value != "")
+                    result += "stdout: " + stdout_value + "\n";
+                if (stderr_value != "")
+                    result += "stderr: " + stderr_value + "\n";
 
                 return result;
             },
