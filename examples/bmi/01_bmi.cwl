@@ -38,7 +38,6 @@ requirements:
 inputs:
   input_file:
     type: File
-    streamable: true
     doc: |-
       A tab-separated data file with biometric measurements for human individuals. The first line in the file should contain column names. One column should contain measurements representing each individual's weight (in kilograms). One column should contain measurements representing each individual's height (in centimeters).
   weight_column_name:

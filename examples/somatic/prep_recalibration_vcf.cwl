@@ -70,8 +70,6 @@ arguments:
         python reconcile_vcf_with_dict.py "$(inputs.output_file_name)" "$DICT_FILE"
 
         picard -Xms128m -Xmx2g SortVcf I="$(inputs.output_file_name)" O="$(inputs.output_file_name)" SEQUENCE_DICTIONARY="$DICT_FILE" CREATE_INDEX=true
-
-        ls -al $(inputs.output_file_name)*
 outputs:
   output_file_1:
     type: File
