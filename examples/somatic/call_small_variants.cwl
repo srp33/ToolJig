@@ -64,10 +64,12 @@ arguments:
 
         gatk FilterMutectCalls -R "$(inputs.fasta_file.basename)" -V unfiltered.vcf -O "$(inputs.output_file_name)"
 outputs:
-  output_file:
+  output_1:
     type: File
     outputBinding:
       glob: "$(inputs.output_file_name)"
+    doc: |-
+      Output file matching the name specified in the "output_file_name" input.
   standard_output:
     type: stdout
   standard_error:

@@ -32,12 +32,18 @@ arguments:
 
         sambamba index -t $(inputs.threads) "$(inputs.output_file_name)" 
 outputs:
-  output_file_1:
+  output_1:
     type: File
     outputBinding:
       glob: "$(inputs.output_file_name)"
-    secondaryFiles:
-      - .bai
+    doc: |-
+      Output file matching the name specified in the "output_file_name" input.
+  output_2:
+    type: File
+    outputBinding:
+      glob: "$(inputs.output_file_name).bai"
+    doc: |-
+      An index file.
   standard_output:
     type: stdout
   standard_error:

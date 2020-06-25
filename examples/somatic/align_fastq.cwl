@@ -55,10 +55,12 @@ arguments:
       valueFrom: |-
         bwa mem -t $(inputs.threads) $(inputs.args) -R "$(inputs.read_group_string)" "$(inputs.fasta_file.path)" "$(inputs.fastq_file_1.path)" "$(inputs.fastq_file_2.path)" | samtools view -b > "$(inputs.output_file_name)"
 outputs:
-  output_file:
+  output_1:
     type: File
     outputBinding:
       glob: "$(inputs.output_file_name)"
+    doc: |-
+      Output file matching the name specified in the "output_file_name" input.
   standard_output:
     type: stdout
   standard_error:

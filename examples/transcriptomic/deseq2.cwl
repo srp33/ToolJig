@@ -80,7 +80,7 @@ outputs:
     outputBinding:
       glob: "$(inputs.output_file_name)"
     doc: |-
-      An output file matching the value specified in the "output_file_name" input should be generated.
+      Output file matching the name specified in the "output_file_name" input.
   standard_output:
     type: stdout
   standard_error:

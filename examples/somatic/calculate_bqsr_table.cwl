@@ -54,10 +54,12 @@ arguments:
 
         java -Xms128m -Xmx8g -jar /usr/GenomeAnalysisTK.jar -T BaseRecalibrator -R "$(inputs.fasta_file.basename)" -I "$(inputs.bam_file.path)" -o "$(inputs.output_file_name)" -nct $(inputs.threads) $KNOWN_SITES_ARG
 outputs:
-  output_file:
+  output_1:
     type: File
     outputBinding:
       glob: "$(inputs.output_file_name)"
+    doc: |-
+      Output file matching the name specified in the "output_file_name" input.
   standard_output:
     type: stdout
   standard_error:

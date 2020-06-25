@@ -64,12 +64,12 @@ arguments:
       valueFrom: |-
         python calculate_bmi.py "$(inputs.input_file_url)" "$(inputs.weight_column_name)" "$(inputs.height_column_name)" "$(inputs.output_file_name)"
 outputs:
-  output_file:
+  output_1:
     type: File
     outputBinding:
       glob: "$(inputs.output_file_name)"
     doc: |-
-      Here we indicate that an output file matching the name specified in the inputs should be generated.
+      Output file matching the name specified in the "output_file_name" input.
   standard_output:
     type: stdout
   standard_error:

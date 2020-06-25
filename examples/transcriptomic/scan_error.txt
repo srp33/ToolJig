@@ -1,4 +1,6 @@
 Bioconductor version 3.10 (BiocManager 1.30.10), ?BiocManager::install for help
+Bioconductor version '3.10' is out-of-date; the current release version '3.11'
+  is available with R version '4.0'; see https://bioconductor.org/install
 Loading required package: Biobase
 Loading required package: BiocGenerics
 Loading required package: parallel
@@ -98,7 +100,7 @@ The following object is masked from ‘package:IRanges’:
 This is mgcv 1.8-31. For overview type 'help("mgcv-package")'.
 Loading required package: genefilter
 Loading required package: BiocParallel
-Downloading GSE1000 directly from GEO to /tmp/RtmpnvgPDS.
+Downloading GSE1000 directly from GEO to /tmp/RtmpHRJrWq.
 trying URL 'https://ftp.ncbi.nlm.nih.gov/geo/series/GSE1nnn/GSE1000/suppl//GSE1000_RAW.tar?tool=geoquery'
 Content type 'application/x-tar' length 35307520 bytes (33.7 MB)
 ==================================================
@@ -113,6 +115,8 @@ Content type 'application/x-gzip' length 9851796 bytes (9.4 MB)
 downloaded 9.4 MB
 
 Bioconductor version 3.10 (BiocManager 1.30.10), ?BiocManager::install for help
+Bioconductor version '3.10' is out-of-date; the current release version '3.11'
+  is available with R version '4.0'; see https://bioconductor.org/install
 * installing *source* package ‘pd.hg.u133a’ ...
 ** using staged installation
 ** R
@@ -128,7 +132,7 @@ Bioconductor version 3.10 (BiocManager 1.30.10), ?BiocManager::install for help
 * DONE (pd.hg.u133a)
 
 The downloaded source packages are in
-	‘/tmp/RtmpnvgPDS/downloaded_packages’
+	‘/tmp/RtmpHRJrWq/downloaded_packages’
 Loading required package: pd.hg.u133a
 Loading required package: RSQLite
 Loading required package: DBI

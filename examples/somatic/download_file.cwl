@@ -30,6 +30,8 @@ outputs:
     type: File
     outputBinding:
       glob: "$(inputs.out_file_name)"
+    doc: |-
+      Output file matching the name specified in the "output_file_name" input.
   standard_output:
     type: stdout
   standard_error:

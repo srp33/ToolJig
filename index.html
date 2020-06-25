@@ -43,30 +43,33 @@
 
         <p>This section enables you to create a CWL tool description. Please fill in the information as requested below. Required field = <font color="red">*</font>.</p>
 
-        <h4>Manage metadata:</h4>
-        <div class="form-group">
-            <label for="tool_id">Tool identifier<sup><font color="red">*</font></sup>:</label>
-            <input v-model="tool_id" id="tool_id" type="text" placeholder="" class="form-control" aria-describedby="helpBlock" />
-            <small id="helpBlock" class="form-text text-muted">
-                Please enter a unique identifier. It must contain only letters, numbers, and underscores. This identifier will be used within the name of the CWL document.
-            </small>
-        </div>
+        <div class="panel panel-default" ref="inputPanel">
+            <h4 class="card-title">Specify basics<sup><font color="red">*</font></sup>:</h4>
 
-        <div class="form-group">
-            <label for="doc">Description:</label>
-            <textarea v-model="doc" id="doc" rows=5 cols=100 placeholder="" class="form-control" aria-describedby="helpBlock"></textarea>
-            <small id="helpBlock" class="form-text text-muted">
-                Please enter a general description of the tool. This description will inform users of the tool about its purpose and function.
-            </small>
-        </div>
+            <div class="form-group">
+                <label for="tool_id">Tool identifier:</label>
+                <input v-model="tool_id" id="tool_id" type="text" placeholder="" class="form-control" aria-describedby="helpBlock" />
+                <div id="helpBlock" class="form-text text-muted">
+                    Please enter a unique identifier. It must contain only letters, numbers, and underscores. This identifier will be used within the name of the CWL document.
+                </div>
+            </div>
 
-        <h4>Manage environment:</h4>
-        <div class="form-group">
-            <label for="dockerfile">Dockerfile:</label>
-            <textarea v-model="dockerfile" id="dockerfile" rows=5 cols=100 placeholder="" class="form-control" style="font-family:monospace;" aria-describedby="helpBlock"></textarea>
-            <small id="helpBlock" class="form-text text-muted">
-                Please enter the contents of a <a href="https://docs.docker.com/develop/develop-images/dockerfile_best-practices/">Dockerfile</a>. A Dockerfile provides instructions for building a Docker image, which can be used as the operating-system environment for the tool. <a href="#" onclick="javascript:alert('TODO');return false;">This document</a> provides tips and examples for creating Dockerfiles.
-            </small>
+            <div class="form-group">
+                <label for="doc">Description:</label>
+                <textarea v-model="doc" id="doc" rows=5 cols=100 placeholder="" class="form-control" aria-describedby="helpBlock"></textarea>
+                <div id="helpBlock" class="form-text text-muted">
+                    Please enter a general description of the tool. This description will inform users of the tool about its purpose and function.
+                </div>
+            </div>
+
+            <h4>Manage environment:</h4>
+            <div class="form-group">
+                <label for="dockerfile">Dockerfile:</label>
+                <textarea v-model="dockerfile" id="dockerfile" rows=5 cols=100 placeholder="" class="form-control" style="font-family:monospace;" aria-describedby="helpBlock"></textarea>
+                <div id="helpBlock" class="form-text text-muted">
+                    Please enter the contents of a <a href="https://docs.docker.com/develop/develop-images/dockerfile_best-practices/">Dockerfile</a>. A Dockerfile provides instructions for building a Docker image, which can be used as the operating-system environment for the tool. <a href="#" onclick="javascript:alert('TODO');return false;">This document</a> provides tips and examples for creating Dockerfiles.
+                </div>
+            </div>
         </div>
 
         <div class="panel panel-default" ref="inputPanel">
@@ -171,28 +174,76 @@
             </ol>
         </div>
 
-        <div class="form-group">
-            <label for="command_template">Command template<sup><font color="red">*</font></sup>:</label>
-            <textarea v-model="command_template" id="command_template" rows=5 cols=100 placeholder="Please enter the command template." class="form-control" aria-describedby="helpBlock"></textarea>
-            <small id="helpBlock" class="form-text text-muted">
-                Here you specify a template for executing the tool at the command line within the execution environment. Each input must be specified at least once in the command template. <a href="#" onclick="javascript:alert('TODO');return false;">This document</a> provides tips and examples for creating command templates.
-            </small>
+        <div class="panel panel-default" ref="outputPanel">
+            <h4 class="card-title">Specify command template<sup><font color="red">*</font></sup>:</h4>
+
+            <p>Here you specify a template for executing the tool at the command line within the execution environment. Each input must be specified at least once in the command template. <a href="#" onclick="javascript:alert('TODO');return false;">This document</a> provides tips and examples for creating command templates.</p>
+
+            <div class="form-group">
+                <textarea v-model="command_template" id="command_template" rows=5 cols=100 placeholder="Please enter the command template." class="form-control" aria-describedby="helpBlock"></textarea>
+            </div>
         </div>
 
-        <div class="panel panel-default" ref="inputPanel">
+        <div class="panel panel-default" ref="outputPanel">
             <h4 class="card-title">Manage outputs<sup><font color="red">*</font></sup>:</h4>
 
-            <p>After a tool executes successfully, you can collect three kinds of output. Standard output typically consists of messages or data printed to the console. Standard error typically consists of errors, warnings, or diagnostic information printed to the console. In addition, many command-line tools produce new data files that have resulted from execution of the tool. In this section, you can specify which outputs should be collected.</p>
+            <p>After a tool executes successfully, you can collect three kinds of output. <em>Standard output</em> typically consists of messages or data printed to the console. <em>Standard error</em> typically consists of errors, warnings, or diagnostic information printed to the console. In addition, many command-line tools generate new data files.</p>
+
+            <p>In this section, you can specify alternate names for the files that will store standard output and standard error.</p>
 
             <div class="form-group">
                 <label for="stdout_file_name">Standard output file name:</label>
-                <input v-model="stdout_file_name" id="stdout_file_name" ref="stdout_file_name" type="text" class="form-control" placeholder="Here you can enter a file name in which standard output will be stored after the tool executes." />
+                <input v-model="stdout_file_name" id="stdout_file_name" ref="stdout_file_name" type="text" class="form-control" placeholder="Enter a file name in which standard output will be stored after the tool executes." />
             </div>
 
             <div class="form-group">
                 <label for="stderr_file_name">Standard error file name:</label>
-                <input v-model="stderr_file_name" id="stderr_file_name" ref="stderr_file_name" type="text" class="form-control" placeholder="Here you can enter a file name in which standard error will be stored after the tool executes." />
+                <input v-model="stderr_file_name" id="stderr_file_name" ref="stderr_file_name" type="text" class="form-control" placeholder="Enter a file name in which standard error will be stored after the tool executes." />
             </div>
+
+            <p>Here you can specify any output files that you expect to be generated by the tool and that you wish to collect after the tool executes. <em>These are separate from any user-specified output files that may have been declared above.</em> Please enter an expression that corresponds to each output file that you wish to collect. If the file will always have the same name, you can just enter the name of that file. Alternatively, you can enter an expression that references the inputs. For example, if you had specified an input file named "fastq_file" and wished to collect an output file of the same name, you would specify the output expression as "$(inputs.fastq_file.basename)". The ".basename" portion represents the name of the input file and excludes the rest of the file path. Other properties can be found <a href="https://www.commonwl.org/v1.1/CommandLineTool.html#File">here</a>; additional examples can be found <a href="https://github.com/srp33/ToolJig/tree/master/examples">here</a>.</p>
+
+            <form v-on:submit.prevent="addOutput">
+                <div class="form-group">
+                    <label for="outputGlob">Expression:</label>
+                    <input v-model="newOutputGlob" id="outputGlob" ref="newOutputGlob" type="text" class="form-control" placeholder="Please enter an expression for this output file." />
+                </div>
+
+                <div class="form-group">
+                    <label for="outputDoc">Documentation:</label>
+                    <input v-model="newOutputDoc" id="outputDoc" ref="newOutputDoc" type="text" class="form-control" placeholder="Provide a short description of this output file." />
+                </div>
+
+                <div class="form-group">
+                    <label for="outputSecondary">Secondary file(s):</label>
+                    <input v-model="newOutputSecondary" id="outputSecondary" ref="newOutputSecondary" type="text" class="form-control" placeholder="Indicate any secondary files (separated by commas) that should accompany this file (example: .ann,.bwt). Spaces will be removed." />
+                </div>
+
+                <p v-if="output_errors.length > 0"><font color="red">
+                    <b>Please correct the following error(s):</b>
+                    <ul>
+                      <li v-for="error in output_errors">{{ error }}</li>
+                    </ul>
+                    </font>
+                </p>
+
+                <div class="form-group">
+                    <button class="btn btn-info" :disabled="newOutputGlob == '' || newOutputDoc == ''">Add</button>
+                </div>
+            </form>
+
+            <p v-if="outputs.length > 0">Here you can edit or delete outputs that have been created. If you click on an Edit button (<span class="glyphicon glyphicon-edit" aria-hidden="true"></span>), it will delete the output and let you edit the values in the boxes above.</p>
+
+            <ol class="list-group">
+                <li v-for="output in outputs" class="list-group-item">{{ output.glob }}
+                    <button v-on:click="editOutput(output)" class="btn btn-default">
+                        <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+                    </button>
+                    <button v-on:click="deleteOutput(output)" class="btn btn-default">
+                        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                    </button>
+                </li>
+            </ol>
         </div>
 
         <h4>CWL document:</h4>
@@ -300,25 +351,32 @@
         data: {
             input_errors: [],
             auxiliary_errors: [],
+            output_errors: [],
             download_cwl_errors: [],
             download_job_errors: [],
             tool_id: "abc_tool",
             //TODO: tool_id: "",
             doc: "",
-            dockerfile: "",
+            //TODO: dockerfile: "",
+            dockerfile: "FROM ubuntu",
             newInputName: "",
             newInputType: "string",
             newInputDoc: "",
             newInputSecondary: "",
             //TODO: inputs: [],
-            inputs: [{name: "a_string", type: "string", doc: "This is a very interesting string input.", value: ""}, {name: "an_integer", type: "int", doc: "This must be an integer.", value: ""}, {name: "a_data_file", type: "File", doc: "This is a path to a file that contains infinite wisdom.", secondary: ".abc,.def", value: ""}, {name: "some_directory", type: "Directory", doc: "This directory has hidden treasure.", value: ""}, {name: "an_output_file", type: "Output_File", doc: "This is a file that will be collected after the tool executes.", value: ""}],
+            inputs: [{name: "a_string", type: "string", doc: "This is a very interesting string input.", secondary: "", value: ""}, {name: "an_integer", type: "int", doc: "This must be an integer.", secondary: "", value: ""}, {name: "a_data_file", type: "File", doc: "This is a path to a file that contains infinite wisdom.", secondary: ".abc,.def", value: ""}, {name: "some_directory", type: "Directory", doc: "This directory has hidden treasure.", secondary: "", value: ""}, {name: "an_output_file", type: "Output_File", doc: "This is a file that will be collected after the tool executes.", secondary: "", value: ""}],
             newAuxName: "",
             newAuxContents: "",
             auxiliary_files: [],
-            //TODO: command_template: ""
-            command_template: "$(inputs.a_string) $(inputs.an_integer) $(inputs.a_data_file.path) $(inputs.some_directory.path) $(inputs.an_output_file)",
             stdout_file_name: "stdout.txt",
-            stderr_file_name: "stderr.txt"
+            stderr_file_name: "stderr.txt",
+            //TODO: outputs: [],
+            outputs: [{glob: "abc", doc: "def", secondary: ".txt"}],
+            newOutputGlob: "",
+            newOutputDoc: "",
+            newOutputSecondary: "",
+            //TODO: command_template: ""
+            command_template: "$(inputs.a_string) $(inputs.an_integer) $(inputs.a_data_file.path) $(inputs.some_directory.path) $(inputs.an_output_file)"
         },
 
         // Computed attributes build content dynamically for display in the app.
@@ -332,6 +390,9 @@
 
                 if (/[^A-Za-z0-9_]+/.test(this.tool_id))
                     this.download_cwl_errors.push("The tool identifier must only container letters, numbers, and underscores.")
+
+                if (this.dockerfile.trim() == "")
+                    this.download_cwl_errors.push("Please specify a Dockerfile.");
 
                 if (this.command_template.trim() == "")
                     this.download_cwl_errors.push("Please specify a command template.");
@@ -371,9 +432,9 @@ class: CommandLineTool
 ${this.buildOptionalString("doc: |-\n", this.indent(2, this.doc))}
 requirements:
   ShellCommandRequirement: {}
-${this.buildOptionalString(`  DockerRequirement:
+  DockerRequirement:
     dockerImageId: ${this.tool_id}
-    dockerFile: |-\n`, this.indent(6, this.dockerfile))}
+    dockerFile: |-\n${this.indent(6, this.dockerfile)}
 ${this.network_access}
 ${this.parseAuxiliaryFiles()}
 ${this.parseInputs()}
@@ -449,7 +510,10 @@ ${this.parseStandardMessages()}
                     var secondaryValues = this.newInputSecondary.split(",");
                     for (j = 0; j < secondaryValues.length; j++)
                         if (!secondaryValues[j].startsWith("."))
-                            this.input_errors.push("Secondary files must start with a period and be separated by commas.");
+                        {
+                            this.input_errors.push("Secondary files must start with periods and be separated by commas.");
+                            break;
+                        }
                 }
 
                 if (this.input_errors.length > 0)
@@ -517,6 +581,57 @@ ${this.parseStandardMessages()}
                 this.$refs.newAuxName.focus();
                 this.$refs.auxPanel.scrollIntoView();
             },
+            addOutput: function() {
+                this.output_errors = [];
+                // Make sure the expression is valid
+                if (/[*?]/.test(this.newOutputGlob))
+                    this.auxiliary_errors.push("Output file expressions cannot include wildcard characters (* or ?).");
+
+                // Make sure there are no duplicates
+                var i;
+                for (i = 0; i < this.outputs.length; i++)
+                    if (this.outputs[i].glob == this.newOutputGlob)
+                        this.output_errors.push("A duplicate output was detected.");
+
+                // Make sure secondaryFiles, if specified, follow correct format
+                this.newOutputSecondary = this.newOutputSecondary.replace(/ /g, "");
+                if (this.newOutputSecondary != "") {
+                    var j;
+                    var secondaryValues = this.newOutputSecondary.split(",");
+                    for (j = 0; j < secondaryValues.length; j++)
+                        if (!secondaryValues[j].startsWith("."))
+                        {
+                            this.output_errors.push("Secondary files must start with periods and be separated by commas.");
+                            break;
+                        }
+                }
+
+                if (this.output_errors.length > 0)
+                    return;
+
+                this.outputs.push({
+                    glob: this.newOutputGlob,
+                    doc: this.newOutputDoc,
+                    secondary: this.newOutputSecondary
+                });
+
+                this.newOutputGlob = "";
+                this.newOutputDoc = "";
+                this.newOutputSecondary = "";
+            },
+            deleteOutput: function(x) {
+                this.outputs = this.outputs.filter(function(value, index, arr) {
+                    return value.glob != x.glob;
+                })
+            },
+            editOutput: function(x) {
+                this.deleteOutput(x);
+                this.newOutputGlob = x.glob;
+                this.newOutputDoc = x.doc;
+                this.newOutputSecondary = x.secondary;
+                this.$refs.newOutputGlob.focus();
+                this.$refs.outputPanel.scrollIntoView();
+            },
             parseInputs: function() {
                 result = "";
                 if (this.inputs.length > 0)
@@ -575,6 +690,28 @@ ${this.parseStandardMessages()}
                     result += "      glob: \"$(inputs." + this.inputs[i].name + ")\"\n";
                     result += "    doc: |-\n";
                     result += `      Output file matching the name specified in the "${this.inputs[i].name}" input.\n`
+                }
+
+                var i;
+                for (i = 0; i<this.outputs.length; i++)
+                {
+                    output_count += 1;
+
+                    result += "  output_" + output_count + ":\n";
+                    result += "    type: File\n";
+                    result += "    outputBinding:\n";
+                    result += "      glob: \"" + this.outputs[i].glob + "\"\n";
+                    result += "    doc: |-\n";
+                    result += this.indent(6, this.outputs[i].doc) + "\n";
+
+                    if (this.outputs[i].secondary != "")
+                    {
+                        result += "    secondaryFiles:\n";
+                        var j;
+                        var secondaryFiles = this.outputs[i].secondary.split(",");
+                        for (j = 0; j < secondaryFiles.length; j++)
+                            result += this.indent(6, "- " + secondaryFiles[j]) + "\n";
+                    }
                 }
 
                 return result;

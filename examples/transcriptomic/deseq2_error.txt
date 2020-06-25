@@ -1,4 +1,6 @@
 Bioconductor version 3.10 (BiocManager 1.30.10), ?BiocManager::install for help
+Bioconductor version '3.10' is out-of-date; the current release version '3.11'
+  is available with R version '4.0'; see https://bioconductor.org/install
 
 Attaching package: ‘dplyr’
 

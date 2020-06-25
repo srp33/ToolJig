@@ -41,12 +41,12 @@ arguments:
 
       Rscript normalize.R "$(inputs.geo_series_id)" "$(inputs.output_file_name)"
 outputs:
-  output_file:
+  output_1:
     type: File
     outputBinding:
       glob: "$(inputs.output_file_name)"
     doc: |-
-      Here we indicate that an output file matching the name specified in the inputs should be generated.
+      Output file matching the name specified in the "output_file_name" input.
   standard_output:
     type: stdout
   standard_error:
