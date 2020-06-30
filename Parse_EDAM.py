@@ -10,6 +10,8 @@ prefix_index = header_items.index("http://data.bioontology.org/metadata/prefixIR
 label_index = header_items.index("Preferred Label")
 def_index = header_items.index("Definitions")
 
+print(f"                        <option value=\"\"></option>")
+
 for line in edam_content.split("\n")[1:]:
     line_items = line.split("\t")
     if len(line_items) < 2:
