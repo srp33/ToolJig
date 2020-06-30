@@ -139,6 +139,17 @@
                 </div>
 
                 <div class="form-group" v-if="newInputType=='File'">
+                    <label for="inputFileFormat">File format:</label>
+                    <select v-model="newInputFileFormat" id="inputFileFormat" class="form-control" id="inputFileFormat">
+                        <option>string</option>
+                        <option>int</option>
+                        <option>File</option>
+                        <option>Directory</option>
+                        <option>Output File</option>
+                    </select>
+                </div>
+
+                <div class="form-group" v-if="newInputType=='File'">
                     <label for="inputSecondary">Secondary file(s):</label>
                     <input v-model="newInputSecondary" id="inputSecondary" ref="newInputSecondary" type="text" class="form-control" placeholder="Indicate any secondary files (separated by commas) that should accompany this file (example: .ann,.bwt). Spaces will be removed." />
                 </div>

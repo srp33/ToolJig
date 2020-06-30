@@ -31,4 +31,4 @@ for line in edam_content.split("\n")[1:]:
 
     description = f"{label} - {definition}"
 
-    print(f"<option value=\"edam:{the_format}\">{description}</option>")
+    print(f"                        <option value=\"edam:{the_format}\">{description}</option>")
