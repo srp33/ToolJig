@@ -34,10 +34,10 @@
     <div id="cwl_app">
         <h2>ToolJig: A simple approach to building Common Workflow Language tool descriptions</h2>
 
-        <p><img src="https://github.com/srp33/ToolJig/raw/master/Logo.jpg" width="400" /><br /><small><a href="https://unsplash.com/@vekonyorsi" class="text-muted" style="font-size: 10px">Image credit</a></small>
+        <p><img src="https://github.com/srp33/ToolJig/raw/master/Logo.jpg" width="400" /><br /><small><a href="https://unsplash.com/@vekonyorsi" target="_blank" class="text-muted" style="font-size: 10px">Image credit</a></small>
         </p>
 
-        <p>The <a href="https://www.commonwl.org/">Common Workflow Language</a> (CWL) is an open specification for describing command-line tools and workflows. CWL documents are used in many scientific disciplines to ensure that tools and workflows can be executed in a manner that is portable across workflow engines and computer systems. <em>ToolJig</em> facilitates creation of CWL tool descriptions and input-job files for those tools. Tool definitions created by ToolJig are fully compatible with the <a href="https://commonwl.org/v1.1/CommandLineTool.html">CWL specification</a>. <b>Our goal is support <em>common</em> use cases for executing command-line tools and research analyses.</b> However, some options within the CWL specification are <em>not</em> supported; users should consult the specification if they wish to use other available features.</p>
+        <p>The <a href="https://www.commonwl.org/" target="_blank">Common Workflow Language</a> (CWL) is an open specification for describing command-line tools and workflows. CWL documents are used in many scientific disciplines to ensure that tools and workflows can be executed in a manner that is portable across workflow engines and computer systems. <em>ToolJig</em> facilitates creation of CWL tool descriptions and input-job files for those tools. Tool definitions created by ToolJig are fully compatible with the <a href="https://commonwl.org/v1.1/CommandLineTool.html" target="_blank">CWL specification</a>. <b>Our goal is support <em>common</em> use cases for executing command-line tools and research analyses.</b> However, some options within the CWL specification are <em>not</em> supported; users should consult the specification if they wish to use other available features.</p>
 
         <hr style="border: 1px solid black;border-radius: 1px;" />
 
@@ -48,26 +48,65 @@
 
             <div class="form-group">
                 <label for="tool_id">Tool identifier:</label>
-                <input v-model="tool_id" id="tool_id" type="text" placeholder="" class="form-control" aria-describedby="helpBlock" />
+                <input v-model="tool_id" id="tool_id" type="text" placeholder="Please enter a unique identifier." class="form-control" aria-describedby="helpBlock" />
                 <div id="helpBlock" class="form-text text-muted">
-                    Please enter a unique identifier. It must contain only letters, numbers, and underscores. This identifier will be used within the name of the CWL document.
+                    This identifier must contain only letters, numbers, and underscores. This identifier will be used within the name of the CWL document.
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="tool_label">Label:</label>
+                <input v-model="tool_label" id="tool_label" type="text" placeholder="Please enter a short description of the tool." class="form-control" aria-describedby="helpBlock" />
+                <div id="helpBlock" class="form-text text-muted">
+                    This description will inform tool users about its purpose and function.
                 </div>
             </div>
 
             <div class="form-group">
                 <label for="doc">Description:</label>
-                <textarea v-model="doc" id="doc" rows=5 cols=100 placeholder="" class="form-control" aria-describedby="helpBlock"></textarea>
+                <textarea v-model="doc" id="doc" rows=5 cols=100 placeholder="You may enter a longer description of the tool." class="form-control" aria-describedby="helpBlock"></textarea>
                 <div id="helpBlock" class="form-text text-muted">
-                    Please enter a general description of the tool. This description will inform users of the tool about its purpose and function.
+                    This optional description can provide more detailed documentation about the tool. 
                 </div>
             </div>
 
-            <h4>Manage environment:</h4>
             <div class="form-group">
                 <label for="dockerfile">Dockerfile:</label>
-                <textarea v-model="dockerfile" id="dockerfile" rows=5 cols=100 placeholder="" class="form-control" style="font-family:monospace;" aria-describedby="helpBlock"></textarea>
+                <textarea v-model="dockerfile" id="dockerfile" rows=5 cols=100 placeholder="Please enter the contents of a Dockerfile." class="form-control" style="font-family:monospace;" aria-describedby="helpBlock"></textarea>
                 <div id="helpBlock" class="form-text text-muted">
-                    Please enter the contents of a <a href="https://docs.docker.com/develop/develop-images/dockerfile_best-practices/">Dockerfile</a>. A Dockerfile provides instructions for building a Docker image, which can be used as the operating-system environment for the tool. <a href="#" onclick="javascript:alert('TODO');return false;">This document</a> provides tips and examples for creating Dockerfiles.
+                    A <a href="https://docs.docker.com/develop/develop-images/dockerfile_best-practices/">Dockerfile</a> provides instructions for building a Docker image, which can be used as the operating-system environment for the tool. <a href="https://osf.io/fsd7t/" target="_blank">This article</a> and <a href="https://github.com/srp33/ToolJig" target="_blank">these examples</a> illustrate how to create Dockerfiles.
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="author_name">Author's name:</label>
+                <input v-model="author_name" id="author_name" type="text" placeholder="Please enter your name." class="form-control" aria-describedby="helpBlock" />
+                <div id="helpBlock" class="form-text text-muted">
+                    This is optional. Specifying your name enables others who use the tool to be aware that you are the author.
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="author_email">Author's email address:</label>
+                <input v-model="author_email" id="author_email" type="text" placeholder="Please enter your email address." class="form-control" aria-describedby="helpBlock" />
+                <div id="helpBlock" class="form-text text-muted">
+                    This is optional. Specifying your email address enables others who use the tool to contact you if they have questions.
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="tool_label">License:</label>
+                <select v-model="license" id="license" class="form-control" id="license" class="form-control" aria-describedby="helpBlock">
+                    <option value="AFL-3.0">Academic Free License v3.0</option>
+                    <option value="Apache-2.0">Apache License 2.0</option>
+                    <option value="BSD-3-Clause">BSD 3-Clause "New" or "Revised" License</option>
+                    <option value="CC0-1.0">Creative Commons Zero v1.0 Universal</option>
+                    <option value="CDDL-1.1">Common Development and Distribution License 1.1</option>
+                    <option value="LGPL-3.0-or-later">GNU Lesser General Public License v3.0 or later</option>
+                    <option value="MIT">MIT License</option>
+                </select>
+                <div id="helpBlock" class="form-text text-muted">
+                    Please select a software license that applies to this CWL document. This will indicate conditions under which others can use the document. Details about these licenses and a more complete list can be found <a href="https://spdx.org/licenses/" target="_blank">here</a>. 
                 </div>
             </div>
         </div>
@@ -100,6 +139,17 @@
                 </div>
 
                 <div class="form-group" v-if="newInputType=='File'">
+                    <label for="inputFileFormat">File format:</label>
+                    <select v-model="newInputFileFormat" id="inputFileFormat" class="form-control" id="inputFileFormat">
+                        <option>string</option>
+                        <option>int</option>
+                        <option>File</option>
+                        <option>Directory</option>
+                        <option>Output File</option>
+                    </select>
+                </div>
+
+                <div class="form-group" v-if="newInputType=='File'">
                     <label for="inputSecondary">Secondary file(s):</label>
                     <input v-model="newInputSecondary" id="inputSecondary" ref="newInputSecondary" type="text" class="form-control" placeholder="Indicate any secondary files (separated by commas) that should accompany this file (example: .ann,.bwt). Spaces will be removed." />
                 </div>
@@ -117,7 +167,7 @@
                 </div>
             </form>
 
-            <p v-if="inputs.length > 0">Here you can edit or delete inputs that have been created. If you click on an Edit button (<span class="glyphicon glyphicon-edit" aria-hidden="true"></span>), it will delete the input and let you edit the values in the boxes above.</p>
+            <p v-if="inputs.length > 0">Here you can edit (<span class="glyphicon glyphicon-edit" aria-hidden="true"></span>) or delete (<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>) inputs.</p>
 
             <ol class="list-group">
                 <li v-for="input in inputs" class="list-group-item">{{ input.name }} - {{ input.type }}
@@ -134,7 +184,7 @@
         <div class="panel panel-default" ref="auxPanel">
             <h4 class="card-title">Manage auxiliary files:</h4>
 
-            <p>In this section, you can manage auxiliary files (optional). Auxiliary files are stored within the execution environment and thus can be used in the command template (see below). Auxiliary files often include analysis scripts or configuration files (in CWL tool descriptions, they are stored under InitialWorkDirRequirement). <a href="#" onclick="javascript:alert('TODO');return false;">Here</a> you can find example CWL tools that use auxiliary files.</p>
+            <p>In this section, you can manage auxiliary files (optional). Auxiliary files are stored within the execution environment and thus can be used in the command template (see below). Auxiliary files often include analysis scripts or configuration files (in CWL tool descriptions, they are stored under InitialWorkDirRequirement). <a href="https://github.com/srp33/ToolJig" target="_blank">Here</a> you can find example CWL tools that use auxiliary files.</p>
 
             <form v-on:submit.prevent="addAuxiliaryFile">
                 <div class="form-group">
@@ -160,7 +210,7 @@
                 </div>
             </form>
 
-            <p v-if="auxiliary_files.length > 0">Here you can edit or delete inputs that have been created. If you click on an Edit button (<span class="glyphicon glyphicon-edit" aria-hidden="true"></span>), it will delete the input and let you edit the values in the boxes above.</p>
+            <p v-if="auxiliary_files.length > 0">Here you can edit (<span class="glyphicon glyphicon-edit" aria-hidden="true"></span>) or delete (<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>) auxiliary files.</p>
 
             <ol class="list-group">
                 <li v-for="aux in auxiliary_files" class="list-group-item">{{ aux.name }}
@@ -177,7 +227,7 @@
         <div class="panel panel-default" ref="outputPanel">
             <h4 class="card-title">Specify command template<sup><font color="red">*</font></sup>:</h4>
 
-            <p>Here you specify a template for executing the tool at the command line within the execution environment. Each input must be specified at least once in the command template. <a href="#" onclick="javascript:alert('TODO');return false;">This document</a> provides tips and examples for creating command templates.</p>
+            <p>Here you specify a template for executing the tool at the command line within the execution environment. Each input must be specified at least once in the command template. <a href="https://github.com/srp33/ToolJig" target="_blank">These examples</a> illustrate the use of create command templates.</p>
 
             <div class="form-group">
                 <textarea v-model="command_template" id="command_template" rows=5 cols=100 placeholder="Please enter the command template." class="form-control" aria-describedby="helpBlock"></textarea>
@@ -201,7 +251,7 @@
                 <input v-model="stderr_file_name" id="stderr_file_name" ref="stderr_file_name" type="text" class="form-control" placeholder="Enter a file name in which standard error will be stored after the tool executes." />
             </div>
 
-            <p>Here you can specify any output files that you expect to be generated by the tool and that you wish to collect after the tool executes. <em>These are separate from any user-specified output files that may have been declared above.</em> Please enter an expression that corresponds to each output file that you wish to collect. If the file will always have the same name, you can just enter the name of that file. Alternatively, you can enter an expression that references the inputs. For example, if you had specified an input file named "fastq_file" and wished to collect an output file of the same name, you would specify the output expression as "$(inputs.fastq_file.basename)". The ".basename" portion represents the name of the input file and excludes the rest of the file path. Other properties can be found <a href="https://www.commonwl.org/v1.1/CommandLineTool.html#File">here</a>; additional examples can be found <a href="https://github.com/srp33/ToolJig/tree/master/examples">here</a>.</p>
+            <p>Here you can specify any output files that you expect to be generated by the tool and that you wish to collect after the tool executes. <em>These are separate from any user-specified output files that may have been declared above.</em> Please enter an expression that corresponds to each output file that you wish to collect. If the file will always have the same name, you can just enter the name of that file. Alternatively, you can enter an expression that references the inputs. For example, if you had specified an input file named "fastq_file" and wished to collect an output file of the same name, you would specify the output expression as "$(inputs.fastq_file.basename)". The ".basename" portion represents the name of the input file and excludes the rest of the file path. Other properties can be found <a href="https://www.commonwl.org/v1.1/CommandLineTool.html#File" target="_blank">here</a>; additional examples can be found <a href="https://github.com/srp33/ToolJig" target="_blank">here</a>.</p>
 
             <form v-on:submit.prevent="addOutput">
                 <div class="form-group">
@@ -232,7 +282,7 @@
                 </div>
             </form>
 
-            <p v-if="outputs.length > 0">Here you can edit or delete outputs that have been created. If you click on an Edit button (<span class="glyphicon glyphicon-edit" aria-hidden="true"></span>), it will delete the output and let you edit the values in the boxes above.</p>
+            <p v-if="outputs.length > 0">Here you can edit (<span class="glyphicon glyphicon-edit" aria-hidden="true"></span>) or delete (<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>) outputs.</p>
 
             <ol class="list-group">
                 <li v-for="output in outputs" class="list-group-item">{{ output.glob }}
@@ -296,7 +346,7 @@
 
         <h4 v-if="cwl.length > 0 && job.length > 0">Example command to execute the tool:</h4>
 
-        <p  v-if="cwl.length > 0 && job.length > 0">First, you must install <a href="https://github.com/common-workflow-language/cwltool">cwltool</a>. Then you could execute the following command, assuming the CWL file and job file are in your current working directory. Alternatively, you could execute the tool using a variety of <a href="https://www.commonwl.org/#Implementations">other engines</a>.</p>
+        <p  v-if="cwl.length > 0 && job.length > 0">First, you must install <a href="https://github.com/common-workflow-language/cwltool" target="_blank">cwltool</a>. Then you could execute the following command, assuming the CWL file and job file are in your current working directory. Alternatively, you could execute the tool using a variety of <a href="https://www.commonwl.org/#Implementations" target="_blank">other engines</a>.</p>
 
         <pre v-text="example_command" v-if="cwl.length > 0 && job.length > 0"></pre>
     </div>
@@ -356,9 +406,16 @@
             download_job_errors: [],
             tool_id: "abc_tool",
             //TODO: tool_id: "",
+            //TODO: tool_label: "",
+            tool_label: "This is a label",
             doc: "",
             //TODO: dockerfile: "",
             dockerfile: "FROM ubuntu",
+            //TODO: author_name: "",
+            author_name: "Stephen Piccolo",
+            //TODO: author_email: "",
+            author_email: "my_email@nospam.edu",
+            license: "Apache-2.0",
             newInputName: "",
             newInputType: "string",
             newInputDoc: "",
@@ -391,8 +448,14 @@
                 if (/[^A-Za-z0-9_]+/.test(this.tool_id))
                     this.download_cwl_errors.push("The tool identifier must only container letters, numbers, and underscores.")
 
+                if (this.tool_label.trim() == "")
+                    this.download_cwl_errors.push("Please specify a label.");
+
                 if (this.dockerfile.trim() == "")
                     this.download_cwl_errors.push("Please specify a Dockerfile.");
+
+                if (this.author_email.trim() != "" && !this.isValidEmail(this.author_email))
+                    this.download_cwl_errors.push("Please specify a valid email address for the author.");
 
                 if (this.command_template.trim() == "")
                     this.download_cwl_errors.push("Please specify a command template.");
@@ -429,6 +492,7 @@
 
                 return `cwlVersion: v1.1
 class: CommandLineTool
+label: ${this.tool_label}
 ${this.buildOptionalString("doc: |-\n", this.indent(2, this.doc))}
 requirements:
   ShellCommandRequirement: {}
@@ -444,6 +508,18 @@ ${this.buildOptionalString(`arguments:
 outputs:
 ${this.parseOutputs()}
 ${this.parseStandardMessages()}
+
+${this.parseAuthorInfo()}
+
+s:dateCreated: "${this.getTodayDate()}"
+s:license: https://spdx.org/licenses/${this.license}
+ 
+$namespaces:
+  s: https://schema.org/
+  edam: http://edamontology.org/
+$schemas:
+ - https://schema.org/version/latest/schema.rdf
+ - http://edamontology.org/EDAM_1.23.owl
             `.replace(/\n\n/g, "\n").replace(/\n\n/g, "\n").trim();
             },
             job: function() {
@@ -497,12 +573,6 @@ ${this.parseStandardMessages()}
                 if (/[^a-zA-Z_0-9]+/.test(this.newInputName))
                     this.input_errors.push("Input names must only contain letters, numbers, and underscores.");
 
-                var i;
-                for (i = 0; i < this.inputs.length; i++)
-                    // Make sure no duplicates
-                    if (this.inputs[i].name == this.newInputName)
-                        this.input_errors.push("An input with name \"" + this.inputs[i].name + "\" already exists.");
-
                 // Make sure secondaryFiles, if specified, follow correct format
                 this.newInputSecondary = this.newInputSecondary.replace(/ /g, "");
                 if (this.newInputSecondary != "") {
@@ -523,6 +593,12 @@ ${this.parseStandardMessages()}
                 if (inputType == "Output File")
                     inputType = "Output_File";
 
+                // Remove any duplicates
+                var i;
+                for (i = 0; i < this.inputs.length; i++)
+                    if (this.inputs[i].name == this.newInputName)
+                        this.deleteInput(this.inputs[i]);
+
                 this.inputs.push({
                     name: this.newInputName,
                     type: inputType,
@@ -542,9 +618,13 @@ ${this.parseStandardMessages()}
                 })
             },
             editInput: function (x) {
-                this.deleteInput(x);
                 this.newInputName = x.name;
-                this.newInputType = x.type;
+                if (x.type == "Output_File") {
+                    this.newInputType = "Output File";
+                }
+                else {
+                    this.newInputType = x.type;
+                }
                 this.newInputDoc = x.doc;
                 this.newInputSecondary = x.secondary;
                 this.$refs.newInputName.focus();
@@ -554,12 +634,15 @@ ${this.parseStandardMessages()}
                 this.auxiliary_errors = [];
                 if (/[^a-zA-Z_0-9\.]+/.test(this.newAuxName))
                     this.auxiliary_errors.push("The names of auxiliary files must only contain letters, numbers, underscores, and periods.");
+
+                if (this.auxiliary_errors.length > 0)
+                    return;
+
+                // Make sure no duplicates
                 var i;
                 for (i = 0; i < this.auxiliary_files.length; i++)
                     if (this.auxiliary_files[i].name == this.newAuxName)
-                        this.auxiliary_errors.push("An auxiliary file with name \"" + this.auxiliary_files[i].name + "\" already exists.");
-                if (this.auxiliary_errors.length > 0)
-                    return;
+                        this.deleteAuxiliaryFile(this.auxiliary_files[i]);
 
                 this.auxiliary_files.push({
                     name: this.newAuxName,
@@ -575,7 +658,6 @@ ${this.parseStandardMessages()}
                 })
             },
             editAuxiliaryFile: function(x) {
-                this.deleteAuxiliaryFile(x);
                 this.newAuxName = x.name;
                 this.newAuxContents = x.contents;
                 this.$refs.newAuxName.focus();
@@ -586,12 +668,6 @@ ${this.parseStandardMessages()}
                 // Make sure the expression is valid
                 if (/[*?]/.test(this.newOutputGlob))
                     this.auxiliary_errors.push("Output file expressions cannot include wildcard characters (* or ?).");
-
-                // Make sure there are no duplicates
-                var i;
-                for (i = 0; i < this.outputs.length; i++)
-                    if (this.outputs[i].glob == this.newOutputGlob)
-                        this.output_errors.push("A duplicate output was detected.");
 
                 // Make sure secondaryFiles, if specified, follow correct format
                 this.newOutputSecondary = this.newOutputSecondary.replace(/ /g, "");
@@ -609,6 +685,12 @@ ${this.parseStandardMessages()}
                 if (this.output_errors.length > 0)
                     return;
 
+                // Make sure there are no duplicates
+                var i;
+                for (i = 0; i < this.outputs.length; i++)
+                    if (this.outputs[i].glob == this.newOutputGlob)
+                        this.deleteOutput(this.outputs[i]);
+
                 this.outputs.push({
                     glob: this.newOutputGlob,
                     doc: this.newOutputDoc,
@@ -625,7 +707,6 @@ ${this.parseStandardMessages()}
                 })
             },
             editOutput: function(x) {
-                this.deleteOutput(x);
                 this.newOutputGlob = x.glob;
                 this.newOutputDoc = x.doc;
                 this.newOutputSecondary = x.secondary;
@@ -733,6 +814,21 @@ ${this.parseStandardMessages()}
 
                 return result;
             },
+            parseAuthorInfo() {
+                author_info = "";
+                if (this.author_name.trim() != "" || this.author_email.trim() != "") {
+                    author_info += " \ns:author:\n";
+                    author_info += "  - class: s:Person\n";
+
+                    if (this.author_name.trim() != "")
+                        author_info += `    s:name: ${this.author_name.trim()}\n`;
+                    if (this.author_email.trim() != "")
+                        author_info += `    s:email: ${this.author_email.trim()}\n`;
+                    author_info += " \n";
+                }
+
+                return author_info;
+            },
             buildOptionalString: function(prefix, value) {
                 if (value == "")
                     return "";
@@ -775,6 +871,17 @@ ${this.parseStandardMessages()}
                 document.body.appendChild(element);
                 element.click();
                 document.body.removeChild(element);
+            },
+            getTodayDate: function() {
+                var d = new Date();
+                return [
+                d.getFullYear(),
+                ('0' + (d.getMonth() + 1)).slice(-2),
+                ('0' + d.getDate()).slice(-2)
+                ].join('-');
+            },
+            isValidEmail: function(address) {
+                return (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(address))
             }
         }
     });
