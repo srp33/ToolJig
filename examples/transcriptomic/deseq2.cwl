@@ -8,8 +8,7 @@ requirements:
   DockerRequirement:
     dockerImageId: deseq2
     dockerFile: |-
-      FROM bioconductor/bioconductor_docker:RELEASE_3_10
-      
+      FROM bioconductor/bioconductor_docker:RELEASE_3_11
       RUN R -e 'BiocManager::install(c("DESeq2"))'
       RUN R -e "install.packages(c('dplyr', 'readr'), repos='https://cloud.r-project.org')"
   NetworkAccess:
