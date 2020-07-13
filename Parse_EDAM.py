@@ -10,7 +10,7 @@ prefix_index = header_items.index("http://data.bioontology.org/metadata/prefixIR
 label_index = header_items.index("Preferred Label")
 def_index = header_items.index("Definitions")
 
-print(f"                        <option value=\"\"></option>")
+out_dict = {}
 
 for line in edam_content.split("\n")[1:]:
     line_items = line.split("\t")
@@ -33,4 +33,12 @@ for line in edam_content.split("\n")[1:]:
 
     description = f"{label} - {definition}"
 
-    print(f"                        <option value=\"edam:{the_format}\">{description}</option>")
+    out_dict[label] = f"                        <option value=\"edam:{the_format}\">{description}</option>"
+
+out_lines = [out_dict[label] for label in sorted(out_dict, key=str.casefold)]
+
+out_lines.insert(0, out_dict.pop("plain text format (unformatted)"))
+out_lines.insert(0, f"                        <option value=\"\"></option>")
+
+for line in out_lines:
+    print(line)
