@@ -7,7 +7,7 @@ requirements:
   DockerRequirement:
     dockerImageId: deseq2
     dockerFile: |-
-      FROM bioconductor/bioconductor_docker:RELEASE_3_10
+      FROM bioconductor/bioconductor_docker:RELEASE_3_11
 
       RUN R -e 'BiocManager::install(c("DESeq2"))'
 
