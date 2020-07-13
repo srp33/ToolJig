@@ -1885,7 +1885,7 @@ $schemas:
 
                 // Make sure secondaryFiles, if specified, follow correct format
                 this.newInputSecondary = this.newInputSecondary.replace(/ /g, "");
-                if (this.newInputSecondary.trim() != "") {
+                if (this.newInputSecondary != "") {
                     var j;
                     var secondaryValues = this.newInputSecondary.split(",");
                     for (j = 0; j < secondaryValues.length; j++)
@@ -1905,11 +1905,15 @@ $schemas:
                     if (this.inputs[i].name == this.newInputName)
                         this.deleteInput(this.inputs[i]);
 
+                var secondaryFilesValue = [];
+                if (this.newInputSecondary != "")
+                    secondaryFilesValue = this.newInputSecondary.split(",");
+
                 this.inputs.push({
                     name: this.newInputName,
                     type: this.newInputType,
                     doc: this.newInputDoc,
-                    secondaryFiles: this.newInputSecondary.trim().split(","),
+                    secondaryFiles: secondaryFilesValue,
                     format: this.newInputFileFormat,
                     value: ""
                 });
@@ -1981,7 +1985,7 @@ $schemas:
 
                 // Make sure secondaryFiles, if specified, follow correct format
                 this.newOutputSecondary = this.newOutputSecondary.replace(/ /g, "");
-                if (this.newOutputSecondary.trim() != "") {
+                if (this.newOutputSecondary != "") {
                     var j;
                     var secondaryValues = this.newOutputSecondary.split(",");
                     for (j = 0; j < secondaryValues.length; j++)
@@ -2001,10 +2005,14 @@ $schemas:
                     if (this.outputs[i].glob == this.newOutputGlob)
                         this.deleteOutput(this.outputs[i]);
 
+                var secondaryFilesValue = [];
+                if (this.newOutputSecondary != "")
+                    secondaryFilesValue = this.newOutputSecondary.split(",");
+
                 this.outputs.push({
                     glob: this.newOutputGlob,
                     doc: this.newOutputDoc,
-                    secondaryFiles: this.newOutputSecondary.trim().split(","),
+                    secondaryFiles: secondaryFilesValue,
                     format: this.newOutputFileFormat
                 });
 
