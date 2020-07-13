@@ -8,7 +8,7 @@ requirements:
   DockerRequirement:
     dockerImageId: scan_normalize
     dockerFile: |-
-      FROM bioconductor/bioconductor_docker:RELEASE_3_10
+      FROM bioconductor/bioconductor_docker:RELEASE_3_11
       
       RUN R -e 'BiocManager::install("SCAN.UPC")'
   NetworkAccess:
