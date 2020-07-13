@@ -1,5 +1,6 @@
 cwlVersion: v1.1
 class: CommandLineTool
+label: DESeq2 example
 doc: |-
   This tool demonstrates how to perform a differential-expression analysis using the Bioconductor DESeq2 package. We use a container image that provides core Bioconductor components (release version 3.10) and use R code to install the DESeq2 packages as well as two helper packages.
 requirements:
@@ -8,9 +9,8 @@ requirements:
     dockerImageId: deseq2
     dockerFile: |-
       FROM bioconductor/bioconductor_docker:RELEASE_3_10
-
+      
       RUN R -e 'BiocManager::install(c("DESeq2"))'
-
       RUN R -e "install.packages(c('dplyr', 'readr'), repos='https://cloud.r-project.org')"
   NetworkAccess:
     class: NetworkAccess
@@ -70,20 +70,39 @@ inputs:
     type: string
     doc: |-
       Name of the output file that will be created. This will be a tab-separated file with differential-expression statistics.
+      #Output_File=edam:format_3751
 arguments:
   - shellQuote: false
     valueFrom: |-
       Rscript run_deseq2_analysis.R "$(inputs.read_counts_url)" "$(inputs.phenotypes_url)" "$(inputs.design_formula)" "$(inputs.output_file_name)"
 outputs:
-  output_1:
+  output_from_input_1:
     type: File
     outputBinding:
       glob: "$(inputs.output_file_name)"
     doc: |-
       Output file matching the name specified in the "output_file_name" input.
+    format: edam:format_3751
   standard_output:
     type: stdout
+    format: edam:format_1964
   standard_error:
     type: stderr
+    format: edam:format_1964
 stdout: deseq2_output.txt
 stderr: deseq2_error.txt
+ 
+s:author:
+  - class: s:Person
+    s:name: Stephen Piccolo
+    s:identifier: https://orcid.org/0000-0003-2001-5640
+ 
+s:dateCreated: "2020-07-13"
+s:license: https://spdx.org/licenses/Apache-2.0
+ 
+$namespaces:
+  s: https://schema.org/
+  edam: http://edamontology.org/
+$schemas:
+ - https://schema.org/version/latest/schema.rdf
+ - http://edamontology.org/EDAM_1.23.owl
