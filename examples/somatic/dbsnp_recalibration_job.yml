@@ -2,4 +2,5 @@ vcf_url: ftp://gsapubftp-anonymous@ftp.broadinstitute.org/bundle/hg38/dbsnp_146.
 fasta_file:
     class: File
     path: ref_genome/hg38.fa
+    format: http://edamontology.org/format_1929
 output_file_name: dbsnp_146.hg38.vcf

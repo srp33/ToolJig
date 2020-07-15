@@ -1,12 +1,15 @@
 fasta_file:
     class: File
     path: ref_genome/hg38.fa
+    format: http://edamontology.org/format_1929
 normal_bam_file:
     class: File
     path: bam4/TCRBOA7-N.bam
+    format: http://edamontology.org/format_2572
 tumor_bam_file:
     class: File
     path: bam4/TCRBOA7-T.bam
+    format: http://edamontology.org/format_2572
 normal_sample_id: TCRBOA7-N
 tumor_sample_id: TCRBOA7-T
 threads: 8

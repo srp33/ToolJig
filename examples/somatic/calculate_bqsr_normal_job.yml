@@ -1,11 +1,13 @@
 fasta_file:
     class: File
     path: ref_genome/hg38.fa
+    format: http://edamontology.org/format_1929
 known_sites_dir:
     class: Directory
     path: known_sites
 bam_file:
     class: File
     path: bam3/TCRBOA7-N.bam
+    format: http://edamontology.org/format_2572
 threads: 8
 output_file_name: TCRBOA7-N.table

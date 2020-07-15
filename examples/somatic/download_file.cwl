@@ -5,6 +5,7 @@ doc: |-
   Download a file from an online location.
 requirements:
   ShellCommandRequirement: {}
+  InlineJavascriptRequirement: {}
   DockerRequirement:
     dockerImageId: download_file
     dockerFile: |-

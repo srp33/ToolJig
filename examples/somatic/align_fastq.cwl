@@ -5,6 +5,7 @@ doc: |-
   Align FASTQ files to a reference genome using the Burrows-Wheeler Aligner software (bwa mem). This is designed for paired-end reads stored in two separate FASTQ files.
 requirements:
   ShellCommandRequirement: {}
+  InlineJavascriptRequirement: {}
   DockerRequirement:
     dockerImageId: align_fastq
     dockerFile: |-

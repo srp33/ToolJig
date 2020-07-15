@@ -5,6 +5,7 @@ doc: |-
   Download the FASTQ files from an online repository and trim adapter sequences and low-quality bases from FASTQ files using the atropos software. Only paired-end reads are supported. atropos: https://github.com/jdidion/atropos
 requirements:
   ShellCommandRequirement: {}
+  InlineJavascriptRequirement: {}
   DockerRequirement:
     dockerImageId: trim_fastq
     dockerFile: |-

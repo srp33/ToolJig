@@ -5,6 +5,7 @@ doc: |-
   Call somatic variants using Mutect2 (GATK) for a tumor/normal pair.
 requirements:
   ShellCommandRequirement: {}
+  InlineJavascriptRequirement: {}
   DockerRequirement:
     dockerImageId: call_small_variants
     dockerFile: |-

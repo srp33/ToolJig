@@ -5,6 +5,7 @@ doc: |-
   Sort and index a BAM file.
 requirements:
   ShellCommandRequirement: {}
+  InlineJavascriptRequirement: {}
   DockerRequirement:
     dockerImageId: sort_bam
     dockerFile: |-

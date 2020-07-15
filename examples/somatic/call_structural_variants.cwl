@@ -5,6 +5,7 @@ doc: |-
   Call structural variants using Delly for a tumor/normal pair.
 requirements:
   ShellCommandRequirement: {}
+  InlineJavascriptRequirement: {}
   DockerRequirement:
     dockerImageId: call_structural_variants
     dockerFile: |-

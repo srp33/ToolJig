@@ -5,6 +5,7 @@ doc: |-
   Detect systematic errors in base quality scores using the Genome Analysis Toolkit (GATK) BaseRecalibrator tool. We use GATK3 because it supports multi-threading in a way that's simpler to use.
 requirements:
   ShellCommandRequirement: {}
+  InlineJavascriptRequirement: {}
   DockerRequirement:
     dockerImageId: calculate_bqsr_table
     dockerFile: |-
@@ -31,7 +32,7 @@ inputs:
     type: File
     doc: |-
       The BAM file to be analyzed.
-    format: edam:format_3327
+    format: edam:format_2572
     secondaryFiles:
       - .bai
   threads:

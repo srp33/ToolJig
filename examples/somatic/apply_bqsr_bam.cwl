@@ -5,6 +5,7 @@ doc: |-
   Apply base quality score recalibration to a BAM file using GATK 3.8-1.
 requirements:
   ShellCommandRequirement: {}
+  InlineJavascriptRequirement: {}
   DockerRequirement:
     dockerImageId: apply_bqsr_bam
     dockerFile: |-

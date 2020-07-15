@@ -5,6 +5,7 @@ doc: |-
   Download a recalibration VCF file from the GATK FTP server and perform some preprocessing so the VCF file will work properly, even if the reference genome was sorted differently than the VCF file.
 requirements:
   ShellCommandRequirement: {}
+  InlineJavascriptRequirement: {}
   DockerRequirement:
     dockerImageId: prep_recalibration_vcf
     dockerFile: |-
@@ -16,34 +17,33 @@ requirements:
     listing:
     - entryname: reconcile_vcf_with_dict.py
       entry: |-
-        entry: |-
-          import sys 
+        import sys 
         
-          vcf_file_path = sys.argv[1]
-          dict_file_path = sys.argv[2]
+        vcf_file_path = sys.argv[1]
+        dict_file_path = sys.argv[2]
         
-          with open(dict_file_path) as dict_file:
-              sequences = set()
-              for line in dict_file:
-                  if not "SN:" in line:
-                      continue
+        with open(dict_file_path) as dict_file:
+            sequences = set()
+            for line in dict_file:
+                if not "SN:" in line:
+                    continue
         
-                  line_items = line.rstrip("\n").split("\t")
-                  sequences.add(line_items[1].replace("SN:", ""))
+                line_items = line.rstrip("\n").split("\t")
+                sequences.add(line_items[1].replace("SN:", ""))
         
-          output = ""
-          with open(vcf_file_path) as vcf_file:
-              for line in vcf_file:
-                  if line.startswith("#"):
-                      if not line.startswith("##contig="):
-                          output += line
-                      continue
+        output = ""
+        with open(vcf_file_path) as vcf_file:
+            for line in vcf_file:
+                if line.startswith("#"):
+                    if not line.startswith("##contig="):
+                        output += line
+                    continue
         
-                  if line.split("\t")[0] in sequences:
-                      output += line
+                if line.split("\t")[0] in sequences:
+                    output += line
         
-          with open(vcf_file_path, 'w') as vcf_file:
-              vcf_file.write(output)
+        with open(vcf_file_path, 'w') as vcf_file:
+            vcf_file.write(output)
 inputs:
   vcf_url:
     type: string

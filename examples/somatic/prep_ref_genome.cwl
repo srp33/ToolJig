@@ -5,6 +5,7 @@ doc: |-
   Prepare a reference genome for read alignment and variant calling. This tool also prepares index files and a dictionary for the reference sequence.
 requirements:
   ShellCommandRequirement: {}
+  InlineJavascriptRequirement: {}
   DockerRequirement:
     dockerImageId: prep_ref_genome
     dockerFile: |-

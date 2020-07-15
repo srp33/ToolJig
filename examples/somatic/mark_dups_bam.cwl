@@ -5,6 +5,7 @@ doc: |-
   Mark duplicate reads in a BAM file. It also indexes the file.
 requirements:
   ShellCommandRequirement: {}
+  InlineJavascriptRequirement: {}
   DockerRequirement:
     dockerImageId: mark_dups_bam
     dockerFile: |-
