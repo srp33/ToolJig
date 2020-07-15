@@ -1525,7 +1525,7 @@
 
         <h4 v-if="cwl.length > 0 && job.length > 0">Example command to execute the tool:</h4>
 
-        <p  v-if="cwl.length > 0 && job.length > 0">First, you must install <a href="https://github.com/common-workflow-language/cwltool" target="_blank">cwltool</a>. Then you could execute the following command, assuming the CWL file and input-object file are in your current working directory. Alternatively, you could execute the tool using a variety of <a href="https://www.commonwl.org/#Implementations" target="_blank">other engines</a>.</p>
+        <p  v-if="cwl.length > 0 && job.length > 0">First, you must install <a href="https://github.com/common-workflow-language/cwltool" target="_blank">cwltool</a>. Then you can execute the following command, assuming the CWL file and input-object file are in your current working directory. Alternatively, you could execute the tool using a variety of <a href="https://www.commonwl.org/#Implementations" target="_blank">other engines</a>.</p>
 
         <pre v-text="example_command" v-if="cwl.length > 0 && job.length > 0"></pre>
     </div>
@@ -1690,6 +1690,7 @@ label: ${this.tool_label}
 ${this.buildOptionalString("doc: |-\n", this.indent(2, this.doc))}
 requirements:
   ShellCommandRequirement: {}
+  InlineJavascriptRequirement: {}
   DockerRequirement:
     dockerImageId: ${this.tool_id}
     dockerFile: |-\n${this.indent(6, this.dockerfile)}
@@ -1739,6 +1740,9 @@ $schemas:
                         output += this.inputs[i].name + ":\n";
                         output += "    class: " + this.inputs[i].type + "\n";
                         output += "    path: " + this.inputs[i].value + "\n";
+
+                        if (this.inputs[i].type == "File" && this.inputs[i].format != "")
+                            output += "    format: " + this.inputs[i].format.replace("edam:", "http://edamontology.org/") + "\n";
                     }
                 }
 
@@ -1750,7 +1754,7 @@ $schemas:
                 return "";
             },
             cwl_file_name: function() { return `${this.tool_id}.cwl`; },
-            job_file_name: function() { return `${this.tool_id}_job.yml`; },
+            job_file_name: function() { return `${this.tool_id}_objects.yml`; },
             example_command: function() {
                 return `cwltool ${this.cwl_file_name} ${this.job_file_name}`;
             }
@@ -1813,7 +1817,7 @@ $schemas:
                     this.newAuxContents = "";
 
                     aux_files = this.getYamlValue(yaml_dict, ["requirements", "InitialWorkDirRequirement", "listing"]);
-                    if (aux_files != "[No value]") {
+                    if (aux_files != "") {
                         var i;
                         for (i = 0; i < aux_files.length; i++) {
                             this.auxiliary_files.push({
@@ -1872,7 +1876,7 @@ $schemas:
                     if (key in my_dict)
                         my_dict = my_dict[key];
                     else
-                        return "[No value]";
+                        return "";
                 }
                 
                 return my_dict;
