@@ -1734,7 +1734,7 @@ $schemas:
                 var i;
                 for (i = 0; i<this.inputs.length; i++)
                 {
-                    if (this.inputs[i].type == "string" || this.inputs[i].type == "int")
+                    if (this.inputs[i].type == "string" || this.inputs[i].type == "int" || this.inputs[i].type == "Output_File")
                         output += this.inputs[i].name + ": " + this.inputs[i].value + "\n";
                     else {
                         output += this.inputs[i].name + ":\n";

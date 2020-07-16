@@ -1,0 +1,9 @@
+file1:
+    class: File
+    path: sum1.txt
+    format: http://edamontology.org/format_1964
+file2:
+    class: File
+    path: sum2.txt
+    format: http://edamontology.org/format_1964
+output_file_name: cat_result.txt
