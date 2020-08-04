@@ -5,7 +5,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
-    <title>Tooljig: A simple approach to building Common Workflow Language tool descriptions</title>
+    <title>Tooljig: A simple approach to building Common Workflow Language tool descriptions and workflows</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
 </head>
 <body>
@@ -32,18 +32,20 @@
 
 <div class="container" align="left">
     <div id="cwl_app">
-        <h2>ToolJig: A simple approach to building Common Workflow Language tool descriptions</h2>
+        <h2>ToolJig: A simple approach to building Common Workflow Language tool descriptions and workflows</h2>
 
         <p><img src="https://github.com/srp33/ToolJig/raw/master/Logo.jpg" width="400" /><br /><small><a href="https://unsplash.com/@vekonyorsi" target="_blank" class="text-muted" style="font-size: 10px">Image credit</a></small>
         </p>
 
-        <p>The <a href="https://www.commonwl.org/" target="_blank">Common Workflow Language</a> (CWL) is an open specification for describing command-line tools and workflows. CWL documents are used in many scientific disciplines to ensure that tools and workflows can be executed in a manner that is portable across workflow engines and computer systems. <em>ToolJig</em> facilitates creation of CWL tool descriptions and input-object files for those tools. Tool definitions created by ToolJig are fully compatible with the <a href="https://commonwl.org/v1.1/CommandLineTool.html" target="_blank">CWL specification</a>. You can see some example CWL tool descriptions <a href="https://github.com/srp33/ToolJig" target="_blank">here</a>. Our goal is support <em>common</em> use cases for executing command-line tools and research analyses. However, some options within the CWL specification are <em>not</em> supported; users should consult the specification if they wish to use other available features.</p>
+        <p>The <a href="https://www.commonwl.org/" target="_blank">Common Workflow Language</a> (CWL) is an open specification for describing command-line tools and workflows. CWL documents are used in many scientific disciplines to ensure that tools and workflows can be executed in a manner that is portable across workflow engines and computer systems. <em>ToolJig</em> facilitates creation of CWL tool descriptions, workflows, and input-object files for those tools. <strong>This portion of ToolJig focuses on building tool descriptions.</strong> Use <a href="workflow.html" target="_blank">this app</a> if you wish to create workflows.</p>
+
+        <p>Tool descriptions created in ToolJig are fully compatible with v1.1 of the <a href="https://commonwl.org/v1.1" target="_blank">CWL specification</a>. You can see some example CWL tool descriptions <a href="https://github.com/srp33/ToolJig" target="_blank">here</a>. Our goal is support <em>common</em> use cases for research analyses. However, some options within the CWL specification are <em>not</em> supported; users should consult the specification if they wish to use other available features.</p>
 
         <hr style="border: 1px solid black;border-radius: 1px;" />
 
         <h4 class="card-title">Upload existing file (optional):</h4>
 
-        <p>If you previously created a CWL tool description using this tool, you can upload it and then edit the information in that file below. <font color="darkorange">(Uploading an existing file may not work for CWL files that were not created using alternative means.)</font> If you do <em>not</em> need to edit an existing CWL file, skip this step.</p>
+        <p>If you previously created a CWL tool description using ToolJig, you can upload it and then edit the information below. <font color="darkorange">(Uploading an existing file may not work for CWL files that were not created using alternative means.)</font> If you do <em>not</em> need to edit an existing CWL file, skip this step.</p>
 
         <div class="form-group">
             <input id="upload_file" type="file" placeholder="Please specify a file to be uploaded." class="form-control" v-on:change="onUploadFile" />
@@ -60,7 +62,7 @@
                 <label for="tool_id">Tool identifier:</label>
                 <input v-model="tool_id" id="tool_id" type="text" placeholder="Please enter a unique identifier." class="form-control" aria-describedby="helpBlock" />
                 <div id="helpBlock" class="form-text text-muted">
-                    This identifier must contain only letters, numbers, and underscores. This identifier will be used within the name of the CWL document.
+                    This identifier must contain only letters, numbers, and underscores. This identifier will be used within the name of the CWL document that is generated.
                 </div>
             </div>
 
@@ -106,7 +108,7 @@
 
             <div class="form-group">
                 <label for="tool_label">License:</label>
-                <select v-model="license" id="license" class="form-control" id="license" class="form-control" aria-describedby="helpBlock">
+                <select v-model="license" id="license" class="form-control" class="form-control" aria-describedby="helpBlock">
                     <option value="AFL-3.0">Academic Free License v3.0</option>
                     <option value="Apache-2.0">Apache License 2.0</option>
                     <option value="BSD-3-Clause">BSD 3-Clause "New" or "Revised" License</option>
@@ -137,7 +139,7 @@
             <form v-on:submit.prevent="addInput">
                 <div class="form-group">
                     <label for="inputName">Name:</label>
-                    <input v-model="newInputName" id="inputName" ref="newInputName" type="text" class="form-control" placeholder="Please enter a unique name for this input. Only letters, numbers, and underscores are allowed." />
+                    <input v-model="newInputName" id="inputName" ref="newInputName" type="text" class="form-control" placeholder="Only letters, numbers, and underscores are allowed." />
                 </div>
 
                 <div class="form-group">
@@ -1630,7 +1632,7 @@
                 this.overall_input_errors = [];
 
                 if (this.tool_id.trim() == "")
-                    this.basics_errors.push("Please specify a tool identifier.");
+                    this.basics_errors.push("Only letters, numbers, and underscores are allowed.");
 
                 if (/[^A-Za-z0-9_]+/.test(this.tool_id))
                     this.basics_errors.push("The tool identifier must only container letters, numbers, and underscores.")
@@ -1887,7 +1889,7 @@ $schemas:
                 if (/[^a-zA-Z_0-9]+/.test(this.newInputName))
                     this.input_errors.push("Input names must only contain letters, numbers, and underscores.");
 
-                // Make sure secondaryFiles, if specified, follow correct format
+                // Make sure secondaryFiles, if specified, follow correct format.
                 this.newInputSecondary = this.newInputSecondary.replace(/ /g, "");
                 if (this.newInputSecondary != "") {
                     var j;

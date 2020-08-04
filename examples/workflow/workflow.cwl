@@ -2,6 +2,10 @@
 
 cwlVersion: v1.1
 class: Workflow
+id: simple_workflow_example
+label: Simple workflow example
+doc: |-
+  This workflow accepts four integers, adds the first two, adds the last two, and then creates a text file that contains the two sums.
 inputs:
   number1: int
   number2: int
