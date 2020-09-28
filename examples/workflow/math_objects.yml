@@ -1,0 +1,7 @@
+add1__number1: 4
+add1__number2: 0
+add2__number1: 2
+add2__number2: 3
+add1__output_file_name: sum1.txt
+add2__output_file_name: sum2.txt
+cat__output_file_name: math_result.txt

@@ -68,5 +68,5 @@ $namespaces:
   s: https://schema.org/
   edam: http://edamontology.org/
 $schemas:
- - https://schema.org/version/latest/schema.rdf
+ - https://schema.org/version/latest/schemaorg-current-http.rdf
  - http://edamontology.org/EDAM_1.23.owl

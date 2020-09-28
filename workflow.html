@@ -270,98 +270,254 @@
             upload_tool_errors: [],
             steps_errors: [],
             //overall_input_errors: [],
-            workflow_id: "abc_workflow",
+            workflow_id: "simple_workflow_example",
+            //workflow_id: "abc_workflow",
             //TODO: workflow_id: "",
-            workflow_label: "This is a label",
+            workflow_label: "Simple workflow example",
+            //workflow_label: "This is a label",
             //TODO: workflow_label: "",
             //TODO: doc: "",
-            doc: "This is a really cool workflow. This description is kinda long kinda longkinda long kinda longkinda long kinda longkinda long kinda longkinda long kinda longkinda long kinda longkinda long kinda longkinda long kinda longkinda long kinda longkinda long kinda longkinda long kinda long.",
+            doc: "This workflow accepts four integers, adds the first two, adds the last two, and then creates a text file that stores the two sums.",
+            //doc: "This is a really cool workflow. This description is kinda long kinda longkinda long kinda longkinda long kinda longkinda long kinda longkinda long kinda longkinda long kinda longkinda long kinda longkinda long kinda longkinda long kinda longkinda long kinda longkinda long kinda long.",
             //TODO: author_name: "",
             author_name: "Stephen Piccolo",
             //TODO: author_orcid: "",
             author_orcid: "https://orcid.org/0000-0003-2001-5640",
             license: "Apache-2.0",
-            workflow_inputs: [],
-            //TODO: workflow_inputs: [{name: "a_string", type: "string", doc: "This is a very interesting string input.", secondaryFiles: [], format: "", value: ""}, {name: "an_integer", type: "int", doc: "This must be an integer.", secondaryFiles: [], format: "", value: ""}],
-            //TODO: tools: [],
-            tools: [{name: "test.cwl", contents: jsyaml.safeLoad(`cwlVersion: v1.1
-class: CommandLineTool
-label: add tool
-doc: |-
-    This is a really cool tool...
-inputs:
-  number1:
-    type: int
-    doc: |-
-      An integer
-  number2:
-    type: int
-    doc: |-
-      A second number
-  output_file_name:
-    type: string
-    doc: |-
-      Name of the output file
-      #Output_File=edam:format_1964
-outputs:
-  output_from_input_1:
-    type: File
-    outputBinding:
-      glob: "$(inputs.output_file_name)"
-    doc: |-
-      Output file matching the name specified in the "output_file_name" input.
-    format: edam:format_1964
-  int_output:
-    type: int
-    doc: |-
-      Placeholder
-    format: edam:format_1964
-  standard_output:
-    type: stdout
-    format: edam:format_1964
-  standard_error:
-    type: stderr
-    format: edam:format_1964`)}, {name: "test2.cwl", contents: jsyaml.safeLoad(`cwlVersion: v1.1
-class: CommandLineTool
-label: add tool
-doc: |-
-    This is a really cool tool...
-inputs:
-  number1:
-    type: int
-    doc: |-
-      An integer
-  number2:
-    type: int
-    doc: |-
-      A second number
-  output_file_name:
-    type: string
-    doc: |-
-      Name of the output file
-      #Output_File=edam:format_1964
-outputs:
-  output_from_input_1:
-    type: File
-    outputBinding:
-      glob: "$(inputs.output_file_name)"
-    doc: |-
-      Output file matching the name specified in the "output_file_name" input.
-    format: edam:format_1964
-  int_output:
-    type: int
-    doc: |-
-      Placeholder
-    format: edam:format_1964
-  standard_output:
-    type: stdout
-    format: edam:format_1964
-  standard_error:
-    type: stderr
-    format: edam:format_1964`)}],
+            //TODO
+            tools: [],
+//             tools: [{name: "add_tool.cwl", contents: jsyaml.safeLoad(`cwlVersion: v1.1
+// class: CommandLineTool
+// label: add tool
+// requirements:
+//   ShellCommandRequirement: {}
+//   DockerRequirement:
+//     dockerImageId: add_tool
+//     dockerFile: |-
+//       FROM python3.8.2
+//   NetworkAccess:
+//     class: NetworkAccess
+//     networkAccess: true
+//   InitialWorkDirRequirement:
+//     listing:
+//     - entryname: add.py
+//       entry: |-
+//         import sys
+        
+//         number1 = int(sys.argv[1])
+//         number2 = int(sys.argv[2])
+//         out_file_path = sys.argv[3]
+        
+//         with open(out_file_path, 'w') as out_file:
+//             total = number1 + number2
+//             out_file.write(str(total))
+// inputs:
+//   number1:
+//     type: int
+//     doc: |-
+//       An integer
+//   number2:
+//     type: int
+//     doc: |-
+//       A second number
+//   output_file_name:
+//     type: string
+//     doc: |-
+//       Name of the output file
+//       #Output_File=edam:format_1964
+// arguments:
+//   - shellQuote: false
+//     valueFrom: |-
+//       python add.py $(inputs.number1) $(inputs.number2) $(inputs.output_file_name)
+// outputs:
+//   output_from_input_1:
+//     type: File
+//     outputBinding:
+//       glob: "$(inputs.output_file_name)"
+//     doc: |-
+//       Output file matching the name specified in the "output_file_name" input.
+//     format: edam:format_1964
+//   standard_output:
+//     type: stdout
+//     format: edam:format_1964
+//   standard_error:
+//     type: stderr
+//     format: edam:format_1964
+// stdout: stdout.txt
+// stderr: stderr.txt
+ 
+// s:author:
+//   - class: s:Person
+//     s:name: Stephen Piccolo
+ 
+// s:dateCreated: "2020-07-14"
+// s:license: https://spdx.org/licenses/Apache-2.0
+ 
+// $namespaces:
+//   s: https://schema.org/
+//   edam: http://edamontology.org/
+// $schemas:
+//  - https://schema.org/version/latest/schema.rdf
+//  - http://edamontology.org/EDAM_1.23.owl`)}, {name: "cat_tool.cwl", contents: jsyaml.safeLoad(`cwlVersion: v1.1
+// class: CommandLineTool
+// label: cat tool
+// requirements:
+//   ShellCommandRequirement: {}
+//   DockerRequirement:
+//     dockerImageId: cat_tool
+//     dockerFile: |-
+//       FROM python3.8.2
+//   NetworkAccess:
+//     class: NetworkAccess
+//     networkAccess: true
+//   InitialWorkDirRequirement:
+//     listing:
+//     - entryname: cat.py
+//       entry: |-
+//         import sys
+        
+//         file_path1 = sys.argv[1]
+//         file_path2 = sys.argv[2]
+//         out_file_path = sys.argv[3]
+        
+//         with open(file_path1) as file1:
+//             contents1 = file1.read()
+        
+//         with open(file_path2) as file2:
+//             contents2 = file2.read()
+        
+//         with open(out_file_path, 'w') as out_file:
+//             out_file.write(contents1 + "\n")
+//             out_file.write(contents2 + "\n")
+// inputs:
+//   file1:
+//     type: File
+//     doc: |-
+//       An file with text
+//     format: edam:format_1964
+//   file2:
+//     type: File
+//     doc: |-
+//       A second file
+//     format: edam:format_1964
+//   output_file_name:
+//     type: string
+//     doc: |-
+//       Name of the output file
+//       #Output_File=edam:format_1964
+// arguments:
+//   - shellQuote: false
+//     valueFrom: |-
+//       python cat.py $(inputs.file1.path) $(inputs.file2.path) $(inputs.output_file_name)
+// outputs:
+//   output_from_input_1:
+//     type: File
+//     outputBinding:
+//       glob: "$(inputs.output_file_name)"
+//     doc: |-
+//       Output file matching the name specified in the "output_file_name" input.
+//     format: edam:format_1964
+//   standard_output:
+//     type: stdout
+//     format: edam:format_1964
+//   standard_error:
+//     type: stderr
+//     format: edam:format_1964
+// stdout: stdout.txt
+// stderr: stderr.txt
+ 
+// s:author:
+//   - class: s:Person
+//     s:name: Stephen Piccolo
+ 
+// s:dateCreated: "2020-07-14"
+// s:license: https://spdx.org/licenses/Apache-2.0
+ 
+// $namespaces:
+//   s: https://schema.org/
+//   edam: http://edamontology.org/
+// $schemas:
+//  - https://schema.org/version/latest/schema.rdf
+//  - http://edamontology.org/EDAM_1.23.owl`)}],
+//             tools: [{name: "test.cwl", contents: jsyaml.safeLoad(`cwlVersion: v1.1
+// class: CommandLineTool
+// label: add tool
+// doc: |-
+//     This is a really cool tool...
+// inputs:
+//   number1:
+//     type: int
+//     doc: |-
+//       An integer
+//   number2:
+//     type: int
+//     doc: |-
+//       A second number
+//   output_file_name:
+//     type: string
+//     doc: |-
+//       Name of the output file
+//       #Output_File=edam:format_1964
+// outputs:
+//   output_from_input_1:
+//     type: File
+//     outputBinding:
+//       glob: "$(inputs.output_file_name)"
+//     doc: |-
+//       Output file matching the name specified in the "output_file_name" input.
+//     format: edam:format_1964
+//   int_output:
+//     type: int
+//     doc: |-
+//       Placeholder
+//     format: edam:format_1964
+//   standard_output:
+//     type: stdout
+//     format: edam:format_1964
+//   standard_error:
+//     type: stderr
+//     format: edam:format_1964`)}, {name: "test2.cwl", contents: jsyaml.safeLoad(`cwlVersion: v1.1
+// class: CommandLineTool
+// label: add tool
+// doc: |-
+//     This is a really cool tool...
+// inputs:
+//   number1:
+//     type: int
+//     doc: |-
+//       An integer
+//   number2:
+//     type: int
+//     doc: |-
+//       A second number
+//   output_file_name:
+//     type: string
+//     doc: |-
+//       Name of the output file
+//       #Output_File=edam:format_1964
+// outputs:
+//   output_from_input_1:
+//     type: File
+//     outputBinding:
+//       glob: "$(inputs.output_file_name)"
+//     doc: |-
+//       Output file matching the name specified in the "output_file_name" input.
+//     format: edam:format_1964
+//   int_output:
+//     type: int
+//     doc: |-
+//       Placeholder
+//     format: edam:format_1964
+//   standard_output:
+//     type: stdout
+//     format: edam:format_1964
+//   standard_error:
+//     type: stderr
+//     format: edam:format_1964`)}],
             //TODO: 
-            //steps: [],
-            steps: [{stepName: "first_step", toolName: "test.cwl", inputSources: ["Workflow_Input", "Workflow_Input", "Workflow_Input"], useAsWorkflowOutputs: [false, true, false]}, {stepName: "second_step", toolName: "test2.cwl", inputSources: ["Workflow_Input", {outputName: "int_output", stepName: "first_step"}, "Workflow_Input"], useAsWorkflowOutputs: [false, true, false]}],
+            steps: [],
+            //steps: [{stepName: "add1", toolName: "add_tool.cwl", inputSources: ["Workflow_Input", "Workflow_Input", "Workflow_Input"], useAsWorkflowOutputs: [false]}, {stepName: "add2", toolName: "add_tool.cwl", inputSources: ["Workflow_Input", "Workflow_Input", "Workflow_Input"], useAsWorkflowOutputs: [false]}, {stepName: "cat", toolName: "cat_tool.cwl", inputSources: ["add1/output_from_input_1", "add2/output_from_input_1", "Workflow_Input"], useAsWorkflowOutputs: [true]}],
+            //steps: [{stepName: "first_step", toolName: "test.cwl", inputSources: ["Workflow_Input", "Workflow_Input", "Workflow_Input"], useAsWorkflowOutputs: [false, true]}, {stepName: "second_step", toolName: "test2.cwl", inputSources: ["Workflow_Input", {outputName: "int_output", stepName: "first_step"}, "Workflow_Input"], useAsWorkflowOutputs: [false, true]}],
             newStepName: "",
             newStepToolName: "",
             newStepToolInputs: [],
@@ -397,27 +553,22 @@ outputs:
 
                 return `cwlVersion: v1.1
 class: Workflow
+id: ${this.workflow_id}
 label: ${this.workflow_label}
 ${this.buildOptionalString("doc: |-\n", this.indent(2, this.doc))}
-
 ${this.buildOptionalString("inputs:\n", this.indent(2, this.parseWorkflowInputs()))}
-
 ${this.buildOptionalString("outputs:\n", this.indent(2, this.parseWorkflowOutputs()))}
-
 ${this.buildOptionalString("steps:\n", this.parseSteps())}
-
 ${this.parseAuthorInfo()}
-
 s:dateCreated: "${this.getTodayDate()}"
 s:license: https://spdx.org/licenses/${this.license}
- 
 $namespaces:
   s: https://schema.org/
   edam: http://edamontology.org/
 $schemas:
- - https://schema.org/version/latest/schema.rdf
+ - https://schema.org/version/latest/schemaorg-current-http.rdf
  - http://edamontology.org/EDAM_1.23.owl
-            `.replace(/\n\n/g, "\n").replace(/\n\n/g, "\n").trim();
+            `.replace(/\n{1,} {0,}\n{1,}/g, "\n\n").replace(/\n\n/g, "\n").replace(/\n\n/g, "\n").trim();
             },
             cwl_file_name: function() { return `${this.workflow_id}.cwl`; },
             job_file_name: function() { return `${this.workflow_id}_objects.yml`; },
@@ -439,6 +590,8 @@ $schemas:
 
                 reader.onload = event => {
 
+                    
+                    e.target.value = "";
 	            }
 
 	            reader.onerror = (e) => {
@@ -488,6 +641,9 @@ $schemas:
                         name: fileName,
                         contents: fileContents
                     });
+
+                    // Clear the file name from the upload control.
+                    e.target.value = "";
 	            }
 
 	            reader.onerror = (e) => {
@@ -495,7 +651,7 @@ $schemas:
 	                console.error(e);
 	            }
 
-	            reader.readAsText(e.target.files[0]);
+	            reader.readAsText(e.target.files[0]);                
             },
             deleteTool: function (x) {
                 this.tools = this.tools.filter(function(value, index, arr) {
@@ -578,7 +734,6 @@ $schemas:
                 var inputSources = [];
                 var i;
                 for (i = 0; i < this.newStepToolInputs.length; i++) {
-                    console.log(this.newStepToolInputs[i].value);
                     inputSources.push(this.newStepToolInputs[i].value);
                 }
 
@@ -628,12 +783,13 @@ $schemas:
                     var stepName = this.steps[i].stepName;
                     var toolName = this.steps[i].toolName;
 
-                    /TODO: Need to revise this logic to support outputSource.
                     var j;
                     for (j = 0; j < this.steps[i].useAsWorkflowOutputs.length; j++) {
                         if (this.steps[i].useAsWorkflowOutputs[j]) {
                             outputInfo = this.getToolInfo(toolName, "outputs", j);
-                            result += `${stepName}__${outputInfo.name}: ${outputInfo.type}\n`;
+                            result += `${stepName}__${outputInfo.name}:\n`;
+                            result += `  type: ${outputInfo.type}\n`;
+                            result += `  outputSource: ${stepName}/${outputInfo.name}\n`;
                         }
                     }
                 }
@@ -665,6 +821,7 @@ $schemas:
                     result += `  ${stepName}:\n`;
                     result += `    run: ${toolName}\n`;
 
+                    // Parse the inputs
                     var inputResult = "";
                     var j;
                     for (j = 0; j < this.steps[i].inputSources.length; j++) {
@@ -675,13 +832,15 @@ $schemas:
                             //inputResult += `      ${inputInfo.name}: ${inputInfo.name}\n`;
                         }
                         else {
-                            inputResult += `      ${inputInfo.name}: ${stepName}/${this.steps[i].inputSources[j].outputName}\n`;
+                            inputResult += `      ${inputInfo.name}: ${this.steps[i].inputSources[j].stepName}/${this.steps[i].inputSources[j].outputName}\n`;
                         }
                     }
 
+                    // Add the inputs to the overall text
                     if (inputResult.length > 0)
                         result += "    in:\n" + inputResult;
 
+                    // Parse the outputs
                     var outputResult = "";
                     var j;
                     for (j = 0; j < this.steps[i].useAsWorkflowOutputs.length; j++) {
@@ -690,16 +849,10 @@ $schemas:
                         if (outputInfo.type == "stdout" || outputInfo.type == "stderr")
                                 continue;
 
-                        /TODO: This section isn't quite right. Probably need to simplify.
-                        // if (this.steps[i].useAsWorkflowOutputs[j]) {
-                        //     outputResult += `      ${outputInfo.name}: ${stepName}__${outputInfo.name}\n`;
-                        //     //outputResult += `      ${inputInfo.name}: ${inputInfo.name}\n`;
-                        // }
-                        // else {
-                        //     outputResult += `      ${outputInfo.name}: ${stepName}/${Object.keys(outputInfo)}\n`;
-                        // }
+                        outputResult += `      [${outputInfo.name}]\n`;
                     }
 
+                    // Add the outputs to the overall text
                     if (outputResult.length > 0)
                         result += "    out:\n" + outputResult;
                 }
@@ -709,14 +862,14 @@ $schemas:
             parseAuthorInfo() {
                 author_info = "";
                 if (this.author_name.trim() != "" || this.author_orcid.trim() != "") {
-                    author_info += " \ns:author:\n";
+                    author_info += "\ns:author:\n";
                     author_info += "  - class: s:Person\n";
 
                     if (this.author_name.trim() != "")
                         author_info += `    s:name: ${this.author_name.trim()}\n`;
                     if (this.author_orcid.trim() != "")
                         author_info += `    s:identifier: ${this.author_orcid.trim()}\n`;
-                    author_info += " \n";
+                    author_info += "\n";
                 }
 
                 return author_info;

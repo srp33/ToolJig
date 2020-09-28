@@ -6,4 +6,4 @@ file2:
     class: File
     path: sum2.txt
     format: http://edamontology.org/format_1964
-output_file_name: cat_result.txt
+output_file_name: math_result.txt

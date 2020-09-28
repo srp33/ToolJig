@@ -1,1 +1,0 @@
-cwltool workflow.cwl workflow_objects.yml
