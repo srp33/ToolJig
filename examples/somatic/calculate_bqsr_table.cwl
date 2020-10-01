@@ -1,4 +1,4 @@
-cwlVersion: v1.1
+cwlVersion: v1.2
 class: CommandLineTool
 label: Apply GATK BaseRecalibrator to a BAM file
 doc: |-

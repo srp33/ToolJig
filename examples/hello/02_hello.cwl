@@ -1,4 +1,4 @@
-cwlVersion: v1.1
+cwlVersion: v1.2
 class: CommandLineTool
 doc: |-
   This simple example tool says hello to a person by name. It uses the arguments property to construct the command from the inputs, thus providing more flexibility for constructing the command (we can easily put an exclamation point at the end of the greeting). Note also that we do not need to specify "position" input bindings. (This script will only execute successfully on operating systems that provide an implementation of the "echo" command.)

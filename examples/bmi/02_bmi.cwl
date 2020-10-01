@@ -1,4 +1,4 @@
-cwlVersion: v1.1
+cwlVersion: v1.2
 class: CommandLineTool
 doc: |-
   This tool is similar to bmi_calculator.cwl, but it retrieves the data file from a web server rather than from a local file.

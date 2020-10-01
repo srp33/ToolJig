@@ -1,4 +1,4 @@
-cwlVersion: v1.1
+cwlVersion: v1.2
 class: CommandLineTool
 label: Call structural variants using Delly for a tumor/normal pair
 doc: |-

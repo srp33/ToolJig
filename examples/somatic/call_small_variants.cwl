@@ -1,4 +1,4 @@
-cwlVersion: v1.1
+cwlVersion: v1.2
 class: CommandLineTool
 label: Calls somatic variants using Mutect2 (GATK) for a tumor/normal pair
 doc: |-

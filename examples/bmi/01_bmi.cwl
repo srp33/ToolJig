@@ -1,4 +1,4 @@
-cwlVersion: v1.1
+cwlVersion: v1.2
 class: CommandLineTool
 doc: |-
   This tool demonstrates a way to process an input data file using an embedded Python script. The script requires as input a data file with tab-separated values. Two of the columns in this file must represent weights and heights of human individuals. The script calculates the individuals' body mass index (BMI) values, stores them in a new column in the file, and writes the file to the output directory. We use a container image from Docker Hub that is based on the "buster" release (version 10.3) of the Debian Linux operating system and includes version 3.8.2 of the Python interpreter.

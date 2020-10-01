@@ -1,4 +1,4 @@
-cwlVersion: v1.1
+cwlVersion: v1.2
 class: CommandLineTool
 label: Mark duplicate reads in a BAM file. It also indexes the file
 doc: |-

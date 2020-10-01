@@ -1,4 +1,4 @@
-cwlVersion: v1.1
+cwlVersion: v1.2
 class: CommandLineTool
 doc: |-
   This simple example tool says hello to a person by name. It uses the baseCommand property to construct the command from the inputs. (This script will only execute successfully on operating systems that provide an implementation of the "echo" command.)

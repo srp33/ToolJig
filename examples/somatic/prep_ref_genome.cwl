@@ -1,4 +1,4 @@
-cwlVersion: v1.1
+cwlVersion: v1.2
 class: CommandLineTool
 label: Prepare a reference genome for read alignment and variant calling
 doc: |-
