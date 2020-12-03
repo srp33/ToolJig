@@ -132,14 +132,6 @@
                 <input id="upload_tool_file" type="file" placeholder="Please specify a file to be uploaded." class="form-control" v-on:change="onUploadToolFile" multiple />
             </div>
 
-            <p v-if="upload_tool_errors.length > 0"><font color="red">
-                <b>Please correct the following error(s):</b>
-                <ul>
-                    <li v-for="error in upload_tool_errors">{{ error }}</li>
-                </ul>
-                </font>
-            </p>
-
             <p v-if="tools.length > 0">Here you can see which tool files have been uploaded. You can also remove (<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>) these files if you wish.</p>
 
             <ol class="list-group">
@@ -199,31 +191,33 @@
                 </output_checkbox>
             </div>
 
-            <p v-if="steps_errors.length > 0"><font color="red">
-                <b>Please correct the following error(s):</b>
-                <ul>
-                    <li v-for="error in steps_errors">{{ error }}</li>
-                </ul>
-                </font>
-            </p>
-
-            <div class="form-group" v-if="steps_errors.length == 0">
-                <button class="btn btn-info">Add / Update</button>
-            </div>
+                <div class="form-group">
+            <!--<div class="form-group" v-if="other_errors.length == 0">-->
+                    <button class="btn btn-info">Add / Update</button>
+            <!--</div>-->
+                </div>
             </form>
 
             <p v-if="steps.length > 0">Here you can see which steps have been added. You can also edit (<span class="glyphicon glyphicon-edit" aria-hidden="true"></span>) or remove (<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>) steps if you wish.</p>
 
             <ol class="list-group">
                 <li v-for="step in steps" class="list-group-item">{{ step.stepName }}
-                    <button v-on:click="editStep(step)" class="btn btn-default">
+                    <!--<button v-on:click="editStep(step)" class="btn btn-default">
                         <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
-                    </button>
+                    </button>-->
                     <button v-on:click="deleteStep(step)" class="btn btn-default">
                         <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
                     </button>
                 </li>
             </ol>
+
+            <p v-if="other_errors.length > 0"><font color="red">
+                <b>Please correct the following error(s):</b>
+                <ul>
+                    <li v-for="error in other_errors">{{ error }}</li>
+                </ul>
+                </font>
+            </p>
 
             <pre v-text="cwl" v-if="cwl"></pre>
         </div>
@@ -279,9 +273,7 @@
         data: {
             upload_file: "",
             basics_errors: [],
-            upload_tool_errors: [],
-            steps_errors: [],
-            //overall_input_errors: [],
+            other_errors: [],
             workflow_id: "simple_workflow_example",
             //workflow_id: "abc_workflow",
             //TODO: workflow_id: "",
@@ -296,236 +288,7 @@
             //TODO: author_orcid: "",
             author_orcid: "https://orcid.org/0000-0003-2001-5640",
             license: "Apache-2.0",
-            //TODO
             tools: [],
-//             tools: [{name: "add_tool.cwl", contents: jsyaml.safeLoad(`cwlVersion: v1.2
-// class: CommandLineTool
-// label: add tool
-// requirements:
-//   ShellCommandRequirement: {}
-//   DockerRequirement:
-//     dockerImageId: add_tool
-//     dockerFile: |-
-//       FROM python3.8.2
-//   NetworkAccess:
-//     class: NetworkAccess
-//     networkAccess: true
-//   InitialWorkDirRequirement:
-//     listing:
-//     - entryname: add.py
-//       entry: |-
-//         import sys
-        
-//         number1 = int(sys.argv[1])
-//         number2 = int(sys.argv[2])
-//         out_file_path = sys.argv[3]
-        
-//         with open(out_file_path, 'w') as out_file:
-//             total = number1 + number2
-//             out_file.write(str(total))
-// inputs:
-//   number1:
-//     type: int
-//     doc: |-
-//       An integer
-//   number2:
-//     type: int
-//     doc: |-
-//       A second number
-//   output_file_name:
-//     type: string
-//     doc: |-
-//       Name of the output file
-//       #Output_File=edam:format_1964
-// arguments:
-//   - shellQuote: false
-//     valueFrom: |-
-//       python add.py $(inputs.number1) $(inputs.number2) $(inputs.output_file_name)
-// outputs:
-//   output_from_input_1:
-//     type: File
-//     outputBinding:
-//       glob: "$(inputs.output_file_name)"
-//     doc: |-
-//       Output file matching the name specified in the "output_file_name" input.
-//     format: edam:format_1964
-//   standard_output:
-//     type: stdout
-//     format: edam:format_1964
-//   standard_error:
-//     type: stderr
-//     format: edam:format_1964
-// stdout: stdout.txt
-// stderr: stderr.txt
- 
-// s:author:
-//   - class: s:Person
-//     s:name: Stephen Piccolo
- 
-// s:dateCreated: "2020-07-14"
-// s:license: https://spdx.org/licenses/Apache-2.0
- 
-// $namespaces:
-//   s: https://schema.org/
-//   edam: http://edamontology.org/
-// $schemas:
-//  - https://schema.org/version/latest/schema.rdf
-//  - http://edamontology.org/EDAM_1.23.owl`)}, {name: "cat_tool.cwl", contents: jsyaml.safeLoad(`cwlVersion: v1.2
-// class: CommandLineTool
-// label: cat tool
-// requirements:
-//   ShellCommandRequirement: {}
-//   DockerRequirement:
-//     dockerImageId: cat_tool
-//     dockerFile: |-
-//       FROM python3.8.2
-//   NetworkAccess:
-//     class: NetworkAccess
-//     networkAccess: true
-//   InitialWorkDirRequirement:
-//     listing:
-//     - entryname: cat.py
-//       entry: |-
-//         import sys
-        
-//         file_path1 = sys.argv[1]
-//         file_path2 = sys.argv[2]
-//         out_file_path = sys.argv[3]
-        
-//         with open(file_path1) as file1:
-//             contents1 = file1.read()
-        
-//         with open(file_path2) as file2:
-//             contents2 = file2.read()
-        
-//         with open(out_file_path, 'w') as out_file:
-//             out_file.write(contents1 + "\n")
-//             out_file.write(contents2 + "\n")
-// inputs:
-//   file1:
-//     type: File
-//     doc: |-
-//       An file with text
-//     format: edam:format_1964
-//   file2:
-//     type: File
-//     doc: |-
-//       A second file
-//     format: edam:format_1964
-//   output_file_name:
-//     type: string
-//     doc: |-
-//       Name of the output file
-//       #Output_File=edam:format_1964
-// arguments:
-//   - shellQuote: false
-//     valueFrom: |-
-//       python cat.py $(inputs.file1.path) $(inputs.file2.path) $(inputs.output_file_name)
-// outputs:
-//   output_from_input_1:
-//     type: File
-//     outputBinding:
-//       glob: "$(inputs.output_file_name)"
-//     doc: |-
-//       Output file matching the name specified in the "output_file_name" input.
-//     format: edam:format_1964
-//   standard_output:
-//     type: stdout
-//     format: edam:format_1964
-//   standard_error:
-//     type: stderr
-//     format: edam:format_1964
-// stdout: stdout.txt
-// stderr: stderr.txt
- 
-// s:author:
-//   - class: s:Person
-//     s:name: Stephen Piccolo
- 
-// s:dateCreated: "2020-07-14"
-// s:license: https://spdx.org/licenses/Apache-2.0
- 
-// $namespaces:
-//   s: https://schema.org/
-//   edam: http://edamontology.org/
-// $schemas:
-//  - https://schema.org/version/latest/schema.rdf
-//  - http://edamontology.org/EDAM_1.23.owl`)}],
-//             tools: [{name: "test.cwl", contents: jsyaml.safeLoad(`cwlVersion: v1.2
-// class: CommandLineTool
-// label: add tool
-// doc: |-
-//     This is a really cool tool...
-// inputs:
-//   number1:
-//     type: int
-//     doc: |-
-//       An integer
-//   number2:
-//     type: int
-//     doc: |-
-//       A second number
-//   output_file_name:
-//     type: string
-//     doc: |-
-//       Name of the output file
-//       #Output_File=edam:format_1964
-// outputs:
-//   output_from_input_1:
-//     type: File
-//     outputBinding:
-//       glob: "$(inputs.output_file_name)"
-//     doc: |-
-//       Output file matching the name specified in the "output_file_name" input.
-//     format: edam:format_1964
-//   int_output:
-//     type: int
-//     doc: |-
-//       Placeholder
-//     format: edam:format_1964
-//   standard_output:
-//     type: stdout
-//     format: edam:format_1964
-//   standard_error:
-//     type: stderr
-//     format: edam:format_1964`)}, {name: "test2.cwl", contents: jsyaml.safeLoad(`cwlVersion: v1.2
-// class: CommandLineTool
-// label: add tool
-// doc: |-
-//     This is a really cool tool...
-// inputs:
-//   number1:
-//     type: int
-//     doc: |-
-//       An integer
-//   number2:
-//     type: int
-//     doc: |-
-//       A second number
-//   output_file_name:
-//     type: string
-//     doc: |-
-//       Name of the output file
-//       #Output_File=edam:format_1964
-// outputs:
-//   output_from_input_1:
-//     type: File
-//     outputBinding:
-//       glob: "$(inputs.output_file_name)"
-//     doc: |-
-//       Output file matching the name specified in the "output_file_name" input.
-//     format: edam:format_1964
-//   int_output:
-//     type: int
-//     doc: |-
-//       Placeholder
-//     format: edam:format_1964
-//   standard_output:
-//     type: stdout
-//     format: edam:format_1964
-//   standard_error:
-//     type: stderr
-//     format: edam:format_1964`)}],
             //TODO: 
             steps: [],
             //steps: [{stepName: "add1", toolName: "add_tool.cwl", inputSources: ["Workflow_Input", "Workflow_Input", "Workflow_Input"], useAsWorkflowOutputs: [false]}, {stepName: "add2", toolName: "add_tool.cwl", inputSources: ["Workflow_Input", "Workflow_Input", "Workflow_Input"], useAsWorkflowOutputs: [false]}, {stepName: "cat", toolName: "cat_tool.cwl", inputSources: ["add1/output_from_input_1", "add2/output_from_input_1", "Workflow_Input"], useAsWorkflowOutputs: [true]}],
@@ -545,8 +308,7 @@
             },
             cwl: function() {
                 this.basics_errors = [];
-                this.upload_tool_errors = [];
-                //this.overall_input_errors = [];
+                this.other_errors = [];
 
                 if (this.workflow_id.trim() == "")
                     this.basics_errors.push("Please specify a workflow identifier.");
@@ -560,11 +322,16 @@
                 if (this.author_orcid.trim() != "" && !this.isValidORCID(this.author_orcid))
                     this.basics_errors.push("Please specify a valid ORCID identifier (e.g., https://orcid.org/0000-0001-2222-3456).");
 
-                if (this.tools.length < 1)
-                    this.upload_tool_errors.push("Please upload at least one tool.");
+                if (this.steps.length < 2)
+                    this.other_errors.push("Please specify at least two steps for the workflow.");
 
-                //if (this.basics_errors.length > 0 || this.upload_tool_errors.length > 0 || this.overall_input_errors.length > 0)
-                if (this.basics_errors.length > 0 || this.upload_tool_errors.length > 0)
+                var workflow_inputs = this.parseWorkflowInputs();
+                var workflow_outputs = this.parseWorkflowOutputs();
+
+                if (workflow_inputs.length < 1 || workflow_outputs.length < 1)
+                    this.other_errors.push("Please specify at least one input and at least one output for the overall workflow.")
+
+                if (this.basics_errors.length > 0 || this.other_errors.length > 0)
                     return "";
 
                 return `cwlVersion: v1.2
@@ -572,8 +339,8 @@ class: Workflow
 id: ${this.workflow_id}
 label: ${this.workflow_label}
 ${this.buildOptionalString("doc: |-\n", this.indent(2, this.doc))}
-${this.buildOptionalString("inputs:\n", this.indent(2, this.parseWorkflowInputs()))}
-${this.buildOptionalString("outputs:\n", this.indent(2, this.parseWorkflowOutputs()))}
+${this.buildOptionalString("inputs:\n", this.indent(2, workflow_inputs))}
+${this.buildOptionalString("outputs:\n", this.indent(2, workflow_outputs))}
 ${this.buildOptionalString("steps:\n", this.parseSteps())}
 ${this.parseAuthorInfo()}
 s:dateCreated: "${this.getTodayDate()}"
@@ -660,7 +427,7 @@ $schemas:
                         var j;
                         for (j = 0; j < this.tools.length; j++) {
                             if (this.tools[j].name == fileName) {
-                                alert("Multiple tool descriptions with the same name cannot be used. The most recently upload file was ignored.");
+                                alert("Multiple tools with the same name cannot be used.");
                                 return;
                             }
                         }
@@ -683,6 +450,14 @@ $schemas:
 	            reader.readAsText(e.target.files[0]);                
             },
             deleteTool: function (x) {
+                var i;
+                for (i = 0; i < this.steps.length; i++) {
+                    if (this.steps[i].toolName == x.name) {
+                        alert("At least one workflow step is using this tool, so it cannot be deleted at this time.")
+                        return;
+                    }
+                }
+
                 this.tools = this.tools.filter(function(value, index, arr) {
                     return value.name != x.name;
                 })
@@ -760,12 +535,22 @@ $schemas:
                 }
             },
             addStep() {
+                if (this.newStepName.trim().length == 0 || /[^A-Za-z0-9_]+/.test(this.newStepName)) {
+                    alert("A step name must be specified. It may only include letters, numbers, and underscores.");
+                    return;
+                }
+
                 var i;
                 for (i = 0; i < this.steps.length; i++) {
                     if (this.newStepName == this.steps[i].stepName) {
                         alert("A step with that name already exists, so it cannot be added.")
                         return;
                     }
+                }
+
+                if (this.newStepToolName.trim().length == 0) {
+                    alert("Please select a tool for this step.");
+                    return;
                 }
 
                 var inputSources = [];
@@ -791,6 +576,11 @@ $schemas:
                 this.newStepToolName = "";
                 this.newStepToolInputs = [];
                 this.newStepToolOutputs = [];
+            },
+            deleteStep: function (x) {
+                this.steps = this.steps.filter(function(value, index, arr) {
+                    return value.stepName != x.stepName;
+                })
             },
             parseWorkflowInputs() {
                 var result = "";
