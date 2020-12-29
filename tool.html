@@ -770,7 +770,7 @@
                 </li>
             </ol>
 
-            <p v-if="overall_input_errors.length"><font color="red">
+            <p v-if="overall_input_errors.length > 0"><font color="red">
                 <b>Please correct the following error(s):</b>
                 <ul>
                   <li v-for="error in overall_input_errors">{{ error }}</li>
@@ -1481,16 +1481,25 @@
                     </button>
                 </li>
             </ol>
+
+            <p v-if="overall_output_errors.length > 0"><font color="red">
+                <b>Please correct the following error(s):</b>
+                <ul>
+                  <li v-for="error in overall_output_errors">{{ error }}</li>
+                </ul>
+                </font>
+            </p>
         </div>
 
         <h4>CWL document:</h4>
 
-        <p v-if="this.basics_errors.length > 0 || this.template_errors.length > 0 || this.overall_input_errors.length"><font color="red">At least one error must be addressed before the CWL document can be generated. Please see the error message(s) above.</font></p>
+        <p v-if="this.cwl.length == 0"><font color="red">At least one error (see above) must be addressed before the CWL document can be generated.</font></p>
 
         <pre v-text="cwl" v-if="cwl"></pre>
         
         <p><div class="form-group">
-            <button class="btn btn-info" variant="outline-primary" v-on:click="downloadCwl" :disabled="this.basics_errors.length > 0 || this.template_errors.length > 0 || this.overall_input_errors.length > 0">Download CWL file</button>
+            <!--<button class="btn btn-info" variant="outline-primary" v-on:click="downloadCwl" :disabled="this.basics_errors.length > 0 || this.template_errors.length > 0 || this.overall_input_errors.length > 0 || this.overall_output_errors.length > 0">Download CWL file</button>-->
+            <button class="btn btn-info" variant="outline-primary" v-on:click="downloadCwl" v-if="this.cwl.length > 0">Download CWL file</button>
         <!--<a v-bind:href="encoded_cwl">Download</a>-->
         </div></p>
 
@@ -1587,6 +1596,7 @@
             auxiliary_errors: [],
             template_errors: [],
             output_errors: [],
+            overall_output_errors: [],
             download_job_errors: [],
             //tool_id: "abc_tool",
             tool_id: "",
@@ -1630,6 +1640,7 @@
                 this.basics_errors = [];
                 this.template_errors = [];
                 this.overall_input_errors = [];
+                this.overall_output_errors = [];
 
                 if (this.tool_id.trim() == "")
                     this.basics_errors.push("Only letters, numbers, and underscores are allowed.");
@@ -1683,7 +1694,17 @@
                     }
                 }
 
-                if (this.basics_errors.length > 0 || this.template_errors.length > 0 || this.overall_input_errors.length > 0)
+                var output_count = this.outputs.length;
+                var i;
+                for (i = 0; i<this.inputs.length; i++) {
+                    if (this.inputs[i].type == "Output_File")
+                        output_count += 1;
+                }
+
+                if (output_count == 0 && this.parseStandardMessages() == "")
+                    this.overall_output_errors.push("You must specify at least one output.");
+
+                if (this.basics_errors.length > 0 || this.template_errors.length > 0 || this.overall_input_errors.length > 0 || this.overall_output_errors.length > 0)
                     return "";
 
                 return `cwlVersion: v1.2
@@ -1777,13 +1798,13 @@ $schemas:
 	                const text = reader.result;
                     const yaml_dict = jsyaml.safeLoad(text);
 
-                    this.tool_id = this.getYamlValue(yaml_dict, ["requirements", "DockerRequirement", "dockerImageId"]);
-                    this.tool_label = this.getYamlValue(yaml_dict, ["label"]);
-                    this.doc = this.getYamlValue(yaml_dict, ["doc"]);
-                    this.dockerfile = this.getYamlValue(yaml_dict, ["requirements", "DockerRequirement", "dockerFile"]);
-                    this.author_name = this.getYamlValue(yaml_dict, ["s:author", 0, "s:name"]);
-                    this.author_orcid = this.getYamlValue(yaml_dict, ["s:author", 0, "s:identifier"]);
-                    this.license = this.getYamlValue(yaml_dict, ["s:license"]).split("/").slice(-1)[0];
+                    this.tool_id = this.getYamlValue(yaml_dict, ["requirements", "DockerRequirement", "dockerImageId"], true);
+                    this.tool_label = this.getYamlValue(yaml_dict, ["label"], false);
+                    this.doc = this.getYamlValue(yaml_dict, ["doc"], false);
+                    this.dockerfile = this.getYamlValue(yaml_dict, ["requirements", "DockerRequirement", "dockerFile"], true);
+                    this.author_name = this.getYamlValue(yaml_dict, ["s:author", 0, "s:name"], false);
+                    this.author_orcid = this.getYamlValue(yaml_dict, ["s:author", 0, "s:identifier"], false);
+                    this.license = this.getYamlValue(yaml_dict, ["s:license"], false).split("/").slice(-1)[0];
 
                     this.inputs = [];
                     this.newInputName = "";
@@ -1792,7 +1813,7 @@ $schemas:
                     this.newInputSecondary = "";
                     this.newInputFileFormat = "";
 
-                    inputs_dict = this.getYamlValue(yaml_dict, ["inputs"]);
+                    inputs_dict = this.getYamlValue(yaml_dict, ["inputs"], false);
 
                     for (var key in inputs_dict) {
                         input_dict = inputs_dict[key];
@@ -1818,7 +1839,7 @@ $schemas:
                     this.newAuxName = "";
                     this.newAuxContents = "";
 
-                    aux_files = this.getYamlValue(yaml_dict, ["requirements", "InitialWorkDirRequirement", "listing"]);
+                    aux_files = this.getYamlValue(yaml_dict, ["requirements", "InitialWorkDirRequirement", "listing"], false);
                     if (aux_files != "") {
                         var i;
                         for (i = 0; i < aux_files.length; i++) {
@@ -1829,7 +1850,7 @@ $schemas:
                         }
                     }
 
-                    this.command_template = this.getYamlValue(yaml_dict, ["arguments", 0, "valueFrom"]);
+                    this.command_template = this.getYamlValue(yaml_dict, ["arguments", 0, "valueFrom"], true);
 
                     this.stdout_file_name = "";
                     if ("stdout" in yaml_dict)
@@ -1844,7 +1865,7 @@ $schemas:
                     this.newOutputSecondary = "";
                     this.newOutputFileFormat = "";
 
-                    outputs_dict = this.getYamlValue(yaml_dict, ["outputs"]);
+                    outputs_dict = this.getYamlValue(yaml_dict, ["outputs"], false);
 
                     for (var key in outputs_dict) {
                         if (!(/^regular_output_\d+/.test(key)))
@@ -1871,16 +1892,25 @@ $schemas:
 
 	            reader.readAsText(e.target.files[0]);
             },
-            getYamlValue: function(yaml_dict, key_array) {
+            getYamlValue: function(yaml_dict, key_array, indicate_missing) {
                 // This goes iteratively deeper into the dictionary to try to find the value.
                 my_dict = yaml_dict;
                 var i;
+                var message = "";
                 for (i = 0; i < key_array.length; i++) {
                     key = key_array[i];
-                    if (key in my_dict)
+
+                    if (key in my_dict) {
                         my_dict = my_dict[key];
-                    else
-                        return "";
+                    }
+                    else {
+                        if (indicate_missing) {
+                            return "[No value was specified in the uploaded file.]";
+                        }
+                        else {
+                            return "";
+                        }
+                    }
                 }
                 
                 return my_dict;
@@ -1977,6 +2007,9 @@ $schemas:
                 this.auxiliary_files = this.auxiliary_files.filter(function(value, index, arr) {
                     return value.name != x.name;
                 })
+
+                this.newAuxName = "";
+                this.newAuxContents = "";
             },
             editAuxiliaryFile: function(x) {
                 this.newAuxName = x.name;
@@ -2033,6 +2066,11 @@ $schemas:
                 this.outputs = this.outputs.filter(function(value, index, arr) {
                     return value.glob != x.glob;
                 })
+
+                this.newOutputGlob = "";
+                this.newOutputDoc = "";
+                this.newOutputSecondary = "";
+                this.newOutputFileFormat = "";
             },
             editOutput: function(x) {
                 this.newOutputGlob = x.glob;

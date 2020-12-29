@@ -119,8 +119,7 @@
                 <ul>
                   <li v-for="error in basics_errors">{{ error }}</li>
                 </ul>
-                </font>
-            </p>
+            </font></p>
         </div>
 
         <div class="panel panel-default" ref="uploadToolPanel">
@@ -129,83 +128,78 @@
             <p>The first step to creating a workflow is to upload CWL tool descriptions that will be used as steps within the workflow.</p>
 
             <div class="form-group">
-                <input id="upload_tool_file" type="file" placeholder="Please specify a file to be uploaded." class="form-control" v-on:change="onUploadToolFile" multiple />
+                <input id="upload_tool_file" type="file" placeholder="Please specify a file to be uploaded." class="form-control" v-on:change="onUploadToolFile($event)" multiple />
             </div>
 
-            <p v-if="tools.length > 0">Here you can see which tool files have been uploaded. You can also remove (<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>) these files if you wish.</p>
+            <p v-if="Object.keys(tools).length > 0">Here you can see which tool files have been uploaded. You can also remove (<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>) these files if you wish.</p>
 
             <ol class="list-group">
-                <li v-for="tool in ordered_tools" class="list-group-item">{{ tool.name }}
-                    <button v-on:click="deleteTool(tool)" class="btn btn-default">
+                <li v-for="tool_name in Object.keys(sortObject(tools))" class="list-group-item">{{ tool_name }}
+                    <button v-on:click="deleteTool(tool_name)" class="btn btn-default">
                         <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
                     </button>
                 </li>
             </ol>
         </div>
 
-        <div class="panel panel-default" ref="stepsPanel" v-if="tools.length > 0">
+        <div class="panel panel-default" ref="stepsPanel" v-if="Object.keys(tools).length > 0">
             <h4 class="card-title">Define workflow steps:</h4>
 
             <p>Here you can define each step of the workflow.</p>
-
-            <form v-on:submit.prevent="addStep">
-
-            <div class="form-group">
-                <label for="step_tool">Please specify a name for this step:</label>
-                <input v-model="newStepName" id="newStepName" type="text" placeholder="Only letters, numbers, and underscores are allowed." class="form-control" />
-            </div>
-
-            <div class="form-group">
-                <label for="step_tool">Select a tool for this step:</label>
-                <select v-model="newStepToolName" id="newStepToolName" class="form-control" v-on:change="getNewStepToolData">
-                    <option disabled value="">Please select one...</option>
-                    <option v-for="tool in tools" v-bind:value="tool.name">
-                        {{ tool.name }}
-                    </option>
-                </select>
-            </div>
-
-            <div class="form-group" v-if="newStepToolInputs.length > 0">
-                <label for="step_inputs">Specify input source(s):</label>
-
-                <p>The inputs for <code>{{ newStepToolName }}</code> are shown below. For each input, there are two options: 1) create a new input for the entire workflow that will be mapped to this input, or 2) indicate that the output of a prior step will be mapped to this input. Please indicate either option below. <span v-if="this.steps == 0">Because this is the first step of the workflow, the inputs can only come from the workflow inputs.</span></p>
-
-                <input_dropdown 
-                    v-for="(input, index) in newStepToolInputs" 
-                    :key="input.name"
-                    v-bind="input"
-                    v-model="newStepToolInputs[index].value">
-                </input_dropdown>
-            </div>
-
-            <div class="form-group" v-if="newStepToolOutputs.length > 0">
-                <label for="step_inputs">Specify output destination(s) for this input:</label>
-
-                <p>The outputs for <code>{{ newStepToolName }}</code> are shown below. For each output, please indicate whether you would like the output to be collected for the entire workflow. If not, the output can be used as input in another step of the workflow.</p>
-
-                <output_checkbox 
-                    v-for="(output, index) in newStepToolOutputs" 
-                    :key="output.name"
-                    v-bind="output"
-                    v-model="newStepToolOutputs[index].value">
-                </output_checkbox>
-            </div>
+            
+            <form v-on:submit.prevent="addUpdateStep">
 
                 <div class="form-group">
-            <!--<div class="form-group" v-if="other_errors.length == 0">-->
+                    <label for="step_tool">Select a tool for this step:</label>
+                    <select v-model="newStepToolName" id="newStepToolName" ref="newStepToolName" class="form-control" v-on:change="getNewStepToolData_onchange">
+                        <option disabled value="">Please select one...</option>
+                        <option v-for="tool_name in Object.keys(sortObject(tools))" v-bind:value="tool_name">
+                            {{ tool_name }}
+                        </option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="step_tool">Please specify a name for this step:</label>
+                    <input v-model="newStepName" id="newStepName" ref="newStepName" type="text" placeholder="Only letters, numbers, and underscores are allowed." class="form-control" />
+                </div>
+
+                <div class="form-group" v-if="newStepToolName.length > 0 && newStepName.length > 0">
+                    <label for="step_inputs">Specify input source(s):</label>
+
+                    <p>The inputs for <code>{{ newStepToolName }}</code> are shown below. For each input, there are two options: 1) create a new input for the entire workflow that will be mapped to this input, or 2) indicate that the output of a prior step will be mapped to this input. Please indicate either option below. <span v-if="this.steps == 0">Because this is the first step of the workflow, the inputs can only be specified as workflow inputs.</span></p>
+
+                    <input_dropdown 
+                        v-for="(input, index) in newStepToolInputs" 
+                        :key="input.inputName"
+                        v-bind="input"
+                        v-model="newStepToolInputs[index].selectedInputSource">
+                    </input_dropdown>
+                </div>
+
+                <div class="form-group" v-if="newStepToolName.length > 0 && newStepName.length > 0">
+                    <label for="step_inputs">Specify output destination(s) for this input:</label>
+
+                    <p>The outputs for <code>{{ newStepToolName }}</code> are shown below. For each output, please indicate whether you would like the output to be collected for the entire workflow. If not, the output can be used as input in another step of the workflow.</p>
+
+                    <p v-for="output in newStepToolOutputs">
+                        <input type="checkbox" :value="output" :id="output" v-model="newStepToolOutputsChecked"> {{ output }}
+                    </p>
+                </div>
+
+                <div class="form-group">
                     <button class="btn btn-info">Add / Update</button>
-            <!--</div>-->
                 </div>
             </form>
 
             <p v-if="steps.length > 0">Here you can see which steps have been added. You can also edit (<span class="glyphicon glyphicon-edit" aria-hidden="true"></span>) or remove (<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>) steps if you wish.</p>
 
             <ol class="list-group">
-                <li v-for="step in steps" class="list-group-item">{{ step.stepName }}
-                    <!--<button v-on:click="editStep(step)" class="btn btn-default">
+                <li v-for="stepName in Object.keys(steps)" class="list-group-item">{{ stepName }}
+                    <button v-on:click="editStep(stepName)" class="btn btn-default">
                         <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
-                    </button>-->
-                    <button v-on:click="deleteStep(step)" class="btn btn-default">
+                    </button>
+                    <button v-on:click="deleteStep(stepName)" class="btn btn-default">
                         <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
                     </button>
                 </li>
@@ -216,96 +210,84 @@
                 <ul>
                     <li v-for="error in other_errors">{{ error }}</li>
                 </ul>
-                </font>
-            </p>
+            </font></p>
 
             <pre v-text="cwl" v-if="cwl"></pre>
+
+            <p><div class="form-group">
+                <!--<button class="btn btn-info" variant="outline-primary" v-on:click="downloadCwl" :disabled="this.basics_errors.length > 0 || this.other_errors.length > 0">Download CWL file</button>-->
+                <button class="btn btn-info" variant="outline-primary" v-on:click="downloadCwl" v-if="cwl.length > 0">Download CWL file</button>
+            </div></p>
         </div>
     </div>
 </div>
 
 <script>
-    // https://stackoverflow.com/questions/16648076/sort-array-on-key-value
-    Array.prototype.sortOn = function(key) {
-        this.sort(function(a, b){
-            if(a[key] < b[key]){
-                return -1;
-            }else if(a[key] > b[key]){
-                return 1;
-            }
-            return 0;
-        });
-    }
-
+    // See https://zaengle.com/blog/using-v-model-on-nested-vue-components
     Vue.component("input_dropdown", {
-        props: ['name', 'relevantOutputs', 'value'],
-        template: `<div class="form-group">{{ name }}:
-                <select v-on:change="updateVal" v-model="text" class="form-control">
-                    <option value="Workflow_Input">Create a new workflow input that will be mapped to this input</option>
-                    <option v-for="output in relevantOutputs"  v-bind:value="output">
-                        Use the {{ output.outputName }} output of the {{ output.stepName }} step
-                    </option>
+        props: {
+            inputName: {
+                type: String,
+                required: true
+            },
+            inputSourceOptions: {
+                type: Array,
+                required: true
+            },
+            value: {
+                type: String,
+                required: true
+            }
+        },
+        template: `
+            <div class="form-group">{{ inputName }}:
+                <select v-model="selectedInputSource" class="form-control">
+                    <option v-for="inputSourceOption in inputSourceOptions"
+                        :value="inputSourceOption.id"
+                        v-html="inputSourceOption.text"
+                    ></option>
                 </select>
             </div>`,
-        data() { return { text:null } },
-        created() { this.text = this.value; },
-        methods:{ updateVal() { this.$emit('input', this.text); } }
+        computed: {
+            selectedInputSource: {
+                get() {return this.value},
+                set(selectedInputSource) { this.$emit('input', selectedInputSource)}
+            }
+        }
     });
 
-    Vue.component("output_checkbox", {
-        props: ['name', 'value'],
-        template: `<div class="checkbox">
-                    <label>
-                     <input type="checkbox" class="form-check-input" v-on:change="updateVal" v-model="checked" id="output_checkbox">
-                     {{ name }}
-                    </label>
-                   </div>`,
-        data() { return { checked:null } },
-        created() { this.checked = this.value; },
-        methods:{ updateVal() { this.$emit('input', this.checked); } }
-    });
-
-    // This is the main Vue app.
     new Vue({
         el: "#cwl_app",
 
-        // The data attribute stores data that will be rendered.
         data: {
             upload_file: "",
             basics_errors: [],
             other_errors: [],
-            workflow_id: "simple_workflow_example",
-            //workflow_id: "abc_workflow",
+            workflow_id: "math",
             //TODO: workflow_id: "",
             workflow_label: "Simple workflow example",
-            //workflow_label: "This is a label",
             //TODO: workflow_label: "",
             //TODO: doc: "",
             doc: "This workflow accepts four integers, adds the first two, adds the last two, and then creates a text file that stores the two sums.",
-            //doc: "This is a really cool workflow. This description is kinda long kinda longkinda long kinda longkinda long kinda longkinda long kinda longkinda long kinda longkinda long kinda longkinda long kinda longkinda long kinda longkinda long kinda longkinda long kinda longkinda long kinda long.",
+            //TODO: doc: "This is a really cool workflow. This description is kinda long kinda longkinda long kinda longkinda long kinda longkinda long kinda longkinda long kinda longkinda long kinda longkinda long kinda longkinda long kinda longkinda long kinda longkinda long kinda longkinda long kinda long.",
             //TODO: author_name: "",
             author_name: "Stephen Piccolo",
             //TODO: author_orcid: "",
             author_orcid: "https://orcid.org/0000-0003-2001-5640",
             license: "Apache-2.0",
-            tools: [],
-            //TODO: 
-            steps: [],
-            //steps: [{stepName: "add1", toolName: "add_tool.cwl", inputSources: ["Workflow_Input", "Workflow_Input", "Workflow_Input"], useAsWorkflowOutputs: [false]}, {stepName: "add2", toolName: "add_tool.cwl", inputSources: ["Workflow_Input", "Workflow_Input", "Workflow_Input"], useAsWorkflowOutputs: [false]}, {stepName: "cat", toolName: "cat_tool.cwl", inputSources: ["add1/output_from_input_1", "add2/output_from_input_1", "Workflow_Input"], useAsWorkflowOutputs: [true]}],
-            //steps: [{stepName: "first_step", toolName: "test.cwl", inputSources: ["Workflow_Input", "Workflow_Input", "Workflow_Input"], useAsWorkflowOutputs: [false, true]}, {stepName: "second_step", toolName: "test2.cwl", inputSources: ["Workflow_Input", {outputName: "int_output", stepName: "first_step"}, "Workflow_Input"], useAsWorkflowOutputs: [false, true]}],
+            //TODO:
+            tools: {},
+            //tools: { "cat_tool.cwl": { "cwlVersion": "v1.2", "class": "CommandLineTool", "label": "cat tool", "requirements": { "ShellCommandRequirement": {}, "DockerRequirement": { "dockerImageId": "cat_tool", "dockerFile": "FROM python3.8.2" }, "NetworkAccess": { "class": "NetworkAccess", "networkAccess": true }, "InitialWorkDirRequirement": { "listing": [ { "entryname": "cat.py", "entry": "import sys\n\nfile_path1 = sys.argv[1]\nfile_path2 = sys.argv[2]\nout_file_path = sys.argv[3]\n\nwith open(file_path1) as file1:\n contents1 = file1.read()\n\nwith open(file_path2) as file2:\n contents2 = file2.read()\n\nwith open(out_file_path, 'w') as out_file:\n out_file.write(contents1 + \"\\n\")\n out_file.write(contents2 + \"\\n\")" } ] } }, "inputs": { "file1": { "type": "File", "doc": "An file with text", "format": "edam:format_1964" }, "file2": { "type": "File", "doc": "A second file", "format": "edam:format_1964" }, "output_file_name": { "type": "string", "doc": "Name of the output file\n#Output_File=edam:format_1964" } }, "arguments": [ { "shellQuote": false, "valueFrom": "python cat.py $(inputs.file1.path) $(inputs.file2.path) $(inputs.output_file_name)" } ], "outputs": { "output_from_input_1": { "type": "File", "outputBinding": { "glob": "$(inputs.output_file_name)" }, "doc": "Output file matching the name specified in the \"output_file_name\" input.", "format": "edam:format_1964" }, "standard_output": { "type": "stdout", "format": "edam:format_1964" }, "standard_error": { "type": "stderr", "format": "edam:format_1964" } }, "stdout": "stdout.txt", "stderr": "stderr.txt", "s:author": [ { "class": "s:Person", "s:name": "Stephen Piccolo" } ], "s:dateCreated": "2020-07-14", "s:license": "https://spdx.org/licenses/Apache-2.0", "$namespaces": { "s": "https://schema.org/", "edam": "http://edamontology.org/" }, "$schemas": [ "https://schema.org/version/latest/schemaorg-current-http.rdf", "http://edamontology.org/EDAM_1.23.owl" ] }, "add_tool.cwl": { "cwlVersion": "v1.2", "class": "CommandLineTool", "label": "add tool", "requirements": { "ShellCommandRequirement": {}, "DockerRequirement": { "dockerImageId": "add_tool", "dockerFile": "FROM python3.8.2" }, "NetworkAccess": { "class": "NetworkAccess", "networkAccess": true }, "InitialWorkDirRequirement": { "listing": [ { "entryname": "add.py", "entry": "import sys\n\nnumber1 = int(sys.argv[1])\nnumber2 = int(sys.argv[2])\nout_file_path = sys.argv[3]\n\nwith open(out_file_path, 'w') as out_file:\n total = number1 + number2\n out_file.write(str(total))" } ] } }, "inputs": { "number1": { "type": "int", "doc": "An integer" }, "number2": { "type": "int", "doc": "A second number" }, "output_file_name": { "type": "string", "doc": "Name of the output file\n#Output_File=edam:format_1964" } }, "arguments": [ { "shellQuote": false, "valueFrom": "python add.py $(inputs.number1) $(inputs.number2) $(inputs.output_file_name)" } ], "outputs": { "output_from_input_1": { "type": "File", "outputBinding": { "glob": "$(inputs.output_file_name)" }, "doc": "Output file matching the name specified in the \"output_file_name\" input.", "format": "edam:format_1964" }, "standard_output": { "type": "stdout", "format": "edam:format_1964" }, "standard_error": { "type": "stderr", "format": "edam:format_1964" } }, "stdout": "stdout.txt", "stderr": "stderr.txt", "s:author": [ { "class": "s:Person", "s:name": "Stephen Piccolo" } ], "s:dateCreated": "2020-07-14", "s:license": "https://spdx.org/licenses/Apache-2.0", "$namespaces": { "s": "https://schema.org/", "edam": "http://edamontology.org/" }, "$schemas": [ "https://schema.org/version/latest/schemaorg-current-http.rdf", "http://edamontology.org/EDAM_1.23.owl" ] } },
+            //TODO:
+            steps: {},
+            //steps: { "add1": { "toolName": "add_tool.cwl", "selectedInputSources": { "number1": "Workflow_Input", "number2": "Workflow_Input", "output_file_name": "Workflow_Input"}, "useAsWorkflowOutputs": {"output_from_input_1": false}}, "add2": {"toolName": "add_tool.cwl", "selectedInputSources": {"number1": "Workflow_Input", "number2": "Workflow_Input", "output_file_name": "Workflow_Input"}, "useAsWorkflowOutputs": {"output_from_input_1": false}}, "cat": {"toolName": "cat_tool.cwl", "selectedInputSources": {"file1": "add1/output_from_input_1", "file2": "add2/output_from_input_1", "output_file_name": "Workflow_Input"}, "useAsWorkflowOutputs": {"output_from_input_1": true}} },
             newStepName: "",
             newStepToolName: "",
             newStepToolInputs: [],
-            newStepToolOutputs: []
+            newStepToolOutputs: [],
+            newStepToolOutputsChecked: []
         },
-
-        // Computed attributes build content dynamically for display in the app.
-        // In this app, we also perform input validation before returning cwl and job documents.
         computed: {
-            ordered_tools: function() {
-                this.tools.sortOn("name");
-                return this.tools;
-            },
             cwl: function() {
                 this.basics_errors = [];
                 this.other_errors = [];
@@ -360,7 +342,6 @@ $schemas:
             }
         },
 
-        // These are functions to make the logic a bit modular.
         methods: {
             onUploadFile: function(e) {
                 var files = e.target.files || e.dataTransfer.files;
@@ -372,8 +353,6 @@ $schemas:
                 const reader = new FileReader();
 
                 reader.onload = event => {
-
-
                     e.target.value = "";
 	            }
 
@@ -399,18 +378,19 @@ $schemas:
                 return my_dict;
             },
             onUploadToolFile: function(e) {
-                var files = e.target.files || e.dataTransfer.files;
-                if (!e.target.files.length) {
+                const files = e.target.files || e.dataTransfer.files;
+
+                if (files.length == 0) {
                     console.log("No file was detected.");
                     return;
                 }
 
-                const reader = new FileReader();
+                Object.keys(files).forEach(i => {
+                    const file = files[i];
+                    const reader = new FileReader();
 
-                reader.onload = event => {
-                    var i;
-                    for (i = 0; i < e.target.files.length; i++) {
-                        var fileName = e.target.files[i].name;
+                    reader.onload = (e) => {
+                        var fileName = files[i].name;
                         var fileContents = jsyaml.safeLoad(reader.result);
 
                         if (fileContents["class"] != "CommandLineTool") {
@@ -419,183 +399,162 @@ $schemas:
                         }
 
                         if (fileContents["cwlVersion"] != "v1.2") {
-                            alert(`${fileName} is not using the same version of the CWL spec as this workflow. It must specify "cwlVersion: v1.2".`);
+                            alert(`${fileName} is not using the same version of the CWL spec as this workflow. It must use "cwlVersion: v1.2".`);
                             return;
                         }
 
-                        // Make sure a file with this name has not been uploaded.
-                        var j;
-                        for (j = 0; j < this.tools.length; j++) {
-                            if (this.tools[j].name == fileName) {
-                                alert("Multiple tools with the same name cannot be used.");
-                                return;
-                            }
+                        if (fileName in this.tools) {
+                            alert("Multiple tools with the same name cannot be used.");
+                            return;
                         }
 
-                        this.tools.push({
-                            name: fileName,
-                            contents: fileContents
-                        });
+                        this.tools[fileName] = fileContents;
+                        this.tools = Object.assign({}, this.tools, this.tools);
                     }
 
-                    // Clear the file name from the upload control.
-                    e.target.value = "";
-	            }
+                    reader.onerror = (e) => {
+                        alert("An error occurred when trying to parse the tool file.")
+                        console.error(e);
+                    }
 
-	            reader.onerror = (e) => {
-                    alert("An error occurred when trying to parse the tool file.")
-	                console.error(e);
-	            }
-
-	            reader.readAsText(e.target.files[0]);                
+                    reader.readAsText(file);
+                });
             },
-            deleteTool: function (x) {
-                var i;
-                for (i = 0; i < this.steps.length; i++) {
-                    if (this.steps[i].toolName == x.name) {
-                        alert("At least one workflow step is using this tool, so it cannot be deleted at this time.")
+            deleteTool: function (toolName) {
+                for (let stepName in this.steps) {
+                    if (this.steps[stepName].toolName == toolName) {
+                        alert(`The ${stepName} step is using this tool, so this tool cannot be deleted at this time.`)
                         return;
                     }
                 }
 
-                this.tools = this.tools.filter(function(value, index, arr) {
-                    return value.name != x.name;
-                })
+                delete this.tools[toolName];
+                this.tools = Object.assign({}, this.tools, this.tools);
             },
             // This is invoked when they select a tool for a given step.
-            getNewStepToolData: function () {
+            getNewStepToolData_onchange: function () {
+                this.getNewStepToolData(newStepToolName.value);
+            },
+            // This obtains information about the tool selected for this step.
+            getNewStepToolData: function (stepToolName_value) {
+                var toolInputs = this.tools[stepToolName_value]["inputs"];
+                var toolOutputs = this.tools[stepToolName_value]["outputs"];
+
                 this.newStepToolInputs = [];
-                this.newStepToolOutputs = [];
+                for (let inputName in toolInputs) {
+                    var inputType = toolInputs[inputName]["type"];
 
-                // First find the tool that they selected.
-                // Note: the logic in this function would be simpler if I used objects more and arrays
-                //       less, but I'm more familiar with arrays for now.
-                var i;
-                for (i = 0; i < this.tools.length; i++) {
-                    if (this.tools[i].name == newStepToolName.value) {
-                        // Iterate through all the relevant inputs for that tool.
-                        var j;
-                        for (j = 0; j < Object.keys(this.tools[i].contents["inputs"]).length; j++) {
-                            var inputName = Object.keys(this.tools[i].contents["inputs"])[j];
-                            var inputType = this.tools[i].contents["inputs"][inputName]["type"];
-                            
-                            // Find outputs from other steps that match the type of this input.
-                            var relevantOutputs = [];
-                            var k;
-                            for (k = 0; k < this.steps.length; k++) {
-                                // Find the tool associated with this step.
-                                var l;
-                                for (l = 0; l < this.tools.length; l++) {
-                                    if (this.tools[l].name == this.steps[k].toolName) {
-                                        // Iterate through the outputs of this tool.
-                                        var m;
-                                        for (m = 0; m < Object.keys(this.tools[l].contents["outputs"]).length; m++) {
-                                            var outputName = Object.keys(this.tools[l].contents["outputs"])[m];
-                                            var outputType = this.tools[l].contents["outputs"][outputName]["type"];
+                    var selectedInputSource = "Workflow_Input";
+                    if (this.newStepName in this.steps)
+                        selectedInputSource = this.steps[this.newStepName].selectedInputSources[inputName];
 
-                                            if (inputType == outputType) {
-                                                relevantOutputs.push({
-                                                    stepName: this.steps[k].stepName,
-                                                    outputName: outputName
-                                                });
-                                            }
-                                        }
-                                    }
-                                }
+                    // These are outputs from other steps that could be connected to the inputs for this step.
+                    // They appear in the dropdown menus.
+                    // Iterate through existing steps and see which outputs are the same type as this input.
+                    // Ignore the step that the user is editing.
+                    var inputSourceOptions = [{id: "Workflow_Input", text: "Create a new workflow input that will be mapped to this input"}];
+                    for (let stepName in this.steps) {
+                        if (stepName == this.newStepName)
+                            continue;
+
+                        var otherStepToolName = this.steps[stepName].toolName;
+
+                        for (let otherStepOutputName in toolOutputs) {
+                            var otherStepOutputType = toolOutputs[otherStepOutputName]["type"];
+
+                            if (otherStepOutputType == inputType) {
+                                var id = `${stepName}/${otherStepOutputName}`;
+                                var text = `Use the ${otherStepOutputName} output of the ${stepName} step`;
+
+                                inputSourceOptions.push({id: id, text: text});
                             }
-
-                            this.newStepToolInputs.push({
-                                name: inputName,
-                                type: inputType,
-                                doc: this.tools[i].contents["inputs"][inputName]["doc"],
-                                relevantOutputs: relevantOutputs,
-                                value: "Workflow_Input"
-                            });
                         }
+                    }
 
-                        // Iterate through the outputs and find any that the user might want to use as workflow outputs.
-                        // Deliberately exclude standard out and standard error.
-                        var j;
-                        for (j = 0; j < Object.keys(this.tools[i].contents["outputs"]).length; j++) {
-                            var outputName = Object.keys(this.tools[i].contents["outputs"])[j];
-                            var outputType = this.tools[i].contents["outputs"][outputName]["type"];
+                    this.newStepToolInputs.push({
+                        inputName: inputName,
+                        selectedInputSource: selectedInputSource,
+                        inputSourceOptions: inputSourceOptions
+                    });
+                }
 
-                            if (outputType == "stdout" || outputType == "stderr")
-                                continue;
+                // Iterate through the outputs and find any that the user wants to use as workflow outputs.
+                this.newStepToolOutputs = [];
+                this.newStepToolOutputsChecked = [];
+                for (let outputName in toolOutputs) {
+                    var outputType = toolOutputs[outputName]["type"];
 
-                            this.newStepToolOutputs.push({
-                                name: outputName,
-                                type: outputType,
-                                value: false
-                            });
+                    if (outputType != "stdout" && outputType != "stderr") {
+                        this.newStepToolOutputs.push(outputName);
+
+                        if (this.newStepName in this.steps && this.steps[this.newStepName].useAsWorkflowOutputs[outputName]) {
+                            this.newStepToolOutputsChecked.push(outputName);
                         }
-
-                        break;
                     }
                 }
             },
-            addStep() {
+            addUpdateStep() {
                 if (this.newStepName.trim().length == 0 || /[^A-Za-z0-9_]+/.test(this.newStepName)) {
                     alert("A step name must be specified. It may only include letters, numbers, and underscores.");
                     return;
                 }
 
-                var i;
-                for (i = 0; i < this.steps.length; i++) {
-                    if (this.newStepName == this.steps[i].stepName) {
-                        alert("A step with that name already exists, so it cannot be added.")
-                        return;
-                    }
-                }
-
-                if (this.newStepToolName.trim().length == 0) {
-                    alert("Please select a tool for this step.");
-                    return;
-                }
-
-                var inputSources = [];
+                let selectedInputSources = {};
                 var i;
                 for (i = 0; i < this.newStepToolInputs.length; i++) {
-                    inputSources.push(this.newStepToolInputs[i].value);
+                    selectedInputSources[this.newStepToolInputs[i].inputName] = this.newStepToolInputs[i].selectedInputSource;
                 }
 
-                var useAsWorkflowOutputs = [];
-                var i;
-                for (i = 0; i < this.newStepToolOutputs.length; i++) {
-                    useAsWorkflowOutputs.push(this.newStepToolOutputs[i].value);
+                let useAsWorkflowOutputs = {};
+                for (let outputName of this.newStepToolOutputs) {
+                    useAsWorkflowOutputs[outputName] = this.newStepToolOutputsChecked.includes(outputName);
                 }
 
-                this.steps.push({
-                    stepName: this.newStepName,
-                    toolName: this.newStepToolName,
-                    inputSources: inputSources,
-                    useAsWorkflowOutputs: useAsWorkflowOutputs
-                });
+                this.steps[this.newStepName] = {toolName: this.newStepToolName, selectedInputSources: selectedInputSources, useAsWorkflowOutputs: useAsWorkflowOutputs};
+                this.steps = Object.assign({}, this.steps, this.steps);
 
                 this.newStepName = "";
                 this.newStepToolName = "";
-                this.newStepToolInputs = [];
-                this.newStepToolOutputs = [];
             },
-            deleteStep: function (x) {
-                this.steps = this.steps.filter(function(value, index, arr) {
-                    return value.stepName != x.stepName;
-                })
+            editStep: function (stepName) {
+                let step = this.steps[stepName];
+
+                this.newStepName = stepName;
+                this.newStepToolName = step.toolName;
+                this.getNewStepToolData(step.toolName);
+                //this.$refs.newStepName.focus();
+                //this.$refs.stepsPanel.scrollIntoView();
+            },
+            deleteStep: function (stepName) {
+                for (let otherStepName in this.steps) {
+                    for (let inputName in this.steps[otherStepName].selectedInputSources) {
+                        var inputSource = this.steps[otherStepName].selectedInputSources[inputName];
+                        
+                        if (inputSource.split("/")[0] == stepName) {
+                            alert(`At least one output ot this step is used as input to the ${otherStepName} step, so it cannot be deleted at this time.`);
+                            return;
+                        }
+                    }
+                }
+
+                delete this.steps[stepName];
+                this.steps = Object.assign({}, this.steps, this.steps);
+
+                this.newStepName = "";
+                this.newStepToolName = "";
             },
             parseWorkflowInputs() {
                 var result = "";
 
-                var i;
-                for (i = 0; i < this.steps.length; i++) {
-                    var stepName = this.steps[i].stepName;
-                    var toolName = this.steps[i].toolName;
+                for (let stepName in this.steps) {
+                    var toolName = this.steps[stepName].toolName;
 
-                    var j;
-                    for (j = 0; j < this.steps[i].inputSources.length; j++) {
-                        if (this.steps[i].inputSources[j] == "Workflow_Input") {
-                            inputInfo = this.getToolInfo(toolName, "inputs", j);
-                            result += `${stepName}__${inputInfo.name}: ${inputInfo.type}\n`;
-                            //result += `${inputInfo.name}: ${inputInfo.type}\n`;
+                    for (let inputName in this.steps[stepName].selectedInputSources) {
+                        var inputSource = this.steps[stepName].selectedInputSources[inputName];
+
+                        if (inputSource == "Workflow_Input") {
+                            var inputType = this.tools[toolName]["inputs"][inputName]["type"];
+                            result += `${stepName}__${inputName}: ${inputType}\n`;
                         }
                     }
                 }
@@ -605,81 +564,55 @@ $schemas:
             parseWorkflowOutputs() {
                 var result = "";
 
-                var i;
-                for (i = 0; i < this.steps.length; i++) {
-                    var stepName = this.steps[i].stepName;
-                    var toolName = this.steps[i].toolName;
+                for (let stepName in this.steps) {
+                    var toolName = this.steps[stepName].toolName;
 
-                    var j;
-                    for (j = 0; j < this.steps[i].useAsWorkflowOutputs.length; j++) {
-                        if (this.steps[i].useAsWorkflowOutputs[j]) {
-                            outputInfo = this.getToolInfo(toolName, "outputs", j);
-                            result += `${stepName}__${outputInfo.name}:\n`;
-                            result += `  type: ${outputInfo.type}\n`;
-                            result += `  outputSource: ${stepName}/${outputInfo.name}\n`;
+                    for (let outputName in this.steps[stepName].useAsWorkflowOutputs) {
+                        if (this.steps[stepName].useAsWorkflowOutputs[outputName]) {
+                            var outputType = this.tools[toolName]["outputs"][outputName]["type"];
+
+                            result += `${stepName}__${outputName}:\n`;
+                            result += `  type: ${outputType}\n`;
+                            result += `  outputSource: ${stepName}/${outputName}\n`;
                         }
                     }
                 }
 
                 return result;
             },
-            getToolInfo(toolName, topLevelKey, index) {
-                var i;
-                for (i = 0; i < this.tools.length; i++) {
-                    if (this.tools[i].name == toolName) {
-                        var name = Object.keys(this.tools[i].contents[topLevelKey])[index];
-
-                        return {
-                            name: name,
-                            type: this.tools[i].contents[topLevelKey][name]["type"],
-                            doc: this.tools[i].contents[topLevelKey][name]["doc"]
-                        };
-                    }
-                }
-            },
             parseSteps() {
                 var result = "";
 
-                var i;
-                for (i = 0; i < this.steps.length; i++) {
-                    var stepName = this.steps[i].stepName;
-                    var toolName = this.steps[i].toolName;
+                for (let stepName in this.steps) {
+                    var toolName = this.steps[stepName].toolName;
 
                     result += `  ${stepName}:\n`;
                     result += `    run: ${toolName}\n`;
 
-                    // Parse the inputs
                     var inputResult = "";
-                    var j;
-                    for (j = 0; j < this.steps[i].inputSources.length; j++) {
-                        var inputInfo = this.getToolInfo(toolName, "inputs", j);
+                    for (let inputName in this.steps[stepName].selectedInputSources) {
+                        var inputSource = this.steps[stepName].selectedInputSources[inputName];
 
-                        if (this.steps[i].inputSources[j] == "Workflow_Input") {
-                            inputResult += `      ${inputInfo.name}: ${stepName}__${inputInfo.name}\n`;
-                            //inputResult += `      ${inputInfo.name}: ${inputInfo.name}\n`;
+                        if (inputSource == "Workflow_Input") {
+                            inputResult += `      ${inputName}: ${stepName}__${inputName}\n`;
                         }
                         else {
-                            inputResult += `      ${inputInfo.name}: ${this.steps[i].inputSources[j].stepName}/${this.steps[i].inputSources[j].outputName}\n`;
+                            inputResult += `      ${inputName}: ${inputSource}\n`;
                         }
                     }
 
-                    // Add the inputs to the overall text
                     if (inputResult.length > 0)
                         result += "    in:\n" + inputResult;
 
-                    // Parse the outputs
                     var outputResult = "";
-                    var j;
-                    for (j = 0; j < this.steps[i].useAsWorkflowOutputs.length; j++) {
-                        var outputInfo = this.getToolInfo(toolName, "outputs", j);
+                    for (let outputName in this.steps[stepName].useAsWorkflowOutputs) {
+                        var outputType = this.tools[toolName]["outputs"][outputName]["type"];
 
-                        if (outputInfo.type == "stdout" || outputInfo.type == "stderr")
-                                continue;
-
-                        outputResult += `      [${outputInfo.name}]\n`;
+                        if (outputType != "stdout" && outputType != "stderr") {
+                            outputResult += `      [${outputName}]\n`;
+                        }
                     }
 
-                    // Add the outputs to the overall text
                     if (outputResult.length > 0)
                         result += "    out:\n" + outputResult;
                 }
@@ -754,6 +687,13 @@ $schemas:
             },
             isValidORCID: function(orcid) {
                 return (/https:\/\/orcid.org\/\d{4}-\d{4}-\d{4}-\d{4}/.test(orcid));
+            },
+            // Derived from https://www.w3docs.com/snippets/javascript/how-to-sort-javascript-object-by-key.html
+            sortObject: function(obj) {
+                return Object.keys(obj).sort().reduce(function (result, key) {
+                    result[key] = obj[key];
+                    return result;
+                }, {});
             }
         }
     });
