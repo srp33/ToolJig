@@ -1,6 +1,8 @@
 cwlVersion: v1.2
 class: CommandLineTool
-label: add tool
+label: Adds two numbers
+doc: |-
+  This tool adds two integers that are specified as inputs and saves the sum to a file.
 requirements:
   ShellCommandRequirement: {}
   DockerRequirement:
@@ -40,6 +42,7 @@ inputs:
 arguments:
   - shellQuote: false
     valueFrom: |-
+      # This could be done with a bash command, but we're using Python for consistency with the other tool.
       python add.py $(inputs.number1) $(inputs.number2) $(inputs.output_file_name)
 outputs:
   output_from_input_1:

@@ -1,3 +1,0 @@
-cwltool ../add_tool.cwl add1_objects.yml
-cwltool ../add_tool.cwl add2_objects.yml
-cwltool ../cat_tool.cwl cat_objects.yml

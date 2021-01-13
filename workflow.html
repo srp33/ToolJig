@@ -146,7 +146,7 @@
             <h4 class="card-title">Define workflow steps:</h4>
 
             <p>Here you can define each step of the workflow.</p>
-            
+
             <form v-on:submit.prevent="addUpdateStep">
 
                 <div class="form-group">
@@ -191,6 +191,9 @@
                     <button class="btn btn-info">Add / Update</button>
                 </div>
             </form>
+
+            {{ steps 
+            }}
 
             <p v-if="steps.length > 0">Here you can see which steps have been added. You can also edit (<span class="glyphicon glyphicon-edit" aria-hidden="true"></span>) or remove (<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>) steps if you wish.</p>
 

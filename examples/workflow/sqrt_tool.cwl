@@ -1,10 +1,12 @@
 cwlVersion: v1.2
 class: CommandLineTool
-label: cat tool
+label: Calculates the square root of a number
+doc: |-
+  This tool reads an integer from a file, calculates the square root of that number, and saves the output to a file.
 requirements:
   ShellCommandRequirement: {}
   DockerRequirement:
-    dockerImageId: cat_tool
+    dockerImageId: sqrt_tool
     dockerFile: |-
       FROM python3.8.2
   NetworkAccess:
@@ -12,33 +14,24 @@ requirements:
     networkAccess: true
   InitialWorkDirRequirement:
     listing:
-    - entryname: cat.py
+    - entryname: sqrt.py
       entry: |-
+        import math
         import sys
         
-        file_path1 = sys.argv[1]
-        file_path2 = sys.argv[2]
-        out_file_path = sys.argv[3]
+        number_file_path = sys.argv[1]
+        out_file_path = sys.argv[2]
         
-        with open(file_path1) as file1:
-            contents1 = file1.read()
-        
-        with open(file_path2) as file2:
-            contents2 = file2.read()
+        with open(number_file_path) as file1:
+            number = float(file1.read())
         
         with open(out_file_path, 'w') as out_file:
-            out_file.write(contents1 + "\n")
-            out_file.write(contents2 + "\n")
+            out_file.write(str(math.sqrt(number)))
 inputs:
-  file1:
+  number_file:
     type: File
     doc: |-
-      An file with text
-    format: edam:format_1964
-  file2:
-    type: File
-    doc: |-
-      A second file
+      A file with a single number in it
     format: edam:format_1964
   output_file_name:
     type: string
@@ -48,7 +41,7 @@ inputs:
 arguments:
   - shellQuote: false
     valueFrom: |-
-      python cat.py $(inputs.file1.path) $(inputs.file2.path) $(inputs.output_file_name)
+      python sqrt.py $(inputs.number_file.path) $(inputs.output_file_name)
 outputs:
   output_from_input_1:
     type: File

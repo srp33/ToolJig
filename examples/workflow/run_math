@@ -1,1 +1,0 @@
-cwltool math.cwl math_objects.yml
