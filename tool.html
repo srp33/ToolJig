@@ -39,7 +39,7 @@
 
         <p>The <a href="https://www.commonwl.org/" target="_blank">Common Workflow Language</a> (CWL) is an open specification for describing command-line tools and workflows. CWL documents are used in many scientific disciplines to ensure that tools and workflows can be executed in a manner that is portable across workflow engines and computer systems. <em>ToolJig</em> facilitates creation of CWL tool descriptions, workflows, and input-object files for those tools. <strong>This portion of ToolJig focuses on building tool descriptions.</strong> Use <a href="workflow.html" target="_blank">this app</a> if you wish to create workflows.</p>
 
-        <p>Tool descriptions created in ToolJig are fully compatible with v1.2 of the <a href="https://commonwl.org/v1.2" target="_blank">CWL specification</a>. You can see some example CWL tool descriptions <a href="https://github.com/srp33/ToolJig" target="_blank">here</a>. Our goal is support <em>common</em> use cases for research analyses. However, some options within the CWL specification are <em>not</em> supported; users should consult the specification if they wish to use other available features.</p>
+        <p>Tool descriptions created in ToolJig are compatible with v1.2 (or 1.0 or 1.1) of the <a href="https://commonwl.org/v1.2" target="_blank">CWL specification</a>. You can see some example CWL tool descriptions <a href="https://github.com/srp33/ToolJig" target="_blank">here</a>. Our goal is support <em>common</em> use cases for research analyses. However, some options within the CWL specification are <em>not</em> supported; users should consult the specification if they wish to use other available features.</p>
 
         <hr style="border: 1px solid black;border-radius: 1px;" />
 
@@ -1589,7 +1589,7 @@
 
         // The data attribute stores data that will be rendered.
         data: {
-            upload_file: "",
+            //upload_file: "",
             basics_errors: [],
             input_errors: [],
             overall_input_errors: [],
@@ -1797,6 +1797,12 @@ $schemas:
                 reader.onload = event => {
 	                const text = reader.result;
                     const yaml_dict = jsyaml.safeLoad(text);
+
+                    if (yaml_dict["cwlVersion"] != "v1.0" && yaml_dict["cwlVersion"] != "v1.1" && yaml_dict["cwlVersion"] != "v1.2") {
+                        alert(`${fileName} is not using a version of CWL that is compatible with this tool (1.0, 1.1, or 1.2).`);
+
+                        return;
+                    }
 
                     this.tool_id = this.getYamlValue(yaml_dict, ["requirements", "DockerRequirement", "dockerImageId"], true);
                     this.tool_label = this.getYamlValue(yaml_dict, ["label"], false);

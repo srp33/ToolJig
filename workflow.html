@@ -39,24 +39,50 @@
 
         <p>The <a href="https://www.commonwl.org/" target="_blank">Common Workflow Language</a> (CWL) is an open specification for describing command-line tools and workflows. CWL documents are used in many scientific disciplines to ensure that tools and workflows can be executed in a manner that is portable across workflow engines and computer systems. <em>ToolJig</em> facilitates creation of CWL tool descriptions, workflows, and input-object files for those tools. <strong>This portion of ToolJig focuses on building workflows.</strong> Use <a href="tool.html" target="_blank">this app</a> if you wish to create tool descriptions.</p>
 
-        <p>Workflows created in ToolJig are fully compatible with v1.2 of the <a href="https://commonwl.org/v1.2" target="_blank">CWL specification</a>. You can see some example CWL workflows <a href="https://github.com/srp33/ToolJig" target="_blank">here</a>. Our goal is support <em>common</em> use cases for research analyses. However, some options within the CWL specification are <em>not</em> supported; users should consult the specification if they wish to use other available features.</p>
+        <p>Workflows created in ToolJig are compatible with v1.2 (or 1.0 or 1.1) of the <a href="https://commonwl.org/v1.2" target="_blank">CWL specification</a>. You can see some example CWL workflows <a href="https://github.com/srp33/ToolJig" target="_blank">here</a>. Our goal is support <em>common</em> use cases for research analyses. However, some options within the CWL specification are <em>not</em> supported; users should consult the specification if they wish to use other available features.</p>
+
+        <p>Required field = <font color="red"><strong>*</strong></font></p>
 
         <hr style="border: 1px solid black;border-radius: 1px;" />
 
-        <h4 class="card-title">Upload existing file (optional):</h4>
+        <div class="panel panel-default" ref="uploadToolPanel" id="uploadToolPanel">
+            <h4 class="card-title">Upload tool descriptions<font color="red">*</font>:</h4>
 
-        <p>If you previously created a CWL workflow using ToolJig, you can upload it and then edit the information below. <font color="darkorange">(Uploading an existing file may not work for CWL files that were not created using alternative means.)</font> If you do <em>not</em> need to edit an existing CWL file, skip this step.</p>
+            <p>The first step to creating a workflow is to upload CWL tool descriptions that will be used as steps within the workflow.</p>
 
-        <div class="form-group">
-            <input id="upload_file" type="file" placeholder="Please specify a file to be uploaded." class="form-control" v-on:change="onUploadFile" />
+            <div class="form-group">
+                <input id="upload_tool_file" type="file" placeholder="Please specify a file to be uploaded." class="form-control" v-on:change="onUploadToolFile($event)" multiple />
+            </div>
+
+            <p v-if="Object.keys(tools).length > 0">Here you can see which tool files have been uploaded. You can also remove (<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>) these files if you wish.</p>
+
+            <ol class="list-group">
+                <li v-for="tool_name in Object.keys(sortObject(tools))" class="list-group-item">{{ tool_name }}
+                    <button v-on:click="deleteTool(tool_name)" class="btn btn-default">
+                        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                    </button>
+                </li>
+            </ol>
         </div>
 
         <hr style="border: 1px solid black;border-radius: 1px;" />
 
-        <p>This section enables you to create a CWL workflow. Please fill in the information as requested below. Required field = <font color="red">*</font>.</p>
+        <div class="panel panel-default" ref="uploadToolPanel" id="uploadToolPanel">
+            <h4 class="card-title">Upload existing workflow file (optional):</h4>
+
+            <p>If you previously created a CWL workflow using ToolJig, you can upload it here and then edit it below. If you do <em>not</em> need to edit an existing CWL file, skip this step.</p>
+
+            <div class="form-group">
+                <input id="upload_file" type="file" placeholder="Please specify a file to be uploaded." class="form-control" v-on:change="onUploadWorkflowFile" />
+            </div>
+        </div>
+
+        <hr style="border: 1px solid black;border-radius: 1px;" />
 
         <div class="panel panel-default" ref="inputPanel">
             <h4 class="card-title">Specify basics<sup><font color="red">*</font></sup>:</h4>
+
+            <p>This section enables you to create a CWL workflow. Please fill in the information as requested below.</p>    
 
             <div class="form-group">
                 <label for="workflow_id">Workflow identifier:</label>
@@ -101,13 +127,13 @@
             <div class="form-group">
                 <label for="license">License:</label>
                 <select v-model="license" id="license" class="form-control" class="form-control" aria-describedby="helpBlock">
-                    <option value="AFL-3.0">Academic Free License v3.0</option>
-                    <option value="Apache-2.0">Apache License 2.0</option>
-                    <option value="BSD-3-Clause">BSD 3-Clause "New" or "Revised" License</option>
-                    <option value="CC0-1.0">Creative Commons Zero v1.0 Universal</option>
-                    <option value="CDDL-1.1">Common Development and Distribution License 1.1</option>
-                    <option value="LGPL-3.0-or-later">GNU Lesser General Public License v3.0 or later</option>
-                    <option value="MIT">MIT License</option>
+                    <option value="https://spdx.org/licenses/AFL-3.0">Academic Free License v3.0</option>
+                    <option value="https://spdx.org/licenses/Apache-2.0">Apache License 2.0</option>
+                    <option value="https://spdx.org/licenses/BSD-3-Clause">BSD 3-Clause "New" or "Revised" License</option>
+                    <option value="https://spdx.org/licenses/CC0-1.0">Creative Commons Zero v1.0 Universal</option>
+                    <option value="https://spdx.org/licenses/CDDL-1.1">Common Development and Distribution License 1.1</option>
+                    <option value="https://spdx.org/licenses/LGPL-3.0-or-later">GNU Lesser General Public License v3.0 or later</option>
+                    <option value="https://spdx.org/licenses/MIT">MIT License</option>
                 </select>
                 <div id="helpBlock" class="form-text text-muted">
                     Please select a software license that applies to this CWL document. This will indicate conditions under which others can use the document. Details about these licenses and a more complete list can be found <a href="https://spdx.org/licenses/" target="_blank">here</a>. 
@@ -122,27 +148,10 @@
             </font></p>
         </div>
 
-        <div class="panel panel-default" ref="uploadToolPanel">
-            <h4 class="card-title">Upload tool descriptions:</h4>
-
-            <p>The first step to creating a workflow is to upload CWL tool descriptions that will be used as steps within the workflow.</p>
-
-            <div class="form-group">
-                <input id="upload_tool_file" type="file" placeholder="Please specify a file to be uploaded." class="form-control" v-on:change="onUploadToolFile($event)" multiple />
-            </div>
-
-            <p v-if="Object.keys(tools).length > 0">Here you can see which tool files have been uploaded. You can also remove (<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>) these files if you wish.</p>
-
-            <ol class="list-group">
-                <li v-for="tool_name in Object.keys(sortObject(tools))" class="list-group-item">{{ tool_name }}
-                    <button v-on:click="deleteTool(tool_name)" class="btn btn-default">
-                        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-                    </button>
-                </li>
-            </ol>
-        </div>
+        <hr style="border: 1px solid black;border-radius: 1px;" v-if="Object.keys(tools).length > 0" />
 
         <div class="panel panel-default" ref="stepsPanel" v-if="Object.keys(tools).length > 0">
+            TODO: {{ steps }}
             <h4 class="card-title">Define workflow steps:</h4>
 
             <p>Here you can define each step of the workflow.</p>
@@ -191,9 +200,6 @@
                     <button class="btn btn-info">Add / Update</button>
                 </div>
             </form>
-
-            {{ steps 
-            }}
 
             <p v-if="steps.length > 0">Here you can see which steps have been added. You can also edit (<span class="glyphicon glyphicon-edit" aria-hidden="true"></span>) or remove (<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>) steps if you wish.</p>
 
@@ -263,27 +269,17 @@
         el: "#cwl_app",
 
         data: {
-            upload_file: "",
             basics_errors: [],
             other_errors: [],
-            workflow_id: "math",
-            //TODO: workflow_id: "",
-            workflow_label: "Simple workflow example",
-            //TODO: workflow_label: "",
-            //TODO: doc: "",
-            doc: "This workflow accepts four integers, adds the first two, adds the last two, and then creates a text file that stores the two sums.",
-            //TODO: doc: "This is a really cool workflow. This description is kinda long kinda longkinda long kinda longkinda long kinda longkinda long kinda longkinda long kinda longkinda long kinda longkinda long kinda longkinda long kinda longkinda long kinda longkinda long kinda longkinda long kinda long.",
-            //TODO: author_name: "",
-            author_name: "Stephen Piccolo",
-            //TODO: author_orcid: "",
-            author_orcid: "https://orcid.org/0000-0003-2001-5640",
+            workflow_id: "",
+            workflow_label: "",
+            doc: "",
+            author_name: "",
+            author_orcid: "",
+            //author_orcid: "https://orcid.org/0000-0003-2001-5640",
             license: "Apache-2.0",
-            //TODO:
             tools: {},
-            //tools: { "cat_tool.cwl": { "cwlVersion": "v1.2", "class": "CommandLineTool", "label": "cat tool", "requirements": { "ShellCommandRequirement": {}, "DockerRequirement": { "dockerImageId": "cat_tool", "dockerFile": "FROM python3.8.2" }, "NetworkAccess": { "class": "NetworkAccess", "networkAccess": true }, "InitialWorkDirRequirement": { "listing": [ { "entryname": "cat.py", "entry": "import sys\n\nfile_path1 = sys.argv[1]\nfile_path2 = sys.argv[2]\nout_file_path = sys.argv[3]\n\nwith open(file_path1) as file1:\n contents1 = file1.read()\n\nwith open(file_path2) as file2:\n contents2 = file2.read()\n\nwith open(out_file_path, 'w') as out_file:\n out_file.write(contents1 + \"\\n\")\n out_file.write(contents2 + \"\\n\")" } ] } }, "inputs": { "file1": { "type": "File", "doc": "An file with text", "format": "edam:format_1964" }, "file2": { "type": "File", "doc": "A second file", "format": "edam:format_1964" }, "output_file_name": { "type": "string", "doc": "Name of the output file\n#Output_File=edam:format_1964" } }, "arguments": [ { "shellQuote": false, "valueFrom": "python cat.py $(inputs.file1.path) $(inputs.file2.path) $(inputs.output_file_name)" } ], "outputs": { "output_from_input_1": { "type": "File", "outputBinding": { "glob": "$(inputs.output_file_name)" }, "doc": "Output file matching the name specified in the \"output_file_name\" input.", "format": "edam:format_1964" }, "standard_output": { "type": "stdout", "format": "edam:format_1964" }, "standard_error": { "type": "stderr", "format": "edam:format_1964" } }, "stdout": "stdout.txt", "stderr": "stderr.txt", "s:author": [ { "class": "s:Person", "s:name": "Stephen Piccolo" } ], "s:dateCreated": "2020-07-14", "s:license": "https://spdx.org/licenses/Apache-2.0", "$namespaces": { "s": "https://schema.org/", "edam": "http://edamontology.org/" }, "$schemas": [ "https://schema.org/version/latest/schemaorg-current-http.rdf", "http://edamontology.org/EDAM_1.23.owl" ] }, "add_tool.cwl": { "cwlVersion": "v1.2", "class": "CommandLineTool", "label": "add tool", "requirements": { "ShellCommandRequirement": {}, "DockerRequirement": { "dockerImageId": "add_tool", "dockerFile": "FROM python3.8.2" }, "NetworkAccess": { "class": "NetworkAccess", "networkAccess": true }, "InitialWorkDirRequirement": { "listing": [ { "entryname": "add.py", "entry": "import sys\n\nnumber1 = int(sys.argv[1])\nnumber2 = int(sys.argv[2])\nout_file_path = sys.argv[3]\n\nwith open(out_file_path, 'w') as out_file:\n total = number1 + number2\n out_file.write(str(total))" } ] } }, "inputs": { "number1": { "type": "int", "doc": "An integer" }, "number2": { "type": "int", "doc": "A second number" }, "output_file_name": { "type": "string", "doc": "Name of the output file\n#Output_File=edam:format_1964" } }, "arguments": [ { "shellQuote": false, "valueFrom": "python add.py $(inputs.number1) $(inputs.number2) $(inputs.output_file_name)" } ], "outputs": { "output_from_input_1": { "type": "File", "outputBinding": { "glob": "$(inputs.output_file_name)" }, "doc": "Output file matching the name specified in the \"output_file_name\" input.", "format": "edam:format_1964" }, "standard_output": { "type": "stdout", "format": "edam:format_1964" }, "standard_error": { "type": "stderr", "format": "edam:format_1964" } }, "stdout": "stdout.txt", "stderr": "stderr.txt", "s:author": [ { "class": "s:Person", "s:name": "Stephen Piccolo" } ], "s:dateCreated": "2020-07-14", "s:license": "https://spdx.org/licenses/Apache-2.0", "$namespaces": { "s": "https://schema.org/", "edam": "http://edamontology.org/" }, "$schemas": [ "https://schema.org/version/latest/schemaorg-current-http.rdf", "http://edamontology.org/EDAM_1.23.owl" ] } },
-            //TODO:
             steps: {},
-            //steps: { "add1": { "toolName": "add_tool.cwl", "selectedInputSources": { "number1": "Workflow_Input", "number2": "Workflow_Input", "output_file_name": "Workflow_Input"}, "useAsWorkflowOutputs": {"output_from_input_1": false}}, "add2": {"toolName": "add_tool.cwl", "selectedInputSources": {"number1": "Workflow_Input", "number2": "Workflow_Input", "output_file_name": "Workflow_Input"}, "useAsWorkflowOutputs": {"output_from_input_1": false}}, "cat": {"toolName": "cat_tool.cwl", "selectedInputSources": {"file1": "add1/output_from_input_1", "file2": "add2/output_from_input_1", "output_file_name": "Workflow_Input"}, "useAsWorkflowOutputs": {"output_from_input_1": true}} },
             newStepName: "",
             newStepToolName: "",
             newStepToolInputs: [],
@@ -329,7 +325,7 @@ ${this.buildOptionalString("outputs:\n", this.indent(2, workflow_outputs))}
 ${this.buildOptionalString("steps:\n", this.parseSteps())}
 ${this.parseAuthorInfo()}
 s:dateCreated: "${this.getTodayDate()}"
-s:license: https://spdx.org/licenses/${this.license}
+s:license: ${this.license}
 $namespaces:
   s: https://schema.org/
   edam: http://edamontology.org/
@@ -346,9 +342,10 @@ $schemas:
         },
 
         methods: {
-            onUploadFile: function(e) {
-                var files = e.target.files || e.dataTransfer.files;
-                if (!e.target.files.length) {
+            onUploadWorkflowFile: function(e) {
+                const files = e.target.files || e.dataTransfer.files;
+
+                if (files.length == 0) {
                     console.log("No file was detected.");
                     return;
                 }
@@ -356,6 +353,69 @@ $schemas:
                 const reader = new FileReader();
 
                 reader.onload = event => {
+                    const text = reader.result;
+                    const yaml_dict = jsyaml.safeLoad(text);
+
+                    if (yaml_dict["cwlVersion"] != "v1.0" && yaml_dict["cwlVersion"] != "v1.1" && yaml_dict["cwlVersion"] != "v1.2") {
+                        alert(`The uploaded file is not using a version of CWL that is compatible with this tool (1.0, 1.1, or 1.2).`);
+
+                        return;
+                    }
+
+                    if (yaml_dict["class"] != "Workflow") {
+                        alert(`The uploaded file is not a CWL Workflow document.`);
+                    }
+
+                    // Find the names of tool files listed in the steps.
+                    // Make sure all of these tools have been uploaded.
+                    var steps = this.getYamlValue(yaml_dict, ["steps"]);
+                    var tool_name;
+                    for (step_name in steps) {
+                        tool_name = steps[step_name]["run"];
+
+                        if (!(tool_name in this.tools)) {
+                            alert(`Before you can upload an existing workflow, the tool description(s) for that workflow must have been uploaded. A tool description has not been uploaded for ${tool_name}, which is specified in the workflow.`);
+
+                            e.target.value = "";
+                            return;
+                        }
+                    }
+
+                    this.workflow_id = this.getYamlValue(yaml_dict, ["id"]);
+                    this.workflow_label = this.getYamlValue(yaml_dict, ["label"]);
+                    this.doc = this.getYamlValue(yaml_dict, ["doc"]);
+                    this.author_name = this.getYamlValue(yaml_dict, ["s:author", 0, "s:name"]);
+                    this.author_orcid = this.getYamlValue(yaml_dict, ["s:author", 0, "s:identifier"]);
+                    this.license = this.getYamlValue(yaml_dict, ["s:license"]);
+                    this.steps = [];
+
+                    for (step_name in this.getYamlValue(yaml_dict, ["steps"])) {
+                        var step = this.getYamlValue(yaml_dict, ["steps", step_name]);
+                        var tool_name = step.run;
+
+                        var selectedInputSources = {};
+                        for (input_name in step.in) {
+                            var input_source = step.in[input_name];
+                            if (input_source.includes("/"))
+                                selectedInputSources[input_name] = input_source;
+                            else
+                                selectedInputSources[input_name] = "Workflow_Input";
+                        }
+
+                        var outputSources = [];
+                        for (output_name in yaml_dict.outputs)
+                            outputSources.push(yaml_dict.outputs[output_name].outputSource);
+
+                        var useAsWorkflowOutputs = {};
+                        for (output_name of step.out) {
+                            useAsWorkflowOutputs[output_name] = outputSources.includes(`${step_name}/${output_name}`);
+                        }
+
+                        this.steps[step_name] = {toolName: tool_name, selectedInputSources: selectedInputSources, useAsWorkflowOutputs: useAsWorkflowOutputs};
+                    }
+
+                    this.steps = Object.assign({}, this.steps, this.steps);
+
                     e.target.value = "";
 	            }
 
@@ -364,7 +424,7 @@ $schemas:
 	                console.error(e);
 	            }
 
-	            // reader.readAsText(e.target.files[0]);
+                reader.readAsText(e.target.files[0]);
             },
             getYamlValue: function(yaml_dict, key_array) {
                 // This goes iteratively deeper into the dictionary to try to find the value.
@@ -398,16 +458,20 @@ $schemas:
 
                         if (fileContents["class"] != "CommandLineTool") {
                             alert(`${fileName} is missing required element "class: CommandLineTool".`);
+
+                            e.target.value = "";
                             return;
                         }
 
-                        if (fileContents["cwlVersion"] != "v1.2") {
-                            alert(`${fileName} is not using the same version of the CWL spec as this workflow. It must use "cwlVersion: v1.2".`);
-                            return;
-                        }
+                        // if (fileContents["cwlVersion"] != "v1.2") {
+                        //     alert(`${fileName} is not using the same version of the CWL spec as this workflow. It must use "cwlVersion: v1.2".`);
+                        //     return;
+                        // }
 
                         if (fileName in this.tools) {
                             alert("Multiple tools with the same name cannot be used.");
+
+                            e.target.value = "";
                             return;
                         }
 
