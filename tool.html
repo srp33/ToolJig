@@ -815,7 +815,7 @@
                     <button v-on:click="editAuxiliaryFile(aux)" class="btn btn-default">
                         <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
                     </button>
-                    <button v-on:click="deleteAuxiliaryFile(aux)" class="btn btn-default">
+                    <button v-on:click="deleteAuxiliaryFile(aux, true)" class="btn btn-default">
                         <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
                     </button>
                 </li>
@@ -1476,7 +1476,7 @@
                     <button v-on:click="editOutput(output)" class="btn btn-default">
                         <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
                     </button>
-                    <button v-on:click="deleteOutput(output)" class="btn btn-default">
+                    <button v-on:click="deleteOutput(output, true)" class="btn btn-default">
                         <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
                     </button>
                 </li>
@@ -1999,7 +1999,7 @@ $schemas:
                 var i;
                 for (i = 0; i < this.auxiliary_files.length; i++)
                     if (this.auxiliary_files[i].name == this.newAuxName)
-                        this.deleteAuxiliaryFile(this.auxiliary_files[i]);
+                        this.deleteAuxiliaryFile(this.auxiliary_files[i], false);
 
                 this.auxiliary_files.push({
                     name: this.newAuxName,
@@ -2009,13 +2009,15 @@ $schemas:
                 this.newAuxName = "";
                 this.newAuxContents = "";
             },
-            deleteAuxiliaryFile: function(x) {
+            deleteAuxiliaryFile: function(x, clear) {
                 this.auxiliary_files = this.auxiliary_files.filter(function(value, index, arr) {
                     return value.name != x.name;
                 })
 
-                this.newAuxName = "";
-                this.newAuxContents = "";
+                if (clear) {
+                    this.newAuxName = "";
+                    this.newAuxContents = "";
+                }
             },
             editAuxiliaryFile: function(x) {
                 this.newAuxName = x.name;
@@ -2050,7 +2052,7 @@ $schemas:
                 var i;
                 for (i = 0; i < this.outputs.length; i++)
                     if (this.outputs[i].glob == this.newOutputGlob)
-                        this.deleteOutput(this.outputs[i]);
+                        this.deleteOutput(this.outputs[i], false);
 
                 var secondaryFilesValue = [];
                 if (this.newOutputSecondary != "")
@@ -2068,15 +2070,17 @@ $schemas:
                 this.newOutputSecondary = "";
                 this.newOutputFileFormat = "";
             },
-            deleteOutput: function(x) {
+            deleteOutput: function(x, clear) {
                 this.outputs = this.outputs.filter(function(value, index, arr) {
                     return value.glob != x.glob;
                 })
 
-                this.newOutputGlob = "";
-                this.newOutputDoc = "";
-                this.newOutputSecondary = "";
-                this.newOutputFileFormat = "";
+                if (clear) {
+                    this.newOutputGlob = "";
+                    this.newOutputDoc = "";
+                    this.newOutputSecondary = "";
+                    this.newOutputFileFormat = "";
+                }
             },
             editOutput: function(x) {
                 this.newOutputGlob = x.glob;

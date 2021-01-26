@@ -17,7 +17,7 @@
 
 <!--Here we define any custom CSS attributes that we want to be used.-->
 <style>
-    .panel-default {
+    .panel-color1 {
         cursor: pointer;
         background-color: #f7f2ef;
         color:#000000;
@@ -27,7 +27,29 @@
         padding-right: 10px;
         border-radius: 4px 4px 0px 0px;
         border: 1px solid #f7f2ef;
-}
+    }
+    .panel-color2 {
+        cursor: pointer;
+        background-color: #f0e9e6;
+        color:#000000;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        padding-left: 10px;
+        padding-right: 10px;
+        border-radius: 4px 4px 4px 4px;
+        border: 1px solid #775d51;
+    }
+    .panel-color3 {
+        cursor: pointer;
+        background-color: #d4cbc8;
+        color:#363030;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        padding-left: 10px;
+        padding-right: 10px;
+        border-radius: 4px 4px 4px 4px;
+        border: 1px solid #c2b3ad;
+    }
 </style>
 
 <div class="container" align="left">
@@ -45,7 +67,7 @@
 
         <hr style="border: 1px solid black;border-radius: 1px;" />
 
-        <div class="panel panel-default" ref="uploadToolPanel" id="uploadToolPanel">
+        <div class="panel panel-color1" ref="uploadToolPanel" id="uploadToolPanel">
             <h4 class="card-title">Upload tool descriptions<font color="red">*</font>:</h4>
 
             <p>The first step to creating a workflow is to upload CWL tool descriptions that will be used as steps within the workflow.</p>
@@ -67,7 +89,7 @@
 
         <hr style="border: 1px solid black;border-radius: 1px;" />
 
-        <div class="panel panel-default" ref="uploadToolPanel" id="uploadToolPanel">
+        <div class="panel panel-color1" ref="uploadToolPanel" id="uploadToolPanel">
             <h4 class="card-title">Upload existing workflow file (optional):</h4>
 
             <p>If you previously created a CWL workflow using ToolJig, you can upload it here and then edit it below. If you do <em>not</em> need to edit an existing CWL file, skip this step.</p>
@@ -79,7 +101,7 @@
 
         <hr style="border: 1px solid black;border-radius: 1px;" />
 
-        <div class="panel panel-default" ref="inputPanel">
+        <div class="panel panel-color1" ref="inputPanel">
             <h4 class="card-title">Specify basics<sup><font color="red">*</font></sup>:</h4>
 
             <p>This section enables you to create a CWL workflow. Please fill in the information as requested below.</p>    
@@ -150,8 +172,7 @@
 
         <hr style="border: 1px solid black;border-radius: 1px;" v-if="Object.keys(tools).length > 0" />
 
-        <div class="panel panel-default" ref="stepsPanel" v-if="Object.keys(tools).length > 0">
-            TODO: {{ steps }}
+        <div class="panel panel-color1" ref="stepsPanel" v-if="Object.keys(tools).length > 0">
             <h4 class="card-title">Define workflow steps:</h4>
 
             <p>Here you can define each step of the workflow.</p>
@@ -178,12 +199,12 @@
 
                     <p>The inputs for <code>{{ newStepToolName }}</code> are shown below. For each input, there are two options: 1) create a new input for the entire workflow that will be mapped to this input, or 2) indicate that the output of a prior step will be mapped to this input. Please indicate either option below. <span v-if="this.steps == 0">Because this is the first step of the workflow, the inputs can only be specified as workflow inputs.</span></p>
 
-                    <input_dropdown 
+                    <input_source_selector 
                         v-for="(input, index) in newStepToolInputs" 
                         :key="input.inputName"
                         v-bind="input"
                         v-model="newStepToolInputs[index].selectedInputSource">
-                    </input_dropdown>
+                    </input_source_selector>
                 </div>
 
                 <div class="form-group" v-if="newStepToolName.length > 0 && newStepName.length > 0">
@@ -201,13 +222,14 @@
                 </div>
             </form>
 
-            <p v-if="steps.length > 0">Here you can see which steps have been added. You can also edit (<span class="glyphicon glyphicon-edit" aria-hidden="true"></span>) or remove (<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>) steps if you wish.</p>
+            <p v-if="steps.length > 0">Here you can see which steps have been added. You can also remove (<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>) steps if you wish.</p>
+            <!--<p v-if="steps.length > 0">Here you can see which steps have been added. You can also edit (<span class="glyphicon glyphicon-edit" aria-hidden="true"></span>) or remove (<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>) steps if you wish.</p>-->
 
             <ol class="list-group">
                 <li v-for="stepName in Object.keys(steps)" class="list-group-item">{{ stepName }}
-                    <button v-on:click="editStep(stepName)" class="btn btn-default">
+                    <!--<button v-on:click="editStep(stepName)" class="btn btn-default">
                         <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
-                    </button>
+                    </button>-->
                     <button v-on:click="deleteStep(stepName)" class="btn btn-default">
                         <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
                     </button>
@@ -233,7 +255,7 @@
 
 <script>
     // See https://zaengle.com/blog/using-v-model-on-nested-vue-components
-    Vue.component("input_dropdown", {
+    Vue.component("input_source_selector", {
         props: {
             inputName: {
                 type: String,
@@ -249,14 +271,12 @@
             }
         },
         template: `
-            <div class="form-group">{{ inputName }}:
-                <select v-model="selectedInputSource" class="form-control">
-                    <option v-for="inputSourceOption in inputSourceOptions"
-                        :value="inputSourceOption.id"
-                        v-html="inputSourceOption.text"
-                    ></option>
-                </select>
-            </div>`,
+            <div class="form-group panel-color2"><div class="panel-color3"><strong>{{ inputName }}</strong></div><br />
+                <div v-for="inputSourceOption in inputSourceOptions">
+                    <input type="radio" v-model="selectedInputSource" :value="inputSourceOption.id"> <span v-html="inputSourceOption.text"></span>
+                </div>
+            </div>
+        `,
         computed: {
             selectedInputSource: {
                 get() {return this.value},
@@ -519,7 +539,7 @@ $schemas:
                     // They appear in the dropdown menus.
                     // Iterate through existing steps and see which outputs are the same type as this input.
                     // Ignore the step that the user is editing.
-                    var inputSourceOptions = [{id: "Workflow_Input", text: "Create a new workflow input that will be mapped to this input"}];
+                    var inputSourceOptions = [{id: "Workflow_Input", text: "Create a new workflow input that will be mapped to this input."}];
                     for (let stepName in this.steps) {
                         if (stepName == this.newStepName)
                             continue;
@@ -531,7 +551,13 @@ $schemas:
 
                             if (otherStepOutputType == inputType) {
                                 var id = `${stepName}/${otherStepOutputName}`;
-                                var text = `Use the ${otherStepOutputName} output of the ${stepName} step`;
+                                var text = `Use the <code>${otherStepOutputName}</code> output of the <code>${stepName}</code> step.`;
+
+                                var otherStepOutputDoc = "";
+                                if ("doc" in toolOutputs[otherStepOutputName])
+                                    text += ` (${toolOutputs[otherStepOutputName]["doc"]})`;
+                                    if (!text.endsWith("."))
+                                        text += ".";
 
                                 inputSourceOptions.push({id: id, text: text});
                             }
@@ -563,6 +589,11 @@ $schemas:
             addUpdateStep() {
                 if (this.newStepName.trim().length == 0 || /[^A-Za-z0-9_]+/.test(this.newStepName)) {
                     alert("A step name must be specified. It may only include letters, numbers, and underscores.");
+                    return;
+                }
+
+                if (this.newStepName.trim() in this.steps) {
+                    alert("Two steps with the same name cannot be used in the same workflow.");
                     return;
                 }
 
