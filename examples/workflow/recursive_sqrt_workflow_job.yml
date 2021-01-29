@@ -1,0 +1,6 @@
+calculation1__number_file:
+    class: File
+    path: 64.txt
+    format: http://edamontology.org/format_1964
+calculation1__output_file_name: tmp.txt
+calculation2__output_file_name: recursive_sqrt_result.txt

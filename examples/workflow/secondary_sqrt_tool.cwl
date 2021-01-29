@@ -1,13 +1,13 @@
 cwlVersion: v1.2
 class: CommandLineTool
-label: Adds two numbers
+label: Calculates the square root of a number plus numbers stored in secondary files
 doc: |-
-  This tool adds two integers and saves the sum to a file.
+  This tool reads integers from a file and two secondary files, sums those numbers, calculates the square root of that sum, and saves the output to a file.
 requirements:
   ShellCommandRequirement: {}
   InlineJavascriptRequirement: {}
   DockerRequirement:
-    dockerImageId: add_tool
+    dockerImageId: sqrt_tool
     dockerFile: |-
       FROM python3.8.2
   NetworkAccess:
@@ -15,26 +15,34 @@ requirements:
     networkAccess: true
   InitialWorkDirRequirement:
     listing:
-    - entryname: add.py
+    - entryname: sqrt.py
       entry: |-
+        import math
         import sys
         
-        number1 = int(sys.argv[1])
-        number2 = int(sys.argv[2])
-        out_file_path = sys.argv[3]
+        number_file_path = sys.argv[1]
+        out_file_path = sys.argv[2]
+        
+        with open(number_file_path) as file1:
+            number = float(file1.read())
+
+        with open(number_file_path + ".a") as file1:
+            number_a = float(file1.read().rstrip("\n"))
+
+        with open(number_file_path + ".b") as file1:
+            number_b = float(file1.read().rstrip("\n"))
         
         with open(out_file_path, 'w') as out_file:
-            total = number1 + number2
-            out_file.write(str(total))
+            out_file.write(str(math.sqrt(number + number_a + number_b)))
 inputs:
-  number1:
-    type: int
+  number_file:
+    type: File
     doc: |-
-      An integer
-  number2:
-    type: int
-    doc: |-
-      A second number
+      A file with a single number in it
+    format: edam:format_1964
+    secondaryFiles:
+      - .a
+      - .b
   output_file_name:
     type: string
     doc: |-
@@ -43,9 +51,7 @@ inputs:
 arguments:
   - shellQuote: false
     valueFrom: |-
-      # This could be done with a bash command, but we're using Python for consistency with the other tool.
-
-      python add.py $(inputs.number1) $(inputs.number2) $(inputs.output_file_name)
+      python sqrt.py $(inputs.number_file.path) $(inputs.output_file_name)
 outputs:
   output_from_input_1:
     type: File

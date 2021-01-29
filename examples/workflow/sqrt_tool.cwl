@@ -5,6 +5,7 @@ doc: |-
   This tool reads an integer from a file, calculates the square root of that number, and saves the output to a file.
 requirements:
   ShellCommandRequirement: {}
+  InlineJavascriptRequirement: {}
   DockerRequirement:
     dockerImageId: sqrt_tool
     dockerFile: |-
@@ -62,6 +63,7 @@ stderr: stderr.txt
 s:author:
   - class: s:Person
     s:name: Stephen Piccolo
+    s:identifier: https://orcid.org/0000-0003-2001-5640
  
 s:dateCreated: "2020-07-14"
 s:license: https://spdx.org/licenses/Apache-2.0

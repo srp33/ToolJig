@@ -340,7 +340,7 @@ class: Workflow
 id: ${this.workflow_id}
 label: ${this.workflow_label}
 ${this.buildOptionalString("doc: |-\n", this.indent(2, this.doc))}
-${this.buildOptionalString("inputs:\n", this.indent(2, workflow_inputs))}
+${this.buildOptionalString("inputs:\n", workflow_inputs)}
 ${this.buildOptionalString("outputs:\n", this.indent(2, workflow_outputs))}
 ${this.buildOptionalString("steps:\n", this.parseSteps())}
 ${this.parseAuthorInfo()}
@@ -651,8 +651,20 @@ $schemas:
                         var inputSource = this.steps[stepName].selectedInputSources[inputName];
 
                         if (inputSource == "Workflow_Input") {
-                            var inputType = this.tools[toolName]["inputs"][inputName]["type"];
-                            result += `${stepName}__${inputName}: ${inputType}\n`;
+                            var input_object = this.tools[toolName]["inputs"][inputName];
+                            result += `  - id: ${stepName}__${inputName}\n    type: ${input_object["type"]}\n`;
+
+                            if ("format" in input_object && input_object["format"] != "") {
+                                result += `    format: ${input_object["format"]}\n`;
+                            }
+
+                            if ("secondaryFiles" in input_object && input_object["secondaryFiles"] != "") {
+                                result += `    secondaryFiles:\n`;
+
+                                for (secondaryFile of input_object["secondaryFiles"]) {
+                                    result += `      - ${secondaryFile}\n`;
+                                }
+                            }
                         }
                     }
                 }

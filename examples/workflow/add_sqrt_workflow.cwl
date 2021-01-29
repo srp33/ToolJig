@@ -1,14 +1,18 @@
 cwlVersion: v1.2
 class: Workflow
-id: simple_workflow_example
-label: Simple workflow example
+id: add_sqrt
+label: Add two numbers, then take square root
 doc: |-
   This workflow accepts two integers, adds them, calculates the square root of that number, and then stores the square root in a file.
 inputs:
-  add__number1: int
-  add__number2: int
-  add__output_file_name: string
-  sqrt__output_file_name: string
+    - id: add__number1
+      type: int
+    - id: add__number2
+      type: int
+    - id: add__output_file_name
+      type: string
+    - id: sqrt__output_file_name
+      type: string
 outputs:
   sqrt__output_from_input_1:
     type: File
@@ -33,7 +37,7 @@ s:author:
   - class: s:Person
     s:name: Stephen Piccolo
     s:identifier: https://orcid.org/0000-0003-2001-5640
-s:dateCreated: "2020-08-05"
+s:dateCreated: "2021-01-29"
 s:license: https://spdx.org/licenses/Apache-2.0
 $namespaces:
   s: https://schema.org/
