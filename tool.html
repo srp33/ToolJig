@@ -1841,6 +1841,8 @@ $schemas:
                         this.inputs.push(input_dict);
                     }
 
+                    this.sortArrayOfObjects(this.inputs, "name");
+
                     this.auxiliary_files = [];
                     this.newAuxName = "";
                     this.newAuxContents = "";
@@ -1855,6 +1857,8 @@ $schemas:
                             });
                         }
                     }
+
+                    this.sortArrayOfObjects(this.auxiliary_files, "name");
 
                     this.command_template = this.getYamlValue(yaml_dict, ["arguments", 0, "valueFrom"], true);
 
@@ -1887,6 +1891,8 @@ $schemas:
 
                         this.outputs.push(output_dict);
                     }
+
+                    this.sortArrayOfObjects(this.outputs, "glob");
 
                     e.target.value = "";
 	            }
@@ -1921,24 +1927,48 @@ $schemas:
                 
                 return my_dict;
             },
+            sortArrayOfObjects: function(array, key) {
+                array.sort((a, b) => {
+                    if (a[key] < b[key]) {
+                        return -1;
+                    }
+                    if (a[key] > b[key]) {
+                        return 1;
+                    }
+                    return 0;
+                });
+            },
+            parseSecondaryFiles: function(inputValue, errorsArray) {
+                if (inputValue != "") {
+                    inputValue = inputValue.replace(/ /g, "");
+
+                    var j;
+                    var secondaryValues = inputValue.split(",");
+                    for (j = 0; j < secondaryValues.length; j++) {
+                        if (!secondaryValues[j].startsWith("."))
+                        {
+                            errorsArray.push("Secondary file extensions must start with a period and be separated by commas.");
+                            break;
+                        }
+
+                        if (!/[A-Za-z]+/.test(secondaryValues[j])) {
+                            errorsArray.push("Secondary file extensions must contain at least one letter.");
+                            break;
+                        }
+                    }
+
+                    return secondaryValues;
+                }
+
+                return [];
+            },
             addInput: function () {
                 this.input_errors = [];
 
                 if (/[^a-zA-Z_0-9]+/.test(this.newInputName))
                     this.input_errors.push("Input names must only contain letters, numbers, and underscores.");
 
-                // Make sure secondaryFiles, if specified, follow correct format.
-                this.newInputSecondary = this.newInputSecondary.replace(/ /g, "");
-                if (this.newInputSecondary != "") {
-                    var j;
-                    var secondaryValues = this.newInputSecondary.split(",");
-                    for (j = 0; j < secondaryValues.length; j++)
-                        if (!secondaryValues[j].startsWith("."))
-                        {
-                            this.input_errors.push("Secondary files must start with periods and be separated by commas.");
-                            break;
-                        }
-                }
+                var secondaryFiles = this.parseSecondaryFiles(this.newInputSecondary, this.input_errors);
 
                 if (this.input_errors.length > 0)
                     return;
@@ -1949,18 +1979,16 @@ $schemas:
                     if (this.inputs[i].name == this.newInputName)
                         this.deleteInput(this.inputs[i]);
 
-                var secondaryFilesValue = [];
-                if (this.newInputSecondary != "")
-                    secondaryFilesValue = this.newInputSecondary.split(",");
-
                 this.inputs.push({
                     name: this.newInputName,
                     type: this.newInputType,
                     doc: this.newInputDoc,
-                    secondaryFiles: secondaryFilesValue,
+                    secondaryFiles: secondaryFiles,
                     format: this.newInputFileFormat,
                     value: ""
                 });
+
+                this.sortArrayOfObjects(this.inputs, "name");
 
                 this.newInputName = "";
                 this.newInputType = "string";
@@ -1981,6 +2009,7 @@ $schemas:
                 else {
                     this.newInputType = x.type;
                 }
+
                 this.newInputDoc = x.doc;
                 this.newInputSecondary = x.secondaryFiles.join(",");
                 this.newInputFileFormat = x.format;
@@ -2005,6 +2034,8 @@ $schemas:
                     name: this.newAuxName,
                     contents: this.newAuxContents
                 });
+
+                this.sortArrayOfObjects(this.auxiliary_files, "name");
 
                 this.newAuxName = "";
                 this.newAuxContents = "";
@@ -2032,18 +2063,7 @@ $schemas:
                 if (/[*?]/.test(this.newOutputGlob))
                     this.output_errors.push("Output file expressions cannot include wildcard characters (* or ?).");
 
-                // Make sure secondaryFiles, if specified, follow correct format
-                this.newOutputSecondary = this.newOutputSecondary.replace(/ /g, "");
-                if (this.newOutputSecondary != "") {
-                    var j;
-                    var secondaryValues = this.newOutputSecondary.split(",");
-                    for (j = 0; j < secondaryValues.length; j++)
-                        if (!secondaryValues[j].startsWith("."))
-                        {
-                            this.output_errors.push("Secondary files must start with periods and be separated by commas.");
-                            break;
-                        }
-                }
+                var secondaryFiles = this.parseSecondaryFiles(this.newOutputSecondary, this.output_errors);
 
                 if (this.output_errors.length > 0)
                     return;
@@ -2054,16 +2074,14 @@ $schemas:
                     if (this.outputs[i].glob == this.newOutputGlob)
                         this.deleteOutput(this.outputs[i], false);
 
-                var secondaryFilesValue = [];
-                if (this.newOutputSecondary != "")
-                    secondaryFilesValue = this.newOutputSecondary.split(",");
-
                 this.outputs.push({
                     glob: this.newOutputGlob,
                     doc: this.newOutputDoc,
-                    secondaryFiles: secondaryFilesValue,
+                    secondaryFiles: secondaryFiles,
                     format: this.newOutputFileFormat
                 });
+
+                this.sortArrayOfObjects(this.outputs, "glob");
 
                 this.newOutputGlob = "";
                 this.newOutputDoc = "";
@@ -2092,11 +2110,12 @@ $schemas:
             },
             parseInputs: function() {
                 result = "";
-                if (this.inputs.length > 0)
+                if (this.inputs.length > 0) {
                     result = "inputs:\n"
+                }
 
                 var i;
-                for (i = 0; i<this.inputs.length; i++)
+                for (i = 0; i < this.inputs.length; i++)
                 {
                     input_type = this.inputs[i].type;
                     if (input_type == "Output_File")
