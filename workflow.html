@@ -242,13 +242,54 @@
                     <li v-for="error in other_errors">{{ error }}</li>
                 </ul>
             </font></p>
+        </div>
 
+        <hr style="border: 1px solid black;border-radius: 1px;" v-if="cwl" />
+
+        <div class="panel panel-color1" ref="stepsPanel" v-if="cwl">
             <pre v-text="cwl" v-if="cwl"></pre>
 
             <p><div class="form-group">
                 <!--<button class="btn btn-info" variant="outline-primary" v-on:click="downloadCwl" :disabled="this.basics_errors.length > 0 || this.other_errors.length > 0">Download CWL file</button>-->
                 <button class="btn btn-info" variant="outline-primary" v-on:click="downloadCwl" v-if="cwl.length > 0">Download CWL file</button>
             </div></p>
+
+            <hr style="border: 1px solid black;border-radius: 1px;" />
+
+            <h4>Create input-object file:</h4>
+    
+            Once you have created a valid CWL file, you can create an input-object file, which defines inputs that will be used when the workflow is executed in one particular instance. The boxes below correspond to the inputs for the overall workflow (not for step inputs that use outputs from other steps).
+    
+            <!--This defines how the dynamic input forms will be created.-->
+            <component 
+              v-for="(input, index) in workflow_inputs" 
+              :key="input.id"
+              :is="input.type"
+              v-bind="input"
+              v-model="workflow_inputs[index].value">
+            </component>
+
+            <p v-if="job_errors.length"><font color="red">
+                <b>Please correct the following error(s):</b>
+                <ul>
+                  <li v-for="error in job_errors">{{ error }}</li>
+                </ul>
+                </font>
+            </p>
+
+            <pre v-text="job" v-if="job"></pre>
+
+            <div class="form-group">
+                <button class="btn btn-info" variant="outline-primary" v-on:click="downloadJob" :disabled="job.length == 0">Download input-object file</button>
+            </div></p>
+
+            <hr style="border: 1px solid black;border-radius: 1px;" v-if="cwl.length > 0 && job.length > 0" />
+
+            <h4 v-if="cwl.length > 0 && job.length > 0">Example command to execute the tool:</h4>
+    
+            <p  v-if="cwl.length > 0 && job.length > 0">First, you must install <a href="https://github.com/common-workflow-language/cwltool" target="_blank">cwltool</a>. Then you can execute the following command, assuming the CWL file and input-object file are in your current working directory. Alternatively, you could execute the tool using a variety of <a href="https://www.commonwl.org/#Implementations" target="_blank">other engines</a>.</p>
+    
+            <pre v-text="example_command" v-if="cwl.length > 0 && job.length > 0"></pre>
         </div>
     </div>
 </div>
@@ -285,12 +326,44 @@
         }
     });
 
+    // These components define the dynamic behavior of the workflow-input boxes that are created.
+    // From example at https://www.raymondcamden.com/2018/10/31/working-with-dynamic-components-in-vuejs
+    Vue.component("string", {
+        props: ['id', 'doc', 'value'],
+        template: `<div class="form-group"><label>{{ id }}<sup><font color="red">*</font></sup>:</label><input type="text" @input="updateVal" v-model="text" class="form-control" aria-describedby="helpBlock" /><span id="helpBlock" class="form-text text-muted">{{ doc }}</span></div>`,
+        data() { return { text:null } },
+        created() { this.text = this.value; },
+        methods:{ updateVal() { this.$emit('input', this.text); } }
+    });
+    Vue.component("int", {
+        props: ['id', 'doc', 'value'],
+        template: `<div class="form-group"><label>{{ id }}<sup><font color="red">*</font></sup>:</label><input type="text" @input="updateVal" v-model="text" class="form-control" aria-describedby="helpBlock" /><span id="helpBlock" class="form-text text-muted">{{ doc }}</span></div>`,
+        data() { return { text:null } },
+        created() { this.text = this.value; },
+        methods:{ updateVal() { this.$emit('input', this.text); } }
+    });
+    Vue.component("File", {
+        props: ['id', 'doc', 'value'],
+        template: `<div class="form-group"><label>{{ id }}<sup><font color="red">*</font></sup>:</label><input type="text" @input="updateVal" v-model="text" class="form-control" aria-describedby="helpBlock" /><span id="helpBlock" class="form-text text-muted">{{ doc }}</span></div>`,
+        data() { return { text:null } },
+        created() { this.text = this.value; },
+        methods:{ updateVal() { this.$emit('input', this.text); } }
+    });
+    Vue.component("Directory", {
+        props: ['id', 'doc', 'value'],
+        template: `<div class="form-group"><label>{{ id }}<sup><font color="red">*</font></sup>:</label><input type="text" @input="updateVal" v-model="text" class="form-control" aria-describedby="helpBlock" /><span id="helpBlock" class="form-text text-muted">{{ doc }}</span></div>`,
+        data() { return { text:null } },
+        created() { this.text = this.value; },
+        methods:{ updateVal() { this.$emit('input', this.text); } }
+    });
+
     new Vue({
         el: "#cwl_app",
 
         data: {
             basics_errors: [],
             other_errors: [],
+            job_errors: [],
             workflow_id: "",
             workflow_label: "",
             doc: "",
@@ -300,6 +373,7 @@
             license: "Apache-2.0",
             tools: {},
             steps: {},
+            workflow_inputs: [],
             newStepName: "",
             newStepToolName: "",
             newStepToolInputs: [],
@@ -326,10 +400,10 @@
                 if (this.steps.length < 2)
                     this.other_errors.push("Please specify at least two steps for the workflow.");
 
-                var workflow_inputs = this.parseWorkflowInputs();
-                var workflow_outputs = this.parseWorkflowOutputs();
+                var workflow_input_text = this.parseWorkflowInputText();
+                var workflow_output_text = this.parseWorkflowOutputText();
 
-                if (workflow_inputs.length < 1 || workflow_outputs.length < 1)
+                if (workflow_input_text.length < 1 || workflow_output_text.length < 1)
                     this.other_errors.push("Please specify at least one input and at least one output for the overall workflow.")
 
                 if (this.basics_errors.length > 0 || this.other_errors.length > 0)
@@ -340,8 +414,8 @@ class: Workflow
 id: ${this.workflow_id}
 label: ${this.workflow_label}
 ${this.buildOptionalString("doc: |-\n", this.indent(2, this.doc))}
-${this.buildOptionalString("inputs:\n", workflow_inputs)}
-${this.buildOptionalString("outputs:\n", this.indent(2, workflow_outputs))}
+${this.buildOptionalString("inputs:\n", workflow_input_text)}
+${this.buildOptionalString("outputs:\n", this.indent(2, workflow_output_text))}
 ${this.buildOptionalString("steps:\n", this.parseSteps())}
 ${this.parseAuthorInfo()}
 s:dateCreated: "${this.getTodayDate()}"
@@ -358,7 +432,38 @@ $schemas:
             job_file_name: function() { return `${this.workflow_id}_objects.yml`; },
             example_command: function() {
                 return `cwltool ${this.cwl_file_name} ${this.job_file_name}`;
-            }
+            },
+            job: function() {
+                this.job_errors = [];
+
+                for (let input of this.workflow_inputs) {
+                    if (input.value.trim() == "")
+                        this.job_errors.push("No value specified for " + input.id + ".");
+                    else if (input.type == "int" && /[^\d]/.test(input.value))
+                        this.job_errors.push("Must specify an integer for " + input.id + ".");
+                }
+
+                if (this.job_errors.length > 0)
+                    return "";
+
+                output = "";
+
+                for (let input of this.workflow_inputs)
+                {
+                    if (input.type == "string" || input.type == "int")
+                        output += input.id + ": " + input.value + "\n";
+                    else {
+                        output += input.id + ":\n";
+                        output += "    class: " + input.type + "\n";
+                        output += "    path: " + input.value + "\n";
+
+                        if (input.type == "File" && input.format != "")
+                            output += "    format: " + input.format.replace("edam:", "http://edamontology.org/") + "\n";
+                    }
+                }
+
+                return output;
+            },
         },
 
         methods: {
@@ -435,6 +540,7 @@ $schemas:
                     }
 
                     this.steps = Object.assign({}, this.steps, this.steps);
+                    this.workflow_inputs = Object.assign([], this.workflow_inputs, this.parseWorkflowInputs());
 
                     e.target.value = "";
 	            }
@@ -611,6 +717,8 @@ $schemas:
                 this.steps[this.newStepName] = {toolName: this.newStepToolName, selectedInputSources: selectedInputSources, useAsWorkflowOutputs: useAsWorkflowOutputs};
                 this.steps = Object.assign({}, this.steps, this.steps);
 
+                this.workflow_inputs = Object.assign([], this.workflow_inputs, this.parseWorkflowInputs());
+
                 this.newStepName = "";
                 this.newStepToolName = "";
             },
@@ -642,6 +750,29 @@ $schemas:
                 this.newStepToolName = "";
             },
             parseWorkflowInputs() {
+                var inputs = [];
+
+                for (let stepName in this.sortObject(this.steps)) {
+                    var toolName = this.steps[stepName].toolName;
+
+                    for (let inputName in this.steps[stepName].selectedInputSources) {
+                        var inputSource = this.steps[stepName].selectedInputSources[inputName];
+
+                        if (inputSource == "Workflow_Input") {
+                            inputs.push({
+                                "id": `${stepName}__${inputName}`,
+                                "type": this.tools[toolName]["inputs"][inputName]["type"],
+                                "doc": this.tools[toolName]["inputs"][inputName]["doc"].split("#Output_File=")[0],
+                                "format": this.tools[toolName]["inputs"][inputName]["format"],
+                                "value": ""
+                            });
+                        }
+                    }
+                }
+
+                return inputs;
+            },
+            parseWorkflowInputText() {
                 var result = "";
 
                 for (let stepName in this.steps) {
@@ -671,7 +802,7 @@ $schemas:
 
                 return result;
             },
-            parseWorkflowOutputs() {
+            parseWorkflowOutputText() {
                 var result = "";
 
                 for (let stepName in this.steps) {

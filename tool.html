@@ -1507,7 +1507,7 @@
 
         <h4>Create input-object file:</h4>
 
-        Once you have created a valid CWL file, you can create an input-object file. The CWL file provides a generic description of the tool. The input-object file defines inputs that will be used in one particular instance when the tool is executed. The boxes below correspond to the inputs described in the CWL file.
+        Once you have created a valid CWL file, you can create an input-object file, which defines inputs that will be used when the tool is executed in one particular instance. The boxes below correspond to the inputs defined above.
 
         <!--This defines how the dynamic input forms will be created.-->
         <component 
@@ -1544,8 +1544,7 @@
 
 <!--This section provides the app's JavaScript logic.-->
 <script>
-    // These components define the dynamic behavior of the input boxes that are created.
-    // This part of the code could be more succinct, but I'm still learning about Vue components.
+    // These components define the dynamic behavior of the job-input boxes that are created.
     // From example at https://www.raymondcamden.com/2018/10/31/working-with-dynamic-components-in-vuejs
     Vue.component("string", {
         props: ['name', 'doc', 'value'],
