@@ -3,7 +3,7 @@ class: Workflow
 id: secondary_sqrt
 label: Square root considers secondary files
 doc: |-
-  Calculates the square root of a number stored in a file plus numbers stored in two secondary files. This demonstrates using secondary files from a tool within a workflow.
+  Calculates the square root of a number stored in a file and saves the result to an output file. It does the same for two secondary files. This demonstrates using secondary files from a tool within a workflow.
 inputs:
   - id: calculation1__number_file
     type: File

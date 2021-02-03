@@ -23,17 +23,18 @@ requirements:
         number_file_path = sys.argv[1]
         out_file_path = sys.argv[2]
         
-        with open(number_file_path) as file1:
-            number = float(file1.read())
+        with open(number_file_path) as number_file:
+            with open(out_file_path, 'w') as out_file:
+              out_file.write(str(math.sqrt(float(number_file.read()))))
 
-        with open(number_file_path + ".a") as file1:
-            number_a = float(file1.read().rstrip("\n"))
+        with open(number_file_path + ".a") as number_file:
+            with open(out_file_path + ".c", 'w') as out_file:
+              out_file.write(str(math.sqrt(float(number_file.read()))))
 
-        with open(number_file_path + ".b") as file1:
-            number_b = float(file1.read().rstrip("\n"))
-        
-        with open(out_file_path, 'w') as out_file:
-            out_file.write(str(math.sqrt(number + number_a + number_b)))
+        with open(number_file_path + ".b") as number_file:
+            with open(out_file_path + ".d", 'w') as out_file:
+              out_file.write(str(math.sqrt(float(number_file.read()))))
+
 inputs:
   number_file:
     type: File
@@ -60,6 +61,9 @@ outputs:
     doc: |-
       Output file matching the name specified in the "output_file_name" input.
     format: edam:format_1964
+    secondaryFiles:
+      - .c
+      - .d
   standard_output:
     type: stdout
     format: edam:format_1964
