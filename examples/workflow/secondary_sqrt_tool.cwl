@@ -2,12 +2,12 @@ cwlVersion: v1.2
 class: CommandLineTool
 label: Calculates the square root of a number plus numbers stored in secondary files
 doc: |-
-  This tool reads integers from a file and two secondary files, sums those numbers, calculates the square root of that sum, and saves the output to a file.
+  This tool reads an integer from a file, calculates the square root of that number, and saves it to an output file. It does the same for two secondary files.
 requirements:
   ShellCommandRequirement: {}
   InlineJavascriptRequirement: {}
   DockerRequirement:
-    dockerImageId: sqrt_tool
+    dockerImageId: secondary_sqrt_tool
     dockerFile: |-
       FROM python3.8.2
   NetworkAccess:

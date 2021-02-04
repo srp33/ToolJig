@@ -2,7 +2,7 @@ cwlVersion: v1.2
 class: CommandLineTool
 label: Calculates the square root of a number
 doc: |-
-  This tool reads an integer from a file, calculates the square root of that number, and saves the output to a file.
+  This tool reads a number from a file, calculates the square root of that number, and saves the output to a file.
 requirements:
   ShellCommandRequirement: {}
   InlineJavascriptRequirement: {}
