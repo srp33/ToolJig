@@ -1,4 +1,6 @@
-Bioconductor version 3.11 (BiocManager 1.30.10), ?BiocManager::install for help
+Bioconductor version 3.10 (BiocManager 1.30.10), ?BiocManager::install for help
+Bioconductor version '3.10' is out-of-date; the current release version '3.12'
+  is available with R version '4.0'; see https://bioconductor.org/install
 
 Attaching package: ‘dplyr’
 
@@ -82,6 +84,7 @@ The following object is masked from ‘package:dplyr’:
 
     count
 
+Loading required package: BiocParallel
 
 Attaching package: ‘DelayedArray’
 
@@ -116,7 +119,7 @@ converting counts to integer mode
   Note: levels of factors in the design contain characters other than
   letters, numbers, '_' and '.'. It is recommended (but not required) to use
   only letters, numbers, and delimiters '_' or '.', as these are safe characters
-  for column names in R. [This is a message, not a warning or an error]
+  for column names in R. [This is a message, not an warning or error]
 Warning message:
 In DESeqDataSet(se, design = design, ignoreRank) :
   some variables in design formula are characters, converting to factors
@@ -124,24 +127,24 @@ estimating size factors
   Note: levels of factors in the design contain characters other than
   letters, numbers, '_' and '.'. It is recommended (but not required) to use
   only letters, numbers, and delimiters '_' or '.', as these are safe characters
-  for column names in R. [This is a message, not a warning or an error]
+  for column names in R. [This is a message, not an warning or error]
 estimating dispersions
 gene-wise dispersion estimates
 mean-dispersion relationship
   Note: levels of factors in the design contain characters other than
   letters, numbers, '_' and '.'. It is recommended (but not required) to use
   only letters, numbers, and delimiters '_' or '.', as these are safe characters
-  for column names in R. [This is a message, not a warning or an error]
+  for column names in R. [This is a message, not an warning or error]
 final dispersion estimates
   Note: levels of factors in the design contain characters other than
   letters, numbers, '_' and '.'. It is recommended (but not required) to use
   only letters, numbers, and delimiters '_' or '.', as these are safe characters
-  for column names in R. [This is a message, not a warning or an error]
+  for column names in R. [This is a message, not an warning or error]
 fitting model and testing
   Note: levels of factors in the design contain characters other than
   letters, numbers, '_' and '.'. It is recommended (but not required) to use
   only letters, numbers, and delimiters '_' or '.', as these are safe characters
-  for column names in R. [This is a message, not a warning or an error]
+  for column names in R. [This is a message, not an warning or error]
 -- replacing outliers and refitting for 4 genes
 -- DESeq argument 'minReplicatesForReplace' = 7 
 -- original counts are preserved in counts(dds)
@@ -149,9 +152,9 @@ estimating dispersions
   Note: levels of factors in the design contain characters other than
   letters, numbers, '_' and '.'. It is recommended (but not required) to use
   only letters, numbers, and delimiters '_' or '.', as these are safe characters
-  for column names in R. [This is a message, not a warning or an error]
+  for column names in R. [This is a message, not an warning or error]
 fitting model and testing
   Note: levels of factors in the design contain characters other than
   letters, numbers, '_' and '.'. It is recommended (but not required) to use
   only letters, numbers, and delimiters '_' or '.', as these are safe characters
-  for column names in R. [This is a message, not a warning or an error]
+  for column names in R. [This is a message, not an warning or error]

@@ -1,4 +1,6 @@
-Bioconductor version 3.11 (BiocManager 1.30.10), ?BiocManager::install for help
+Bioconductor version 3.10 (BiocManager 1.30.10), ?BiocManager::install for help
+Bioconductor version '3.10' is out-of-date; the current release version '3.12'
+  is available with R version '4.0'; see https://bioconductor.org/install
 Loading required package: Biobase
 Loading required package: BiocGenerics
 Loading required package: parallel
@@ -32,7 +34,7 @@ Welcome to Bioconductor
 
 Loading required package: oligo
 Loading required package: oligoClasses
-Welcome to oligoClasses version 1.50.0
+Welcome to oligoClasses version 1.48.0
 Loading required package: Biostrings
 Loading required package: S4Vectors
 Loading required package: stats4
@@ -54,7 +56,7 @@ The following object is masked from ‘package:base’:
 
 No methods found in package ‘RSQLite’ for request: ‘dbListFields’ when loading ‘oligo’
 ================================================================================
-Welcome to oligo version 1.52.0
+Welcome to oligo version 1.50.0
 ================================================================================
 Loading required package: GEOquery
 Setting options('download.file.method.GEOquery'='auto')
@@ -98,7 +100,7 @@ The following object is masked from ‘package:IRanges’:
 This is mgcv 1.8-31. For overview type 'help("mgcv-package")'.
 Loading required package: genefilter
 Loading required package: BiocParallel
-Downloading GSE1000 directly from GEO to /tmp/RtmpqSGMqp.
+Downloading GSE1000 directly from GEO to /tmp/RtmpKanW19.
 trying URL 'https://ftp.ncbi.nlm.nih.gov/geo/series/GSE1nnn/GSE1000/suppl//GSE1000_RAW.tar?tool=geoquery'
 Content type 'application/x-tar' length 35307520 bytes (33.7 MB)
 ==================================================
@@ -107,12 +109,14 @@ downloaded 33.7 MB
 Loading required package: pd.hg.u133a
 Attempting to obtain 'pd.hg.u133a' from BioConductor website.
 Checking to see if your internet connection works...
-trying URL 'https://bioconductor.org/packages/3.11/data/annotation/src/contrib/pd.hg.u133a_3.12.0.tar.gz'
+trying URL 'https://bioconductor.org/packages/3.10/data/annotation/src/contrib/pd.hg.u133a_3.12.0.tar.gz'
 Content type 'application/x-gzip' length 9851796 bytes (9.4 MB)
 ==================================================
 downloaded 9.4 MB
 
-Bioconductor version 3.11 (BiocManager 1.30.10), ?BiocManager::install for help
+Bioconductor version 3.10 (BiocManager 1.30.10), ?BiocManager::install for help
+Bioconductor version '3.10' is out-of-date; the current release version '3.12'
+  is available with R version '4.0'; see https://bioconductor.org/install
 * installing *source* package ‘pd.hg.u133a’ ...
 ** using staged installation
 ** R
@@ -128,7 +132,7 @@ Bioconductor version 3.11 (BiocManager 1.30.10), ?BiocManager::install for help
 * DONE (pd.hg.u133a)
 
 The downloaded source packages are in
-	‘/tmp/RtmpqSGMqp/downloaded_packages’
+	‘/tmp/RtmpKanW19/downloaded_packages’
 Loading required package: pd.hg.u133a
 Loading required package: RSQLite
 Loading required package: DBI
@@ -147,7 +151,7 @@ Attempting to converge...iteration 10, c = 0.309218
 Attempting to converge...iteration 11, c = 0.150701
 Attempting to converge...iteration 12, c = 0.105259
 Attempting to converge...iteration 13, c = 0.088257
-Attempting to converge...iteration 14, c = 0.055808
+Attempting to converge...iteration 14, c = 0.055807
 Attempting to converge...iteration 15, c = 0.014556
 Attempting to converge...iteration 16, c = 0.027292
 Attempting to converge...iteration 17, c = 0.017061
@@ -234,7 +238,7 @@ Attempting to converge...iteration 5, c = 1.032509
 Attempting to converge...iteration 6, c = 0.339756
 Attempting to converge...iteration 7, c = 0.13513
 Attempting to converge...iteration 8, c = 0.321328
-Attempting to converge...iteration 9, c = 21.873502
+Attempting to converge...iteration 9, c = 21.873501
 Attempting to converge...iteration 10, c = 0.123006
 Attempting to converge...iteration 11, c = 0.115691
 Attempting to converge...iteration 12, c = 0.342515
@@ -347,7 +351,7 @@ Attempting to converge...iteration 32, c = 0.181124
 Attempting to converge...iteration 33, c = 0.01131
 Attempting to converge...iteration 34, c = 0.589475
 Attempting to converge...iteration 35, c = 0.425253
-Attempting to converge...iteration 36, c = 0.247891
+Attempting to converge...iteration 36, c = 0.24789
 Attempting to converge...iteration 37, c = 0.463654
 Attempting to converge...iteration 38, c = 0.455293
 Attempting to converge...iteration 39, c = 0.277823
@@ -361,9 +365,9 @@ Attempting to converge...iteration 46, c = 0.488247
 Attempting to converge...iteration 47, c = 0.024446
 Attempting to converge...iteration 48, c = 0.291225
 Attempting to converge...iteration 49, c = 0.046196
-Attempting to converge...iteration 50, c = 0.38419
+Attempting to converge...iteration 50, c = 0.384191
 Attempting to converge...iteration 51, c = 0.606188
-Attempting to converge...iteration 52, c = 2.684589
+Attempting to converge...iteration 52, c = 2.684588
 Attempting to converge...iteration 53, c = 0.221775
 Attempting to converge...iteration 54, c = 0.378536
 Attempting to converge...iteration 55, c = 0.249995
@@ -382,8 +386,8 @@ Attempting to converge...iteration 67, c = 0.076302
 Attempting to converge...iteration 68, c = 0.346028
 Attempting to converge...iteration 69, c = 0.167808
 Attempting to converge...iteration 70, c = 0.361422
-Attempting to converge...iteration 71, c = 0.52105
-Attempting to converge...iteration 72, c = 1.287189
+Attempting to converge...iteration 71, c = 0.521051
+Attempting to converge...iteration 72, c = 1.28719
 Attempting to converge...iteration 73, c = 0.0075
 Converged in 73 iterations. Proportion of background probes: 0.571353
 Platform design info loaded.

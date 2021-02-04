@@ -1,3 +1,3 @@
-cwltool 01_hello.cwl hello_job.yml
-cwltool 02_hello.cwl hello_job_age.yml
-cwltool 03_hello.cwl hello_job_age.yml
+cwltool 01_hello.cwl hello_objects.yml
+cwltool 02_hello.cwl hello_objects_age.yml
+cwltool 03_hello.cwl hello_objects_age.yml

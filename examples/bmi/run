@@ -1,2 +1,2 @@
-cwltool 01_bmi.cwl 01_bmi_job.yml
-cwltool 02_bmi.cwl 02_bmi_job.yml
+cwltool 01_bmi.cwl 01_bmi_objects.yml
+cwltool 02_bmi.cwl 02_bmi_objects.yml
