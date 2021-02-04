@@ -5,15 +5,15 @@ label: Recursive square root
 doc: |-
   This workflow reads a number from a file, calculates the square root of that number, calculates the square root of the resulting number, and saves the output to a file. This demonstrates the ability to invoke the same tool recursively.
 inputs:
-    - id: calculation1__number_file
-      type: File
-      format: edam:format_1964
-    - id: calculation1__output_file_name
-      type: string
-    - id: calculation2__output_file_name
-      type: string
+  - id: calculation1__number_file
+    type: File
+    format: edam:format_1964
+  - id: calculation1__output_file_name
+    type: string
+  - id: calculation2__output_file_name
+    type: string
 outputs:
-  calculation2__output_from_input_1:
+  - id: calculation2__output_from_input_1
     type: File
     outputSource: calculation2/output_from_input_1
 steps:
@@ -34,7 +34,7 @@ steps:
 s:author:
   - class: s:Person
     s:name: Stephen Piccolo
-s:dateCreated: "2021-01-29"
+s:dateCreated: "2021-02-04"
 s:license: https://spdx.org/licenses/Apache-2.0
 $namespaces:
   s: https://schema.org/

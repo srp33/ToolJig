@@ -415,7 +415,7 @@ id: ${this.workflow_id}
 label: ${this.workflow_label}
 ${this.buildOptionalString("doc: |-\n", this.indent(2, this.doc))}
 ${this.buildOptionalString("inputs:\n", workflow_input_text)}
-${this.buildOptionalString("outputs:\n", this.indent(2, workflow_output_text))}
+${this.buildOptionalString("outputs:\n", workflow_output_text)}
 ${this.buildOptionalString("steps:\n", this.parseSteps())}
 ${this.parseAuthorInfo()}
 s:dateCreated: "${this.getTodayDate()}"
@@ -812,9 +812,9 @@ $schemas:
                         if (this.steps[stepName].useAsWorkflowOutputs[outputName]) {
                             var outputType = this.tools[toolName]["outputs"][outputName]["type"];
 
-                            result += `${stepName}__${outputName}:\n`;
-                            result += `  type: ${outputType}\n`;
-                            result += `  outputSource: ${stepName}/${outputName}\n`;
+                            result += `  - id: ${stepName}__${outputName}\n`;
+                            result += `    type: ${outputType}\n`;
+                            result += `    outputSource: ${stepName}/${outputName}\n`;
                         }
                     }
                 }

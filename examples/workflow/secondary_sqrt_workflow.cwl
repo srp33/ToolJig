@@ -1,6 +1,6 @@
 cwlVersion: v1.2
 class: Workflow
-id: secondary_sqrt
+id: secondary_sqrt_workflow
 label: Square root considers secondary files
 doc: |-
   Calculates the square root of a number stored in a file and saves the result to an output file. It does the same for two secondary files. This demonstrates using secondary files from a tool within a workflow.
@@ -14,7 +14,7 @@ inputs:
   - id: calculation1__output_file_name
     type: string
 outputs:
-  calculation1__output_from_input_1:
+  - id: calculation1__output_from_input_1
     type: File
     outputSource: calculation1/output_from_input_1
 steps:
@@ -28,7 +28,7 @@ steps:
 s:author:
   - class: s:Person
     s:name: Stephen Piccolo
-s:dateCreated: "2021-01-25"
+s:dateCreated: "2021-02-04"
 s:license: https://spdx.org/licenses/Apache-2.0
 $namespaces:
   s: https://schema.org/
