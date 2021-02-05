@@ -5,7 +5,7 @@ doc: |-
 requirements:
   ShellCommandRequirement: {}
   DockerRequirement:
-    dockerPull: python:3.8.2-slim-buster
+    dockerPull: python:3.9-slim-buster
   InitialWorkDirRequirement:
     listing:
     - entryname: calculate_bmi.py

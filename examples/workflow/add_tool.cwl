@@ -9,7 +9,7 @@ requirements:
   DockerRequirement:
     dockerImageId: add_tool
     dockerFile: |-
-      FROM python3.8.2
+      FROM python:3.9-slim-buster
   NetworkAccess:
     class: NetworkAccess
     networkAccess: true

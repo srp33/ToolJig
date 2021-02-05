@@ -1,4 +1,7 @@
+set -o errexit
+
 cwltool --outdir ref_genome prep_ref_genome.cwl genome_prep_objects.yml
+exit
 
 cwltool --outdir known_sites prep_recalibration_vcf.cwl 1000G_recalibration_objects.yml
 cwltool --outdir known_sites prep_recalibration_vcf.cwl dbsnp_recalibration_objects.yml
