@@ -288,7 +288,7 @@
 
             <h4 v-if="cwl.length > 0 && job.length > 0">Example command to execute the tool:</h4>
     
-            <p  v-if="cwl.length > 0 && job.length > 0">First, you must install <a href="https://github.com/common-workflow-language/cwltool" target="_blank">cwltool</a>. Then you can execute the following command, assuming the CWL file and input-object file are in your current working directory. Alternatively, you could execute the tool using a variety of <a href="https://www.commonwl.org/#Implementations" target="_blank">other engines</a>.</p>
+            <p  v-if="cwl.length > 0 && job.length > 0">First, you must install <a href="https://github.com/common-workflow-language/cwltool" target="_blank">cwltool</a> and <a href="https://docs.docker.com/engine/install" target="_blank">Docker Engine</a>. Then you can execute the following command, assuming the CWL file and input-object file are in your current working directory (if not, modify the command to point to the locations of these files). Alternatively, you can execute the tool using a variety of <a href="https://www.commonwl.org/#Implementations" target="_blank">other engines</a>.</p>
     
             <pre v-text="example_command" v-if="cwl.length > 0 && job.length > 0"></pre>
         </div>
