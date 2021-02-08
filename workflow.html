@@ -303,6 +303,10 @@
                 type: String,
                 required: true
             },
+            inputDoc: {
+                type: String,
+                required: true
+            },
             inputSourceOptions: {
                 type: Array,
                 required: true
@@ -314,6 +318,8 @@
         },
         template: `
             <div class="form-group panel-color2"><div class="panel-color3"><strong>{{ inputName }}</strong></div><br />
+                <p><em>Description: {{ inputDoc }}</em></p> 
+
                 <div v-for="inputSourceOption in inputSourceOptions">
                     <input type="radio" v-model="selectedInputSource" :value="inputSourceOption.id"> <span v-html="inputSourceOption.text"></span>
                 </div>
@@ -636,6 +642,13 @@ $schemas:
 
                 this.newStepToolInputs = [];
                 for (let inputName in toolInputs) {
+                    var inputDoc = "";
+                    if ("doc" in toolInputs[inputName]) {
+                        inputDoc = toolInputs[inputName]["doc"].split("#Output_File=")[0].trim();
+                        if (!inputDoc.endsWith("."))
+                            inputDoc += ".";
+                    }
+                    
                     var inputType = toolInputs[inputName]["type"];
 
                     var selectedInputSource = "Workflow_Input";
@@ -662,9 +675,7 @@ $schemas:
 
                                 var otherStepOutputDoc = "";
                                 if ("doc" in toolOutputs[otherStepOutputName])
-                                    text += ` (${toolOutputs[otherStepOutputName]["doc"]})`;
-                                    if (!text.endsWith("."))
-                                        text += ".";
+                                    text += ` <em>Description: ${toolOutputs[otherStepOutputName]["doc"]}</em>`;
 
                                 inputSourceOptions.push({id: id, text: text});
                             }
@@ -673,6 +684,7 @@ $schemas:
 
                     this.newStepToolInputs.push({
                         inputName: inputName,
+                        inputDoc: inputDoc,
                         selectedInputSource: selectedInputSource,
                         inputSourceOptions: inputSourceOptions
                     });
@@ -760,10 +772,15 @@ $schemas:
                         var inputSource = this.steps[stepName].selectedInputSources[inputName];
 
                         if (inputSource == "Workflow_Input") {
+                            var doc = "";
+                            if ("doc" in this.tools[toolName]["inputs"][inputName]) {
+                                doc = this.tools[toolName]["inputs"][inputName]["doc"].split("#Output_File=")[0].trim();
+                            }
+
                             inputs.push({
                                 "id": `${stepName}__${inputName}`,
                                 "type": this.tools[toolName]["inputs"][inputName]["type"],
-                                "doc": this.tools[toolName]["inputs"][inputName]["doc"].split("#Output_File=")[0],
+                                "doc": doc,
                                 "format": this.tools[toolName]["inputs"][inputName]["format"],
                                 "value": ""
                             });
