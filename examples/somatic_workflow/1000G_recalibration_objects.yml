@@ -1,0 +1,6 @@
+vcf_url: ftp://gsapubftp-anonymous@ftp.broadinstitute.org/bundle/hg38/1000G_phase1.snps.high_confidence.hg38.vcf.gz
+fasta_file:
+    class: File
+    path: ref_genome/hg38.fa
+    format: http://edamontology.org/format_1929
+output_file_name: 1000G_phase1.snps.high_confidence.hg38.vcf
