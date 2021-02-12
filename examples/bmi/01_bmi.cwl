@@ -48,21 +48,21 @@ inputs:
     type: string
     doc: |-
       Name of the column in input_file that contains height measurements.
-  output_file_name:
+  output_file:
     type: string
     doc: |-
       Name of the output file that will be created. This file will contain the same contents as input_file, augmented with an additional column (labeled "BMI") that indicates each person's body mass index (BMI).
 arguments:
     - shellQuote: false
       valueFrom: |-
-        python calculate_bmi.py "$(inputs.input_file.path)" "$(inputs.weight_column_name)" "$(inputs.height_column_name)" "$(inputs.output_file_name)"
+        python calculate_bmi.py "$(inputs.input_file.path)" "$(inputs.weight_column_name)" "$(inputs.height_column_name)" "$(inputs.output_file)"
 outputs:
-  output_1:
+  output_file:
     type: File
     outputBinding:
-      glob: "$(inputs.output_file_name)"
+      glob: "$(inputs.output_file)"
     doc: |-
-      Output file matching the name specified in the "output_file_name" input.
+      Output file matching the name specified in the "output_file" input.
   standard_output:
     type: stdout
   standard_error:

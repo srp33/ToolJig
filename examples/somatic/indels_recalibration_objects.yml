@@ -3,4 +3,4 @@ fasta_file:
     class: File
     path: ref_genome/hg38.fa
     format: http://edamontology.org/format_1929
-output_file_name: Mills_and_1000G_gold_standard.indels.hg38.vcf
+output_file: Mills_and_1000G_gold_standard.indels.hg38.vcf

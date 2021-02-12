@@ -23,7 +23,7 @@ inputs:
     type: int
     doc: |-
       The number of threads that sambamba will use.
-  output_file_name:
+  output_file:
     type: string
     doc: |-
       Name of the output file that will be created.
@@ -31,21 +31,21 @@ inputs:
 arguments:
   - shellQuote: false
     valueFrom: |-
-      sambamba markdup -t $(inputs.threads) $(inputs.bam_file.path) "$(inputs.output_file_name)"
+      sambamba markdup -t $(inputs.threads) $(inputs.bam_file.path) "$(inputs.output_file)"
       
-      sambamba index -t $(inputs.threads) "$(inputs.output_file_name)" 
+      sambamba index -t $(inputs.threads) "$(inputs.output_file)" 
 outputs:
-  output_from_input_1:
+  output_file:
     type: File
     outputBinding:
-      glob: "$(inputs.output_file_name)"
+      glob: "$(inputs.output_file)"
     doc: |-
-      Output file matching the name specified in the "output_file_name" input.
+      Output file matching the name specified in the "output_file" input.
     format: edam:format_2572
-  regular_output_1:
+  output_file_bai:
     type: File
     outputBinding:
-      glob: "$(inputs.output_file_name).bai"
+      glob: "$(inputs.output_file).bai"
     doc: |-
       An index file.
     format: edam:format_3327

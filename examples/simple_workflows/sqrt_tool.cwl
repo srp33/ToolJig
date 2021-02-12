@@ -34,7 +34,7 @@ inputs:
     doc: |-
       A file with a single number in it
     format: edam:format_1964
-  output_file_name:
+  output_file:
     type: string
     doc: |-
       Name of the output file
@@ -42,14 +42,14 @@ inputs:
 arguments:
   - shellQuote: false
     valueFrom: |-
-      python sqrt.py $(inputs.number_file.path) $(inputs.output_file_name)
+      python sqrt.py $(inputs.number_file.path) $(inputs.output_file)
 outputs:
-  output_from_input_1:
+  output_file:
     type: File
     outputBinding:
-      glob: "$(inputs.output_file_name)"
+      glob: "$(inputs.output_file)"
     doc: |-
-      Output file matching the name specified in the "output_file_name" input.
+      Output file matching the name specified in the "output_file" input.
     format: edam:format_1964
   standard_output:
     type: stdout

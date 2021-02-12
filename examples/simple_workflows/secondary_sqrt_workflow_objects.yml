@@ -2,4 +2,4 @@ calculation1__number_file:
     class: File
     path: 64.txt
     format: http://edamontology.org/format_1964
-calculation1__output_file_name: secondary_sqrt_result.txt
+calculation1__output_file: secondary_sqrt_result.txt

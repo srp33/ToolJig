@@ -3,4 +3,4 @@ input_file:
     path: biometric_data.tsv
 weight_column_name: Weight
 height_column_name: Height
-output_file_name: 01_biometric_data_with_bmi.tsv
+output_file: 01_biometric_data_with_bmi.tsv

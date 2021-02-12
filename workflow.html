@@ -215,7 +215,7 @@
                     <p>The outputs for <code>{{ newStepToolName }}</code> are shown below. For each output, please indicate whether you would like the output to be collected for the entire workflow. If not, the output can be used as input in another step of the workflow.</p>
 
                     <p v-for="output in newStepToolOutputs">
-                        <input type="checkbox" :value="output" :id="output" v-model="newStepToolOutputsChecked"> {{ output }}
+                        <input type="checkbox" :value="output" :id="output" v-model="newStepToolOutputsChecked"> {{ output }} {{ getOutputDescription(output) }}
                     </p>
                 </div>
 
@@ -953,6 +953,10 @@ $schemas:
                     result[key] = obj[key];
                     return result;
                 }, {});
+            },
+            getOutputDescription: function(outputName) {
+                //return "testing" + outputName;
+                return "";
             }
         }
     });

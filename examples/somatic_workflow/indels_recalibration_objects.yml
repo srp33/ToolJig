@@ -1,6 +1,0 @@
-vcf_url: ftp://gsapubftp-anonymous@ftp.broadinstitute.org/bundle/hg38/Mills_and_1000G_gold_standard.indels.hg38.vcf.gz
-fasta_file:
-    class: File
-    path: ref_genome/hg38.fa
-    format: http://edamontology.org/format_1929
-output_file_name: Mills_and_1000G_gold_standard.indels.hg38.vcf

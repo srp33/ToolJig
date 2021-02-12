@@ -9,30 +9,30 @@ inputs:
     type: int
   - id: add__number2
     type: int
-  - id: add__output_file_name
+  - id: add__output_file
     type: string
-  - id: sqrt__output_file_name
+  - id: sqrt__output_file
     type: string
 outputs:
-  - id: sqrt__output_from_input_1
+  - id: sqrt__output_file
     type: File
-    outputSource: sqrt/output_from_input_1
+    outputSource: sqrt/output_file
 steps:
   add:
     run: add_tool.cwl
     in:
       number1: add__number1
       number2: add__number2
-      output_file_name: add__output_file_name
+      output_file: add__output_file
     out:
-      [output_from_input_1]
+      [output_file]
   sqrt:
     run: sqrt_tool.cwl
     in:
-      number_file: add/output_from_input_1
-      output_file_name: sqrt__output_file_name
+      number_file: add/output_file
+      output_file: sqrt__output_file
     out:
-      [output_from_input_1]
+      [output_file]
 s:author:
   - class: s:Person
     s:name: Stephen Piccolo

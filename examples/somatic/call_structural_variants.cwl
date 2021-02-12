@@ -41,7 +41,7 @@ inputs:
     type: string
     doc: |-
       URL of a file with regions to exclude (which speeds up execution times). These files can be found for many reference genomes here: https://github.com/dellytools/delly/tree/master/excludeTemplates. Make sure to get the URL for the raw version of the file. Example: https://raw.githubusercontent.com/dellytools/delly/master/excludeTemplates/human.hg38.excl.tsv.
-  output_file_name:
+  output_file:
     type: string
     doc: |-
       Name of the output file that will be created.
@@ -53,14 +53,14 @@ arguments:
       
       delly call -x `basename "$(inputs.exclude_template_url)"` -o output.bcf -g "$(inputs.fasta_file.path)" "$(inputs.tumor_bam_file.path)" "$(inputs.normal_bam_file.path)"
       
-      bcftools view output.bcf > "$(inputs.output_file_name)"
+      bcftools view output.bcf > "$(inputs.output_file)"
 outputs:
-  output_from_input_1:
+  output_file:
     type: File
     outputBinding:
-      glob: "$(inputs.output_file_name)"
+      glob: "$(inputs.output_file)"
     doc: |-
-      Output file matching the name specified in the "output_file_name" input.
+      Output file matching the name specified in the "output_file" input.
     format: edam:format_3016
   standard_output:
     type: stdout

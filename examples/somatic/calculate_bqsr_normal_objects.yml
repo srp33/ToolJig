@@ -10,4 +10,4 @@ bam_file:
     path: bam3/TCRBOA7-N.bam
     format: http://edamontology.org/format_2572
 threads: 8
-output_file_name: TCRBOA7-N.table
+output_file: TCRBOA7-N.table

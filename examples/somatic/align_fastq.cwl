@@ -50,7 +50,7 @@ inputs:
     type: string
     doc: |-
       Additional arguments that will be passed through to bwa mem. Example value: "-k 15".
-  output_file_name:
+  output_file:
     type: string
     doc: |-
       Name of the BAM file that will be created.
@@ -58,14 +58,14 @@ inputs:
 arguments:
   - shellQuote: false
     valueFrom: |-
-      bwa mem -t $(inputs.threads) $(inputs.args) -R "$(inputs.read_group_string)" "$(inputs.fasta_file.path)" "$(inputs.fastq_file_1.path)" "$(inputs.fastq_file_2.path)" | samtools view -b > "$(inputs.output_file_name)"
+      bwa mem -t $(inputs.threads) $(inputs.args) -R "$(inputs.read_group_string)" "$(inputs.fasta_file.path)" "$(inputs.fastq_file_1.path)" "$(inputs.fastq_file_2.path)" | samtools view -b > "$(inputs.output_file)"
 outputs:
-  output_from_input_1:
+  output_file:
     type: File
     outputBinding:
-      glob: "$(inputs.output_file_name)"
+      glob: "$(inputs.output_file)"
     doc: |-
-      Output file matching the name specified in the "output_file_name" input.
+      Output file matching the name specified in the "output_file" input.
     format: edam:format_2572
   standard_output:
     type: stdout

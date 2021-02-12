@@ -11,20 +11,20 @@ inputs:
     secondaryFiles:
       - .a
       - .b
-  - id: calculation1__output_file_name
+  - id: calculation1__output_file
     type: string
 outputs:
-  - id: calculation1__output_from_input_1
+  - id: calculation1__output_file
     type: File
-    outputSource: calculation1/output_from_input_1
+    outputSource: calculation1/output_file
 steps:
   calculation1:
     run: secondary_sqrt_tool.cwl
     in:
       number_file: calculation1__number_file
-      output_file_name: calculation1__output_file_name
+      output_file: calculation1__output_file
     out:
-      [output_from_input_1]
+      [output_file]
 s:author:
   - class: s:Person
     s:name: Stephen Piccolo

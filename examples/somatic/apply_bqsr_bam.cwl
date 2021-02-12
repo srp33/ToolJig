@@ -40,7 +40,7 @@ inputs:
     type: int
     doc: |-
       The number of threads that GATK should use.
-  output_file_name:
+  output_file:
     type: string
     doc: |-
       Name of the output file that will be created.
@@ -60,23 +60,23 @@ arguments:
       
       ln -s "$(inputs.fasta_file.path).dict" "$(inputs.fasta_file.basename.replace('.fa', '.dict'))"
       
-      java -Xms128m -Xmx2g -jar /usr/GenomeAnalysisTK.jar -T PrintReads -R "$(inputs.fasta_file.basename)" -BQSR "$(inputs.bqsr_table_file.path)" -I "$(inputs.bam_file.path)" -o "$(inputs.output_file_name)" -nct $(inputs.threads)
+      java -Xms128m -Xmx2g -jar /usr/GenomeAnalysisTK.jar -T PrintReads -R "$(inputs.fasta_file.basename)" -BQSR "$(inputs.bqsr_table_file.path)" -I "$(inputs.bam_file.path)" -o "$(inputs.output_file)" -nct $(inputs.threads)
       
       # We use samtools rather than sambamba because we can install it more easily in this image.
       
-      samtools index "$(inputs.output_file_name)"
+      samtools index "$(inputs.output_file)"
 outputs:
-  output_from_input_1:
+  output_file:
     type: File
     outputBinding:
-      glob: "$(inputs.output_file_name)"
+      glob: "$(inputs.output_file)"
     doc: |-
-      Output file matching the name specified in the "output_file_name" input.
+      Output file matching the name specified in the "output_file" input.
     format: edam:format_2572
-  regular_output_1:
+  output_file_bai:
     type: File
     outputBinding:
-      glob: "$(inputs.output_file_name).bai"
+      glob: "$(inputs.output_file).bai"
     doc: |-
       An index file.
     format: edam:format_3327

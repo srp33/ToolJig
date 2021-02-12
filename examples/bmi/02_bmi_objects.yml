@@ -1,4 +1,4 @@
 input_file_url: https://raw.githubusercontent.com/srp33/ToolJig/master/examples/bmi/biometric_data.tsv
 weight_column_name: Weight
 height_column_name: Height
-output_file_name: 02_biometric_data_with_bmi.tsv
+output_file: 02_biometric_data_with_bmi.tsv

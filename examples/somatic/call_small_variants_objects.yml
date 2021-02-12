@@ -13,4 +13,4 @@ tumor_bam_file:
 normal_sample_id: TCRBOA7-N
 tumor_sample_id: TCRBOA7-T
 threads: 8
-output_file_name: TCRBOA7.snp_indels.vcf
+output_file: TCRBOA7.snp_indels.vcf

@@ -3,4 +3,4 @@ fasta_file:
     class: File
     path: ref_genome/hg38.fa
     format: http://edamontology.org/format_1929
-output_file_name: dbsnp_146.hg38.vcf
+output_file: dbsnp_146.hg38.vcf

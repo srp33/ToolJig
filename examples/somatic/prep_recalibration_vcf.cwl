@@ -56,7 +56,7 @@ inputs:
     format: edam:format_1929
     secondaryFiles:
       - .dict
-  output_file_name:
+  output_file:
     type: string
     doc: |-
       Name of the output VCF file (non-gzipped). Example value: dbsnp_146.hg38.vcf.
@@ -70,21 +70,21 @@ arguments:
       
       DICT_FILE="$(inputs.fasta_file.path)".dict
       
-      python reconcile_vcf_with_dict.py "$(inputs.output_file_name)" "$DICT_FILE"
+      python reconcile_vcf_with_dict.py "$(inputs.output_file)" "$DICT_FILE"
       
-      picard -Xms128m -Xmx2g SortVcf I="$(inputs.output_file_name)" O="$(inputs.output_file_name)" SEQUENCE_DICTIONARY="$DICT_FILE" CREATE_INDEX=true
+      picard -Xms128m -Xmx2g SortVcf I="$(inputs.output_file)" O="$(inputs.output_file)" SEQUENCE_DICTIONARY="$DICT_FILE" CREATE_INDEX=true
 outputs:
-  output_from_input_1:
+  output_file:
     type: File
     outputBinding:
-      glob: "$(inputs.output_file_name)"
+      glob: "$(inputs.output_file)"
     doc: |-
-      Output file matching the name specified in the "output_file_name" input.
+      Output file matching the name specified in the "output_file" input.
     format: edam:format_3016
-  regular_output_1:
+  output_file_idx:
     type: File
     outputBinding:
-      glob: "$(inputs.output_file_name).idx"
+      glob: "$(inputs.output_file).idx"
     doc: |-
       An index file.
   standard_output:

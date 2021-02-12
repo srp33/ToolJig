@@ -18,7 +18,7 @@ inputs:
     type: string
     doc: |-
       URL of file to be download.
-  out_file_name:
+  out_file:
     type: string
     doc: |-
       Name of the output file to be saved.
@@ -26,14 +26,14 @@ inputs:
 arguments:
   - shellQuote: false
     valueFrom: |-
-      wget -O $(inputs.out_file_name) $(inputs.url)
+      wget -O $(inputs.out_file) $(inputs.url)
 outputs:
-  output_from_input_1:
+  output_file:
     type: File
     outputBinding:
-      glob: "$(inputs.out_file_name)"
+      glob: "$(inputs.out_file)"
     doc: |-
-      Output file matching the name specified in the "out_file_name" input.
+      Output file matching the name specified in the "out_file" input.
     format: edam:format_1964
   standard_output:
     type: stdout

@@ -33,7 +33,7 @@ arguments:
       
       picard -Xms128m -Xmx2g CreateSequenceDictionary REFERENCE=$(inputs.ref_genome_version).fa OUTPUT=$(inputs.ref_genome_version).fa.dict
 outputs:
-  regular_output_1:
+  index_fasta_file:
     type: File
     outputBinding:
       glob: "$(inputs.ref_genome_version).fa"

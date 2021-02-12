@@ -33,14 +33,14 @@ arguments:
     valueFrom: |-
       atropos $(inputs.args) -pe1 $(inputs.fastq_file_1.path) -pe2 $(inputs.fastq_file_2.path) -o $(inputs.fastq_file_1.basename) -p $(inputs.fastq_file_2.basename)
 outputs:
-  regular_output_1:
+  fastq_file_1:
     type: File
     outputBinding:
       glob: "$(inputs.fastq_file_1.basename)"
     doc: |-
       Trimmed FASTQ file for the first ends of paired-end reads.
     format: edam:format_1931
-  regular_output_2:
+  fastq_file_2:
     type: File
     outputBinding:
       glob: "$(inputs.fastq_file_2.basename)"

@@ -48,7 +48,7 @@ inputs:
     type: int
     doc: |-
       The number of threads that GATK should use.
-  output_file_name:
+  output_file:
     type: string
     doc: |-
       Name of the output file that will be created.
@@ -70,14 +70,14 @@ arguments:
       
       gatk Mutect2 -R "$(inputs.fasta_file.basename)" --input $(inputs.normal_bam_file.path) --input $(inputs.tumor_bam_file.path) --output unfiltered.vcf -normal $(inputs.normal_sample_id) -tumor $(inputs.tumor_sample_id) --native-pair-hmm-threads $(inputs.threads)
       
-      gatk FilterMutectCalls -R "$(inputs.fasta_file.basename)" -V unfiltered.vcf -O "$(inputs.output_file_name)"
+      gatk FilterMutectCalls -R "$(inputs.fasta_file.basename)" -V unfiltered.vcf -O "$(inputs.output_file)"
 outputs:
-  output_from_input_1:
+  output_file:
     type: File
     outputBinding:
-      glob: "$(inputs.output_file_name)"
+      glob: "$(inputs.output_file)"
     doc: |-
-      Output file matching the name specified in the "output_file_name" input.
+      Output file matching the name specified in the "output_file" input.
     format: edam:format_3016
   standard_output:
     type: stdout

@@ -8,29 +8,29 @@ inputs:
   - id: calculation1__number_file
     type: File
     format: edam:format_1964
-  - id: calculation1__output_file_name
+  - id: calculation1__output_file
     type: string
-  - id: calculation2__output_file_name
+  - id: calculation2__output_file
     type: string
 outputs:
-  - id: calculation2__output_from_input_1
+  - id: calculation2__output_file
     type: File
-    outputSource: calculation2/output_from_input_1
+    outputSource: calculation2/output_file
 steps:
   calculation1:
     run: sqrt_tool.cwl
     in:
       number_file: calculation1__number_file
-      output_file_name: calculation1__output_file_name
+      output_file: calculation1__output_file
     out:
-      [output_from_input_1]
+      [output_file]
   calculation2:
     run: sqrt_tool.cwl
     in:
-      number_file: calculation1/output_from_input_1
-      output_file_name: calculation2__output_file_name
+      number_file: calculation1/output_file
+      output_file: calculation2__output_file
     out:
-      [output_from_input_1]
+      [output_file]
 s:author:
   - class: s:Person
     s:name: Stephen Piccolo

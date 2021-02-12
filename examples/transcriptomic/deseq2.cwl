@@ -65,7 +65,7 @@ inputs:
     type: string
     doc: |-
       A formula that expresses how the counts for each gene might depend on one or more metadata variables. More details about this formula can be found at https://bioconductor.org/packages/release/bioc/manuals/DESeq2/man/DESeq2.pdf.
-  output_file_name:
+  output_file:
     type: string
     doc: |-
       Name of the output file that will be created. This will be a tab-separated file with differential-expression statistics.
@@ -73,14 +73,14 @@ inputs:
 arguments:
   - shellQuote: false
     valueFrom: |-
-      Rscript run_deseq2_analysis.R "$(inputs.read_counts_url)" "$(inputs.phenotypes_url)" "$(inputs.design_formula)" "$(inputs.output_file_name)"
+      Rscript run_deseq2_analysis.R "$(inputs.read_counts_url)" "$(inputs.phenotypes_url)" "$(inputs.design_formula)" "$(inputs.output_file)"
 outputs:
-  output_from_input_1:
+  output_file:
     type: File
     outputBinding:
-      glob: "$(inputs.output_file_name)"
+      glob: "$(inputs.output_file)"
     doc: |-
-      Output file matching the name specified in the "output_file_name" input.
+      Output file matching the name specified in the "output_file" input.
     format: edam:format_3751
   standard_output:
     type: stdout
