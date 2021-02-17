@@ -215,7 +215,7 @@
                     <p>The outputs for <code>{{ newStepToolName }}</code> are shown below. For each output, please indicate whether you would like the output to be collected for the entire workflow. If not, the output can be used as input in another step of the workflow.</p>
 
                     <p v-for="output in newStepToolOutputs">
-                        <input type="checkbox" :value="output" :id="output" v-model="newStepToolOutputsChecked"> {{ output }} {{ getOutputDescription(output) }}
+                        <input type="checkbox" :value="output" :id="output" v-model="newStepToolOutputsChecked"> <span v-html="output"></span> <span v-html="getOutputDescription(output)"></span>
                     </p>
                 </div>
 
@@ -644,7 +644,7 @@ $schemas:
                 for (let inputName in toolInputs) {
                     var inputDoc = "";
                     if ("doc" in toolInputs[inputName]) {
-                        inputDoc = toolInputs[inputName]["doc"].split("#Output_File=")[0].trim();
+                        inputDoc = this.getToolInputDoc(toolInputs, inputName);
                         if (!inputDoc.endsWith("."))
                             inputDoc += ".";
                     }
@@ -704,6 +704,9 @@ $schemas:
                         }
                     }
                 }
+            },
+            getToolInputDoc(toolInputs, inputName) {
+                return toolInputs[inputName]["doc"].split("#Output_File=")[0].trim();
             },
             addUpdateStep() {
                 if (this.newStepName.trim().length == 0 || /[^A-Za-z0-9_]+/.test(this.newStepName)) {
@@ -774,7 +777,7 @@ $schemas:
                         if (inputSource == "Workflow_Input") {
                             var doc = "";
                             if ("doc" in this.tools[toolName]["inputs"][inputName]) {
-                                doc = this.tools[toolName]["inputs"][inputName]["doc"].split("#Output_File=")[0].trim();
+                                doc = this.getToolInputDoc(this.tools[toolName]["inputs"], inputName);
                             }
 
                             inputs.push({
@@ -955,8 +958,9 @@ $schemas:
                 }, {});
             },
             getOutputDescription: function(outputName) {
-                //return "testing" + outputName;
-                return "";
+                var doc = this.getToolInputDoc(this.tools[this.newStepToolName].inputs, outputName);
+                var type = this.tools[this.newStepToolName].inputs[outputName].type;
+                return `- <em>${doc} Type: ${type}</em>`;
             }
         }
     });
