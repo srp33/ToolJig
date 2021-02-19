@@ -9,8 +9,6 @@ inputs:
     type: int
   - id: add__number2
     type: int
-  - id: add__output_file
-    type: string
   - id: sqrt__output_file
     type: string
 outputs:
@@ -21,23 +19,28 @@ steps:
   add:
     run: add_tool.cwl
     in:
-      number1: add__number1
-      number2: add__number2
-      output_file: add__output_file
+      - id: number1
+        source: add__number1
+      - id: number2
+        source: add__number2
+      - id: output_file
+        default: temp_FCTCnXvvZH
     out:
       [output_file]
   sqrt:
     run: sqrt_tool.cwl
     in:
-      number_file: add/output_file
-      output_file: sqrt__output_file
+      - id: number_file
+        source: add/output_file
+      - id: output_file
+        source: sqrt__output_file
     out:
       [output_file]
 s:author:
   - class: s:Person
     s:name: Stephen Piccolo
     s:identifier: https://orcid.org/0000-0003-2001-5640
-s:dateCreated: "2021-02-04"
+s:dateCreated: "2021-02-18"
 s:license: https://spdx.org/licenses/Apache-2.0
 $namespaces:
   s: https://schema.org/

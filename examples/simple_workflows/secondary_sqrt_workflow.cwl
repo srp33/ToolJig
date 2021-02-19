@@ -21,8 +21,10 @@ steps:
   calculation1:
     run: secondary_sqrt_tool.cwl
     in:
-      number_file: calculation1__number_file
-      output_file: calculation1__output_file
+      - id: number_file
+        source: calculation1__number_file
+      - id: output_file
+        source: calculation1__output_file
     out:
       [output_file]
 s:author:

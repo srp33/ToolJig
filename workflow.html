@@ -220,7 +220,7 @@
                 </div>
 
                 <div class="form-group">
-                    <button class="btn btn-info">Add / Update</button>
+                    <button class="btn btn-info">Add</button>
                 </div>
             </form>
 
@@ -526,12 +526,18 @@ $schemas:
                         var tool_name = step.run;
 
                         var selectedInputSources = {};
-                        for (input_name in step.in) {
-                            var input_source = step.in[input_name];
-                            if (input_source.includes("/"))
-                                selectedInputSources[input_name] = input_source;
-                            else
-                                selectedInputSources[input_name] = "Workflow_Input";
+                        for (let input of step.in) {
+                            if ("default" in input) {
+                                selectedInputSources[input.id] = "Random_File_Name";
+                            }
+                            else {
+                                if (input.source.includes("/")) {
+                                    selectedInputSources[input.id] = input.source;
+                                }
+                                else {
+                                    selectedInputSources[input.id] = "Workflow_Input";
+                                }
+                            }
                         }
 
                         var outputSources = [];
@@ -644,22 +650,21 @@ $schemas:
                 for (let inputName in toolInputs) {
                     var inputDoc = "";
                     if ("doc" in toolInputs[inputName]) {
-                        inputDoc = this.getToolInputDoc(toolInputs, inputName);
-                        if (!inputDoc.endsWith("."))
-                            inputDoc += ".";
+                        inputDoc = toolInputs[inputName]["doc"];
                     }
                     
                     var inputType = toolInputs[inputName]["type"];
-
                     var selectedInputSource = "Workflow_Input";
-                    if (this.newStepName in this.steps)
-                        selectedInputSource = this.steps[this.newStepName].selectedInputSources[inputName];
 
                     // These are outputs from other steps that could be connected to the inputs for this step.
                     // They appear in the dropdown menus.
                     // Iterate through existing steps and see which outputs are the same type as this input.
                     // Ignore the step that the user is editing.
                     var inputSourceOptions = [{id: "Workflow_Input", text: "Create a new workflow input that will be mapped to this input."}];
+
+                    if (inputDoc.includes("#Output_File="))
+                        inputSourceOptions.push({id: "Random_File_Name", text: "Generate a random file name."});
+
                     for (let stepName in this.steps) {
                         if (stepName == this.newStepName)
                             continue;
@@ -684,7 +689,7 @@ $schemas:
 
                     this.newStepToolInputs.push({
                         inputName: inputName,
-                        inputDoc: inputDoc,
+                        inputDoc: this.trimToolInputDoc(inputDoc),
                         selectedInputSource: selectedInputSource,
                         inputSourceOptions: inputSourceOptions
                     });
@@ -705,8 +710,13 @@ $schemas:
                     }
                 }
             },
-            getToolInputDoc(toolInputs, inputName) {
-                return toolInputs[inputName]["doc"].split("#Output_File=")[0].trim();
+            trimToolInputDoc(doc) {
+                var doc = doc.split("#Output_File=")[0].trim();
+
+                if (doc != "" && !doc.endsWith("."))
+                    doc += ".";
+
+                return doc;
             },
             addUpdateStep() {
                 if (this.newStepName.trim().length == 0 || /[^A-Za-z0-9_]+/.test(this.newStepName)) {
@@ -777,7 +787,7 @@ $schemas:
                         if (inputSource == "Workflow_Input") {
                             var doc = "";
                             if ("doc" in this.tools[toolName]["inputs"][inputName]) {
-                                doc = this.getToolInputDoc(this.tools[toolName]["inputs"], inputName);
+                                doc = this.trimToolInputDoc(this.tools[toolName]["inputs"][inputName]["doc"]);
                             }
 
                             inputs.push({
@@ -855,11 +865,17 @@ $schemas:
                     for (let inputName in this.steps[stepName].selectedInputSources) {
                         var inputSource = this.steps[stepName].selectedInputSources[inputName];
 
+                        inputResult += `      - id: ${inputName}\n`;
                         if (inputSource == "Workflow_Input") {
-                            inputResult += `      ${inputName}: ${stepName}__${inputName}\n`;
+                            inputResult += `        source: ${stepName}__${inputName}\n`;
                         }
                         else {
-                            inputResult += `      ${inputName}: ${inputSource}\n`;
+                            if (inputSource == "Random_File_Name") {
+                                inputResult += `        default: temp_${this.generateRandomString()}\n`;
+                            }
+                            else {
+                                inputResult += `        source: ${inputSource}\n`;
+                            }
                         }
                     }
 
@@ -958,9 +974,22 @@ $schemas:
                 }, {});
             },
             getOutputDescription: function(outputName) {
-                var doc = this.getToolInputDoc(this.tools[this.newStepToolName].inputs, outputName);
+                var doc = this.trimToolInputDoc(this.tools[this.newStepToolName].inputs[outputName]["doc"]);
                 var type = this.tools[this.newStepToolName].inputs[outputName].type;
                 return `- <em>${doc} Type: ${type}</em>`;
+            },
+            generateRandomString: function() {
+                // Adapted from https://stackoverflow.com/questions/1349404/generate-random-string-characters-in-javascript
+                var length           = 10;
+                var result           = '';
+                var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+                var charactersLength = characters.length;
+
+                for ( var i = 0; i < length; i++ ) {
+                    result += characters.charAt(Math.floor(Math.random() * charactersLength));
+                }
+
+                return result;
             }
         }
     });

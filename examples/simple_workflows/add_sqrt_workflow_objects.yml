@@ -1,4 +1,3 @@
 add__number1: 99
 add__number2: -83
-add__output_file: sum.txt
 sqrt__output_file: add_sqrt_result.txt

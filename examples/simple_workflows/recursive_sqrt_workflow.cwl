@@ -8,8 +8,6 @@ inputs:
   - id: calculation1__number_file
     type: File
     format: edam:format_1964
-  - id: calculation1__output_file
-    type: string
   - id: calculation2__output_file
     type: string
 outputs:
@@ -20,21 +18,25 @@ steps:
   calculation1:
     run: sqrt_tool.cwl
     in:
-      number_file: calculation1__number_file
-      output_file: calculation1__output_file
+      - id: number_file
+        source: calculation1__number_file
+      - id: output_file
+        default: temp_YzTakwlKEj
     out:
       [output_file]
   calculation2:
     run: sqrt_tool.cwl
     in:
-      number_file: calculation1/output_file
-      output_file: calculation2__output_file
+      - id: number_file
+        source: calculation1/output_file
+      - id: output_file
+        source: calculation2__output_file
     out:
       [output_file]
 s:author:
   - class: s:Person
     s:name: Stephen Piccolo
-s:dateCreated: "2021-02-04"
+s:dateCreated: "2021-02-19"
 s:license: https://spdx.org/licenses/Apache-2.0
 $namespaces:
   s: https://schema.org/
