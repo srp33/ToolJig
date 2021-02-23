@@ -1,6 +1,6 @@
 cwlVersion: v1.2
 class: Workflow
-id: somatic_variant_caller
+id: somatic_variant_caller_workflow
 label: Calls somatic variants from tumor/normal genome pair
 doc: |-
   This workflow accepts FASTQ files as input and executes the steps necessary to identify somatic variants that differ between the tumor genome and the normal genome.
