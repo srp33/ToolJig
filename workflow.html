@@ -210,9 +210,9 @@
                 </div>
 
                 <div class="form-group" v-if="newStepToolName.length > 0 && newStepName.length > 0">
-                    <label for="step_inputs">Specify output destination(s) for this input:</label>
+                    <label for="step_inputs">Specify output destination(s):</label>
 
-                    <p>The outputs for <code>{{ newStepToolName }}</code> are shown below. For each output, please indicate whether you would like the output to be collected for the entire workflow. If not, the output can be used as input in another step of the workflow.</p>
+                    <p>The outputs for <code>{{ newStepToolName }}</code> are shown below. For each output, please indicate whether you would like the output to be collected for the entire workflow. If not, the output instead can be used as input for another step of the workflow.</p>
 
                     <p v-for="output in newStepToolOutputs">
                         <input type="checkbox" :value="output" :id="output" v-model="newStepToolOutputsChecked"> <span v-html="output"></span> <span v-html="getOutputDescription(output)"></span>
@@ -644,7 +644,6 @@ $schemas:
             // This obtains information about the tool selected for this step.
             getNewStepToolData: function (stepToolName_value) {
                 var toolInputs = this.tools[stepToolName_value]["inputs"];
-                var toolOutputs = this.tools[stepToolName_value]["outputs"];
 
                 this.newStepToolInputs = [];
                 for (let inputName in toolInputs) {
@@ -670,6 +669,7 @@ $schemas:
                             continue;
 
                         var otherStepToolName = this.steps[stepName].toolName;
+                        var toolOutputs = this.tools[otherStepToolName]["outputs"];
 
                         for (let otherStepOutputName in toolOutputs) {
                             var otherStepOutputType = toolOutputs[otherStepOutputName]["type"];
@@ -696,8 +696,10 @@ $schemas:
                 }
 
                 // Iterate through the outputs and find any that the user wants to use as workflow outputs.
+                var toolOutputs = this.tools[stepToolName_value]["outputs"];
                 this.newStepToolOutputs = [];
                 this.newStepToolOutputsChecked = [];
+
                 for (let outputName in toolOutputs) {
                     var outputType = toolOutputs[outputName]["type"];
 
@@ -974,8 +976,9 @@ $schemas:
                 }, {});
             },
             getOutputDescription: function(outputName) {
-                var doc = this.trimToolInputDoc(this.tools[this.newStepToolName].inputs[outputName]["doc"]);
-                var type = this.tools[this.newStepToolName].inputs[outputName].type;
+                var doc = this.trimToolInputDoc(this.tools[this.newStepToolName].outputs[outputName]["doc"]);
+                var type = this.tools[this.newStepToolName].outputs[outputName].type;
+
                 return `- <em>${doc} Type: ${type}</em>`;
             },
             generateRandomString: function() {
