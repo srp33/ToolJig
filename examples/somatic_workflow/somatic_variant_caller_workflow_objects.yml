@@ -1,0 +1,33 @@
+align_normal__threads: 8
+align_normal__read_group_string: @RG\\tID:TCRBOA7.N.lane2\\tPL:ILLUMINA\\tLB:TCRBOA7-N\\tSM:TCRBOA7-N
+align_normal__args: -k 15
+align_tumor__threads: 8
+align_tumor__read_group_string: @RG\\tID:TCRBOA7.T.lane2\\tPL:ILLUMINA\\tLB:TCRBOA7-T\\tSM:TCRBOA7-T
+align_tumor__args: -k 15
+apply_bqsr_normal__threads: 8
+apply_bqsr_tumor__threads: 8
+calculate_bqsr_normal__known_sites_dir:
+    class: Directory
+    path: known_sites
+calculate_bqsr_normal__threads: 8
+calculate_bqsr_tumor__threads: 8
+call_small_variants__normal_sample_id: TCRBOA7-N
+call_small_variants__tumor_sample_id: TCRBOA7-T
+call_small_variants__threads: 8
+call_small_variants__output_file: TCRBOA7.snp_indels.vcf
+call_structural_variants__exclude_template_url: https://raw.githubusercontent.com/dellytools/delly/master/excludeTemplates/human.hg38.excl.tsv
+call_structural_variants__output_file: TCRBOA7.sv.vcf
+download_normal_1__url: https://osf.io/wsk7j/download
+download_normal_2__url: https://osf.io/kqeb6/download
+download_tumor_1__url: https://osf.io/zqp62/download
+download_tumor_2__url: https://osf.io/qtg8x/download
+mark_dups_normal__threads: 8
+mark_dups_tumor__threads: 8
+prep_recalibration_vcf_1000G__vcf_url: ftp://gsapubftp-anonymous@ftp.broadinstitute.org/bundle/hg38/1000G_phase1.snps.high_confidence.hg38.vcf.gz
+prep_recalibration_vcf_dbsnp__vcf_url: ftp://gsapubftp-anonymous@ftp.broadinstitute.org/bundle/hg38/dbsnp_146.hg38.vcf.gz
+prep_recalibration_vcf_indels__vcf_url: ftp://gsapubftp-anonymous@ftp.broadinstitute.org/bundle/hg38/Mills_and_1000G_gold_standard.indels.hg38.vcf.gz
+prep_ref_genome__ref_genome_version: hg38
+sort_normal__threads: 8
+sort_tumor__threads: 8
+trim_normal__args: -q 20 -Q 20 --minimum-length 40 --threads 8
+trim_tumor__args: -q 20 -Q 20 --minimum-length 40 --threads 8
