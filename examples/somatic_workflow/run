@@ -1,1 +1,1 @@
-cwltool cwltool somatic_variant_caller_workflow.cwl somatic_variant_caller_workflow_objects.yml
+cwltool somatic_variant_caller_workflow.cwl somatic_variant_caller_workflow_objects.yml
