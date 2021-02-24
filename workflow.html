@@ -884,14 +884,12 @@ $schemas:
                     if (inputResult.length > 0)
                         result += "    in:\n" + inputResult;
 
-                    //var outputResult = "";
                     var regularOutputs = [];
                     for (let outputName in this.steps[stepName].useAsWorkflowOutputs) {
                         var outputType = this.tools[toolName]["outputs"][outputName]["type"];
 
                         if (outputType != "stdout" && outputType != "stderr") {
                             regularOutputs.push(outputName);
-                            //outputResult += `      [${outputName}]\n`;
                         }
                     }
 
