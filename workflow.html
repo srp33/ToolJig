@@ -653,6 +653,7 @@ $schemas:
                     }
                     
                     var inputType = toolInputs[inputName]["type"];
+                    var inputFormat = toolInputs[inputName]["format"];
                     var selectedInputSource = "Workflow_Input";
 
                     // These are outputs from other steps that could be connected to the inputs for this step.
@@ -672,17 +673,19 @@ $schemas:
                         var toolOutputs = this.tools[otherStepToolName]["outputs"];
 
                         for (let otherStepOutputName in toolOutputs) {
-                            var otherStepOutputType = toolOutputs[otherStepOutputName]["type"];
+                            if (toolOutputs[otherStepOutputName]["type"] == inputType) {
+                                var otherStepOutputFormat = toolOutputs[otherStepOutputName]["format"];
 
-                            if (otherStepOutputType == inputType) {
-                                var id = `${stepName}/${otherStepOutputName}`;
-                                var text = `Use the <code>${otherStepOutputName}</code> output of the <code>${stepName}</code> step.`;
+                                if (inputFormat == "" || otherStepOutputFormat == "" || inputFormat == otherStepOutputFormat) {
+                                    var id = `${stepName}/${otherStepOutputName}`;
+                                    var text = `Use the <code>${otherStepOutputName}</code> output of the <code>${stepName}</code> step.`;
 
-                                var otherStepOutputDoc = "";
-                                if ("doc" in toolOutputs[otherStepOutputName])
-                                    text += ` <em>Description: ${toolOutputs[otherStepOutputName]["doc"]}</em>`;
+                                    var otherStepOutputDoc = "";
+                                    if ("doc" in toolOutputs[otherStepOutputName])
+                                        text += ` <em>Description: ${toolOutputs[otherStepOutputName]["doc"]}</em>`;
 
-                                inputSourceOptions.push({id: id, text: text});
+                                    inputSourceOptions.push({id: id, text: text});
+                                }
                             }
                         }
                     }

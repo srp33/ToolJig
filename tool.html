@@ -741,7 +741,7 @@
                     <p><small>Please specify the file format (optional). These formats are from the <a href="http://edamontology.org/page" target="_blank">EDAM Ontology</a> and apply to bioinformatics tools. If the format is not specified in the list, please contact us.</small></p>
                 </div>
 
-                <div class="form-group" v-if="newInputType=='File'">
+                <div class="form-group" v-if="newInputType=='File' || newInputType=='Output_File'">
                     <label for="inputSecondary">Secondary file(s):</label>
                     <input v-model="newInputSecondary" id="inputSecondary" ref="newInputSecondary" type="text" class="form-control" placeholder="Indicate any secondary files (separated by commas) that should accompany this file (example: .ann,.bwt). Spaces will be removed." />
                 </div>
@@ -1828,13 +1828,20 @@ $schemas:
 
                         input_dict["is_output_file"] = false;
                         if (/\n#Output_File/.test(input_dict["doc"])) {
+                            var parts1 = input_dict["doc"].split("\n#Output_File=");
+
                             input_dict["type"] = "Output_File";
-                            input_dict["format"] = input_dict["doc"].split("\n#Output_File=")[1].trim();
-                            input_dict["doc"] = input_dict["doc"].split("\n#Output_File=")[0].trim();
+                            input_dict["doc"] = parts1[0].trim();
                             input_dict["is_output_file"] = true;
+
+                            var parts2 = parts1[1].split(";");
+                            input_dict["format"] = parts2[0].trim();
+                            
+                            if (parts2.length > 1 && parts2[1].trim().length > 0)
+                                input_dict["secondaryFiles"] = parts2[1].replace("secondaryFiles: ", "").trim().split(",");
                         }
                         else if (!("format" in input_dict))
-                                input_dict["format"] = "";
+                            input_dict["format"] = "";
 
                         if (!("secondaryFiles" in input_dict))
                             input_dict["secondaryFiles"] = [];
@@ -2144,9 +2151,9 @@ $schemas:
                     result += "    type: " + input_type + "\n";
 
                     doc = this.inputs[i].doc;
-                    if (this.inputs[i].type == "Output_File")
-                        doc += `\n#Output_File=${this.inputs[i].format}`;
-                    result += "    doc: |-\n" + this.indent(6, doc) + "\n";
+                    if (this.inputs[i].type == "Output_File") {
+                        doc += `\n#Output_File=format: ${this.inputs[i].format}`;
+                    }
 
                     if (this.inputs[i].type == "File" && this.inputs[i].format != "")
                         result += "    format: " + this.inputs[i].format + "\n";
@@ -2157,6 +2164,12 @@ $schemas:
                         for (j = 0; j < this.inputs[i].secondaryFiles.length; j++)
                             result += this.indent(6, "- " + this.inputs[i].secondaryFiles[j]) + "\n";
                     }
+
+                    if (this.inputs[i].type == "Output_File" && this.inputs[i].secondaryFiles.length > 0) {
+                        doc += ";secondaryFiles: " + this.inputs[i].secondaryFiles.join(",");
+                    }
+
+                    result += "    doc: |-\n" + this.indent(6, doc) + "\n";
                 }
 
                 return result;
@@ -2178,14 +2191,11 @@ $schemas:
             },
             parseOutputs: function() {
                 result = "";
-                var output_count = 0;
                 var i;
                 for (i = 0; i<this.inputs.length; i++)
                 {
                     if (this.inputs[i].type != "Output_File")
                         continue;
-
-                    output_count += 1;
 
                     result += `  ${this.inputs[i].name}:\n`;
                     result += "    type: File\n";
@@ -2193,8 +2203,17 @@ $schemas:
                     result += "      glob: \"$(inputs." + this.inputs[i].name + ")\"\n";
                     result += "    doc: |-\n";
                     result += `      Output file matching the name specified in the "${this.inputs[i].name}" input.\n`;
+
                     if (this.inputs[i].format != "")
                         result += "    format: " + this.inputs[i].format + "\n";
+
+                    if (this.inputs[i].secondaryFiles.length > 0)
+                    {
+                        result += "    secondaryFiles:\n";
+                        var j;
+                        for (j = 0; j < this.inputs[i].secondaryFiles.length; j++)
+                            result += this.indent(6, "- " + this.inputs[i].secondaryFiles[j]) + "\n";
+                    }
                 }
 
                 var i;
@@ -2206,6 +2225,7 @@ $schemas:
                     result += "      glob: \"" + this.outputs[i].glob + "\"\n";
                     result += "    doc: |-\n";
                     result += this.indent(6, this.outputs[i].doc) + "\n";
+
                     if (this.outputs[i].format != "")
                         result += "    format: " + this.outputs[i].format + "\n";
 

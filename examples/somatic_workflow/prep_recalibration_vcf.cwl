@@ -45,22 +45,22 @@ requirements:
         with open(vcf_file_path, 'w') as vcf_file:
             vcf_file.write(output)
 inputs:
-  vcf_url:
-    type: string
-    doc: |-
-      URL for a recalibration VCF file. Example value: ftp://gsapubftp-anonymous@ftp.broadinstitute.org/bundle/hg38/dbsnp_146.hg38.vcf.gz.
   fasta_file:
     type: File
-    doc: |-
-      Reference genome FASTA file.
     format: edam:format_1929
     secondaryFiles:
       - .dict
+    doc: |-
+      Reference genome FASTA file.
   output_file:
     type: string
     doc: |-
       Name of the output VCF file (non-gzipped). Example value: dbsnp_146.hg38.vcf.
-      #Output_File=edam:format_3016
+      #Output_File=format: edam:format_3016;secondaryFiles: .idx
+  vcf_url:
+    type: string
+    doc: |-
+      URL for a recalibration VCF file. Example value: ftp://gsapubftp-anonymous@ftp.broadinstitute.org/bundle/hg38/dbsnp_146.hg38.vcf.gz.
 arguments:
   - shellQuote: false
     valueFrom: |-
@@ -81,12 +81,8 @@ outputs:
     doc: |-
       Output file matching the name specified in the "output_file" input.
     format: edam:format_3016
-  output_file_idx:
-    type: File
-    outputBinding:
-      glob: "$(inputs.output_file).idx"
-    doc: |-
-      An index file.
+    secondaryFiles:
+      - .idx
   standard_output:
     type: stdout
     format: edam:format_1964
@@ -101,7 +97,7 @@ s:author:
     s:name: Stephen Piccolo
     s:identifier: https://orcid.org/0000-0003-2001-5640
  
-s:dateCreated: "2020-07-13"
+s:dateCreated: "2021-02-26"
 s:license: https://spdx.org/licenses/Apache-2.0
  
 $namespaces:

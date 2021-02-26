@@ -9,9 +9,7 @@ requirements:
   DockerRequirement:
     dockerImageId: calculate_bqsr_table
     dockerFile: |-
-      dockerImageId: calculate_bqsr_table
-      dockerFile: |-
-        FROM broadinstitute/gatk3:3.8-1
+      FROM broadinstitute/gatk3:3.8-1
   NetworkAccess:
     class: NetworkAccess
     networkAccess: true
