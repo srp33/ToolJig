@@ -199,7 +199,9 @@
                 <div class="form-group" v-if="newStepToolName.length > 0 && newStepName.length > 0">
                     <label for="step_inputs">Specify input source(s):</label>
 
-                    <p>The inputs for <code>{{ newStepToolName }}</code> are shown below. For each input, there are two options: 1) create a new input for the entire workflow that will be mapped to this input, or 2) indicate that the output of a prior step will be mapped to this input. Please indicate either option below. <span v-if="this.steps == 0">Because this is the first step of the workflow, the inputs can only be specified as workflow inputs.</span></p>
+                    <p>The inputs for <code>{{ newStepToolName }}</code> are shown below. For each input, you will need to select a single source. You always have the option to create a new input for the entire workflow and use that input as the source. In these cases, you will also need to specify a corresponding value in the input-object file. Alternatively, you can indicate that the output of a prior step will be used as input for this step.</p>
+
+                    <p>A special case occurs when a step has an "output file" input. Normally, the user would specify the name of this "output file" and thus it would need to be a workflow input. However, naming this file is <em>only</em> necessary if the "output file" is used as an output for the entire workflow. If an "output file" from one step will <em>only</em> be used as an input for a subsequent step, you can indicate that a random file name should be generated. <!--Alternatively, you can specify a static name for this file. In either case, it -->This relieves the user from having to specify workflow inputs unnecessarily.</p>
 
                     <input_source_selector 
                         v-for="(input, index) in newStepToolInputs" 
@@ -662,8 +664,10 @@ $schemas:
                     // Ignore the step that the user is editing.
                     var inputSourceOptions = [{id: "Workflow_Input", text: "Create a new workflow input that will be mapped to this input."}];
 
-                    if (inputDoc.includes("#Output_File="))
+                    if (inputDoc.includes("#Output_File=")) {
                         inputSourceOptions.push({id: "Random_File_Name", text: "Generate a random file name."});
+                        //inputSourceOptions.push({id: "Static_File_Name", text: "Use a static file name."});
+                    }
 
                     for (let stepName in this.steps) {
                         if (stepName == this.newStepName)
@@ -879,7 +883,12 @@ $schemas:
                                 inputResult += `        default: temp_${this.generateRandomString()}\n`;
                             }
                             else {
-                                inputResult += `        source: ${inputSource}\n`;
+                                // if (inputSource == "Static_File_Name") {
+                                //     inputResult += `        default: \n`;
+                                // }
+                                // else {
+                                    inputResult += `        source: ${inputSource}\n`;
+                                // }
                             }
                         }
                     }
