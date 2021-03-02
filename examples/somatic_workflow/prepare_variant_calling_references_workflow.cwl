@@ -1,6 +1,6 @@
 cwlVersion: v1.2
 class: Workflow
-id: prepare_variant_calling_references
+id: prepare_variant_calling_references_workflow
 label: Prepare reference files for somatic variant calling
 doc: |-
   This workflow downloads and prepares reference-genome and recalibration files to be used in somatic variant calling.
