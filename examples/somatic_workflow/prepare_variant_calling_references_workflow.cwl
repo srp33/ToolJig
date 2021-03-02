@@ -20,6 +20,9 @@ inputs:
   - id: prep_recalibration_vcf_indels__vcf_url
     type: string
 outputs:
+  - id: prep_ref_genome__reference_fasta_file
+    type: File
+    outputSource: prep_ref_genome/reference_fasta_file
   - id: prep_recalibration_vcf_1000G__output_file
     type: File
     outputSource: prep_recalibration_vcf_1000G/output_file
