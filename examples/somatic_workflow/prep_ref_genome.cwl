@@ -33,7 +33,7 @@ arguments:
       
       picard -Xms128m -Xmx2g CreateSequenceDictionary REFERENCE=$(inputs.ref_genome_version).fa OUTPUT=$(inputs.ref_genome_version).fa.dict
 outputs:
-  index_fasta_file:
+  reference_fasta_file:
     type: File
     outputBinding:
       glob: "$(inputs.ref_genome_version).fa"
@@ -62,7 +62,7 @@ s:author:
     s:name: Stephen Piccolo
     s:identifier: https://orcid.org/0000-0003-2001-5640
  
-s:dateCreated: "2020-07-13"
+s:dateCreated: "2021-03-01"
 s:license: https://spdx.org/licenses/Apache-2.0
  
 $namespaces:
