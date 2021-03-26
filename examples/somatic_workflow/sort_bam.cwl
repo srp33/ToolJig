@@ -16,18 +16,18 @@ requirements:
 inputs:
   bam_file:
     type: File
+    format: edam:format_2572
     doc: |-
       BAM file to be sorted.
-    format: edam:format_2572
-  threads:
-    type: int
-    doc: |-
-      The number of threads that samtools should use when sorting.
   output_file:
     type: string
     doc: |-
       Name of the sorted BAM file that will be created.
-      #Output_File=edam:format_2572
+      #Output_File=format: edam:format_2572;secondaryFiles: .bai
+  threads:
+    type: int
+    doc: |-
+      The number of threads that samtools should use when sorting.
 arguments:
   - shellQuote: false
     valueFrom: |-
@@ -42,13 +42,8 @@ outputs:
     doc: |-
       Output file matching the name specified in the "output_file" input.
     format: edam:format_2572
-  output_file_bai:
-    type: File
-    outputBinding:
-      glob: "$(inputs.output_file).bai"
-    doc: |-
-      An index file.
-    format: edam:format_1964
+    secondaryFiles:
+      - .bai
   standard_output:
     type: stdout
     format: edam:format_1964
@@ -63,7 +58,7 @@ s:author:
     s:name: Stephen Piccolo
     s:identifier: https://orcid.org/0000-0003-2001-5640
  
-s:dateCreated: "2020-07-13"
+s:dateCreated: "2021-03-03"
 s:license: https://spdx.org/licenses/Apache-2.0
  
 $namespaces:

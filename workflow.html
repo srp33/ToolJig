@@ -80,13 +80,15 @@
 
             <p v-if="Object.keys(tools).length > 0">Here you can see which tool files have been uploaded. You can also remove (<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>) these files if you wish.</p>
 
-            <ol class="list-group">
-                <li v-for="tool_name in Object.keys(sortObject(tools))" class="list-group-item">{{ tool_name }}
-                    <button v-on:click="deleteTool(tool_name)" class="btn btn-default">
-                        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-                    </button>
-                </li>
-            </ol>
+            <p>
+                <ol class="list-group">
+                    <li v-for="tool_name in Object.keys(sortObject(tools))" class="list-group-item">{{ tool_name }}
+                        <button v-on:click="deleteTool(tool_name)" class="btn btn-default">
+                            <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                        </button>
+                    </li>
+                </ol>
+            </p>
         </div>
 
         <hr style="border: 1px solid black;border-radius: 1px;" />
@@ -177,6 +179,10 @@
         <div class="panel panel-color1" ref="stepsPanel" v-if="Object.keys(tools).length > 0">
             <h4 class="card-title">Define workflow steps:</h4>
 
+            TODO
+            <p>{{ steps }}</p>
+            <p>{{ parseWorkflowInputs() }}</p>
+
             <p>Here you can define each step of the workflow.</p>
 
             <form v-on:submit.prevent="addUpdateStep">
@@ -199,9 +205,9 @@
                 <div class="form-group" v-if="newStepToolName.length > 0 && newStepName.length > 0">
                     <label for="step_inputs">Specify input source(s):</label>
 
-                    <p>The inputs for <code>{{ newStepToolName }}</code> are shown below. For each input, you will need to select a single source. You always have the option to create a new input for the entire workflow and use that input as the source. In these cases, you will also need to specify a corresponding value in the input-object file. Alternatively, you can indicate that the output of a prior step will be used as input for this step.</p>
+                    <p>The inputs for <code>{{ newStepToolName }}</code> are shown below. For each input, you will need to select a single source. You always have the option to create an input for the entire workflow and use that input as the source. In these cases, you will also need to specify a corresponding value in the input-object file. Alternatively, you can indicate that the output of a prior step will be used as input for this step.</p>
 
-                    <p>A special case occurs when a step has an "output file" input. Normally, the user would specify the name of this "output file" and thus it would need to be a workflow input. However, naming this file is <em>only</em> necessary if the "output file" is used as an output for the entire workflow. If an "output file" from one step will <em>only</em> be used as an input for a subsequent step, you can indicate that a random file name should be generated. <!--Alternatively, you can specify a static name for this file. In either case, it -->This relieves the user from having to specify workflow inputs unnecessarily.</p>
+                    <p>A special case occurs when a step has an "output file" input. Normally, the user would specify the name of this "output file" and thus it would need to be a workflow input. However, naming this file is <em>only</em> necessary if the "output file" is used as an output for the entire workflow. If an "output file" from one step will <em>only</em> be used as an input for a subsequent step, you can indicate that a temporary file should be generated. <!--Alternatively, you can specify a static name for this file. In either case, it -->This relieves you from having to specify workflow inputs unnecessarily.</p>
 
                     <input_source_selector 
                         v-for="(input, index) in newStepToolInputs" 
@@ -226,19 +232,21 @@
                 </div>
             </form>
 
-            <p v-if="steps.length > 0">Here you can see which steps have been added. You can also remove (<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>) steps if you wish.</p>
-            <!--<p v-if="steps.length > 0">Here you can see which steps have been added. You can also edit (<span class="glyphicon glyphicon-edit" aria-hidden="true"></span>) or remove (<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>) steps if you wish.</p>-->
+            <p v-if="Object.keys(steps).length > 0">Here you can see which steps have been added. You can also remove (<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>) steps if you wish.</p>
+            <!--<p v-if="Object.keys(steps).length > 0">Here you can see which steps have been added. You can also edit (<span class="glyphicon glyphicon-edit" aria-hidden="true"></span>) or remove (<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>) steps if you wish.</p>-->
 
-            <ol class="list-group">
-                <li v-for="stepName in Object.keys(steps)" class="list-group-item">{{ stepName }}
-                    <!--<button v-on:click="editStep(stepName)" class="btn btn-default">
-                        <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
-                    </button>-->
-                    <button v-on:click="deleteStep(stepName)" class="btn btn-default">
-                        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-                    </button>
-                </li>
-            </ol>
+            <p>
+                <ol class="list-group">
+                    <li v-for="stepName in Object.keys(steps)" class="list-group-item">{{ stepName }}
+                        <!--<button v-on:click="editStep(stepName)" class="btn btn-default">
+                            <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+                        </button>-->
+                        <button v-on:click="deleteStep(stepName)" class="btn btn-default">
+                            <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                        </button>
+                    </li>
+                </ol>
+            </p>
 
             <p v-if="other_errors.length > 0"><font color="red">
                 <b>Please correct the following error(s):</b>
@@ -316,23 +324,29 @@
             value: {
                 type: String,
                 required: true
-            }
+            },
         },
         template: `
             <div class="form-group panel-color2"><div class="panel-color3"><strong>{{ inputName }}</strong></div><br />
                 <p><em>Description: {{ inputDoc }}</em></p> 
 
                 <div v-for="inputSourceOption in inputSourceOptions">
-                    <input type="radio" v-model="selectedInputSource" :value="inputSourceOption.id"> <span v-html="inputSourceOption.text"></span>
+                    <input type="radio" v-model="selectedInputSource" :value="inputSourceOption.type"> <span v-html="inputSourceOption.text"></span>
+
+                    <input :type="inputSourceOption.type == 'New_Workflow_Input' ? 'text' : 'hidden'" v-model="inputSourceOption.theValue" size="35">
                 </div>
             </div>
         `,
         computed: {
             selectedInputSource: {
-                get() {return this.value},
-                set(selectedInputSource) { this.$emit('input', selectedInputSource)}
-            }
-        }
+                get() {
+                    return this.value;
+                },
+                set(selectedInputSource) {
+                    this.$emit('input', selectedInputSource);
+                }
+            },
+        },
     });
 
     // These components define the dynamic behavior of the workflow-input boxes that are created.
@@ -406,14 +420,17 @@
                 if (this.author_orcid.trim() != "" && !this.isValidORCID(this.author_orcid))
                     this.basics_errors.push("Please specify a valid ORCID identifier (e.g., https://orcid.org/0000-0001-2222-3456).");
 
-                if (this.steps.length < 2)
+                if (Object.keys(this.steps).length < 2)
                     this.other_errors.push("Please specify at least two steps for the workflow.");
 
                 var workflow_input_text = this.parseWorkflowInputText();
                 var workflow_output_text = this.parseWorkflowOutputText();
 
-                if (workflow_input_text.length < 1 || workflow_output_text.length < 1)
-                    this.other_errors.push("Please specify at least one input and at least one output for the overall workflow.")
+                if (workflow_input_text.length < 1)
+                    this.other_errors.push("Please specify at least one input for the overall workflow.")
+
+                if (workflow_output_text.length < 1)
+                    this.other_errors.push("Please specify at least one output for the overall workflow.")
 
                 if (this.basics_errors.length > 0 || this.other_errors.length > 0)
                     return "";
@@ -523,6 +540,8 @@ $schemas:
                     this.license = this.getYamlValue(yaml_dict, ["s:license"]);
                     this.steps = [];
 
+                    let newWorkflowInputs = [];
+
                     for (step_name in this.getYamlValue(yaml_dict, ["steps"])) {
                         var step = this.getYamlValue(yaml_dict, ["steps", step_name]);
                         var tool_name = step.run;
@@ -530,14 +549,28 @@ $schemas:
                         var selectedInputSources = {};
                         for (let input of step.in) {
                             if ("default" in input) {
-                                selectedInputSources[input.id] = "Random_File_Name";
+                                selectedInputSources[input.id] = {type: "Temp_File_Name", specifiedValue: this.generateRandomFileName()};
                             }
                             else {
                                 if (input.source.includes("/")) {
-                                    selectedInputSources[input.id] = input.source;
+                                    selectedInputSources[input.id] = {type: "Other_Step", specifiedValue: input.source};
                                 }
                                 else {
-                                    selectedInputSources[input.id] = "Workflow_Input";
+                                    console.log(input.id);
+                                    console.log(input.source);
+                                    console.log(newWorkflowInputs);
+
+                                    if (newWorkflowInputs.includes(input.source)) {
+                                        console.log("got here1");
+                                        var workflow_input = {type: `Existing_Workflow_Input: ${input.source}`, specifiedValue: input.source};
+                                    }
+                                    else {
+                                        console.log("got here2");
+                                        var workflow_input = {type: "New_Workflow_Input", specifiedValue: input.id};
+                                        newWorkflowInputs.push(input.source);
+                                    }
+
+                                    selectedInputSources[input.id] = workflow_input;
                                 }
                             }
                         }
@@ -555,7 +588,7 @@ $schemas:
                     }
 
                     this.steps = Object.assign({}, this.steps, this.steps);
-                    this.workflow_inputs = Object.assign([], this.workflow_inputs, this.parseWorkflowInputs());
+                    this.workflow_inputs = this.parseWorkflowInputs();
 
                     e.target.value = "";
 	            }
@@ -656,17 +689,21 @@ $schemas:
                     
                     var inputType = toolInputs[inputName]["type"];
                     var inputFormat = toolInputs[inputName]["format"];
-                    var selectedInputSource = "Workflow_Input";
 
                     // These are outputs from other steps that could be connected to the inputs for this step.
                     // They appear in the dropdown menus.
                     // Iterate through existing steps and see which outputs are the same type as this input.
                     // Ignore the step that the user is editing.
-                    var inputSourceOptions = [{id: "Workflow_Input", text: "Create a new workflow input that will be mapped to this input."}];
+                    var inputSourceOptions = [{type: "New_Workflow_Input", text: "Create a new workflow input with the following identifier: ", theValue: this.getNewWorkflowInputDefault(inputName)}];
+
+                    for (let input of this.workflow_inputs) {
+                        if (input.type == inputType) {
+                            inputSourceOptions.push({type: `Existing_Workflow_Input: ${input.id}`, text: `Use the <code>${input.id}</code> workflow input.`, theValue: input.id});
+                        }
+                    }
 
                     if (inputDoc.includes("#Output_File=")) {
-                        inputSourceOptions.push({id: "Random_File_Name", text: "Generate a random file name."});
-                        //inputSourceOptions.push({id: "Static_File_Name", text: "Use a static file name."});
+                        inputSourceOptions.push({type: "Temp_File_Name", text: "Generate a temporary file.", theValue: this.generateRandomFileName()});
                     }
 
                     for (let stepName in this.steps) {
@@ -688,7 +725,7 @@ $schemas:
                                     if ("doc" in toolOutputs[otherStepOutputName])
                                         text += ` <em>Description: ${toolOutputs[otherStepOutputName]["doc"]}</em>`;
 
-                                    inputSourceOptions.push({id: id, text: text});
+                                    inputSourceOptions.push({type: "Other_Step", text: text, theValue: id});
                                 }
                             }
                         }
@@ -697,7 +734,7 @@ $schemas:
                     this.newStepToolInputs.push({
                         inputName: inputName,
                         inputDoc: this.trimToolInputDoc(inputDoc),
-                        selectedInputSource: selectedInputSource,
+                        selectedInputSource: "New_Workflow_Input",
                         inputSourceOptions: inputSourceOptions
                     });
                 }
@@ -719,6 +756,24 @@ $schemas:
                     }
                 }
             },
+            getNewWorkflowInputDefault(inputID) {
+                for (let input of this.workflow_inputs) {
+                    if (input.id == inputID) {
+                        return inputID += "_2";
+                    }
+                }
+
+                return(inputID);
+            },
+            isWorkflowInputDuplicated(inputID) {
+                for (let input of this.workflow_inputs) {
+                    if (input.id == inputID) {
+                        return true;
+                    }
+                }
+
+                return false;
+            },
             trimToolInputDoc(doc) {
                 var doc = doc.split("#Output_File=")[0].trim();
 
@@ -738,10 +793,35 @@ $schemas:
                     return;
                 }
 
+                // Figure out which option was selected for each input.
                 let selectedInputSources = {};
+                let newWorkflowInputNames = [];
                 var i;
                 for (i = 0; i < this.newStepToolInputs.length; i++) {
-                    selectedInputSources[this.newStepToolInputs[i].inputName] = this.newStepToolInputs[i].selectedInputSource;
+                    let inputSource = this.newStepToolInputs[i].selectedInputSource;
+
+                    var j = 0;
+                    for (j = 0; j < this.newStepToolInputs[i].inputSourceOptions.length; j++) {
+                        if (this.newStepToolInputs[i].inputSourceOptions[j].type == inputSource) {
+                            let sourceOption = this.newStepToolInputs[i].inputSourceOptions[j];
+
+                            if (sourceOption.theValue.trim() == "") {
+                                alert("A workflow input identifier cannot be blank.");
+                                return;
+                            }
+
+                            if (sourceOption.type == "New_Workflow_Input" && (newWorkflowInputNames.includes(sourceOption.theValue) || this.isWorkflowInputDuplicated(sourceOption.theValue))) {
+                                alert(`The ${sourceOption.theValue} workflow input identifier has already been used.`);
+                                return;
+                            }
+
+                            selectedInputSources[this.newStepToolInputs[i].inputName] = {type: sourceOption.type, specifiedValue: sourceOption.theValue};
+
+                            if (sourceOption.type == "New_Workflow_Input") {
+                                newWorkflowInputNames.push(sourceOption.theValue);
+                            }
+                        }
+                    }
                 }
 
                 let useAsWorkflowOutputs = {};
@@ -756,24 +836,48 @@ $schemas:
 
                 this.newStepName = "";
                 this.newStepToolName = "";
+                this.newStepToolInputs = [];
             },
-            editStep: function (stepName) {
-                let step = this.steps[stepName];
+            // editStep: function (stepName) {
+            //     let step = this.steps[stepName];
 
-                this.newStepName = stepName;
-                this.newStepToolName = step.toolName;
-                this.getNewStepToolData(step.toolName);
-                //this.$refs.newStepName.focus();
-                //this.$refs.stepsPanel.scrollIntoView();
-            },
+            //     this.newStepName = stepName;
+            //     this.newStepToolName = step.toolName;
+            //     this.getNewStepToolData(step.toolName);
+            //     //this.$refs.newStepName.focus();
+            //     //this.$refs.stepsPanel.scrollIntoView();
+            // },
             deleteStep: function (stepName) {
+                // Make sure no outputs of this step are used by other steps.
                 for (let otherStepName in this.steps) {
                     for (let inputName in this.steps[otherStepName].selectedInputSources) {
                         var inputSource = this.steps[otherStepName].selectedInputSources[inputName];
                         
-                        if (inputSource.split("/")[0] == stepName) {
-                            alert(`At least one output ot this step is used as input to the ${otherStepName} step, so it cannot be deleted at this time.`);
+                        if (inputSource.specifiedValue.split("/")[0] == stepName) {
+                            alert(`At least one output of the ${stepName} step is used as input to the ${otherStepName} step, so the ${stepName} step cannot be deleted at this time.`);
                             return;
+                        }
+                    }
+                }
+
+                // Make sure this step has no New_Workflow_Input values that are used by other steps.
+                for (let inputName in this.steps[stepName].selectedInputSources) {
+                    var inputSource = this.steps[stepName].selectedInputSources[inputName];
+
+                    if (inputSource.type == "New_Workflow_Input") {
+                        for (let otherStepName in this.steps) {
+                            if (stepName == otherStepName) {
+                                continue;
+                            }
+
+                            for (let otherInputName in this.steps[otherStepName].selectedInputSources) {
+                                var otherInputSource = this.steps[otherStepName].selectedInputSources[otherInputName];
+
+                                if (otherInputSource.type == `Existing_Workflow_Input: ${inputSource.specifiedValue}`) {
+                                    alert(`The ${stepName} step specifies the ${inputSource.specifiedValue} workflow input, and the ${otherStepName} step uses this workflow input. So the ${stepName} step cannot be deleted at this time.`);
+                                    return;
+                                }
+                            }
                         }
                     }
                 }
@@ -781,26 +885,28 @@ $schemas:
                 delete this.steps[stepName];
                 this.steps = Object.assign({}, this.steps, this.steps);
 
+                this.workflow_inputs = this.parseWorkflowInputs();
+
                 this.newStepName = "";
                 this.newStepToolName = "";
             },
             parseWorkflowInputs() {
                 var inputs = [];
 
-                for (let stepName in this.sortObject(this.steps)) {
+                for (let stepName in this.steps) {
                     var toolName = this.steps[stepName].toolName;
 
                     for (let inputName in this.steps[stepName].selectedInputSources) {
                         var inputSource = this.steps[stepName].selectedInputSources[inputName];
 
-                        if (inputSource == "Workflow_Input") {
+                        if (inputSource.type == "New_Workflow_Input") {
                             var doc = "";
                             if ("doc" in this.tools[toolName]["inputs"][inputName]) {
                                 doc = this.trimToolInputDoc(this.tools[toolName]["inputs"][inputName]["doc"]);
                             }
 
                             inputs.push({
-                                "id": `${stepName}__${inputName}`,
+                                "id": inputSource.specifiedValue,
                                 "type": this.tools[toolName]["inputs"][inputName]["type"],
                                 "doc": doc,
                                 "format": this.tools[toolName]["inputs"][inputName]["format"],
@@ -821,9 +927,9 @@ $schemas:
                     for (let inputName in this.steps[stepName].selectedInputSources) {
                         var inputSource = this.steps[stepName].selectedInputSources[inputName];
 
-                        if (inputSource == "Workflow_Input") {
+                        if (inputSource.type == "New_Workflow_Input") {
                             var input_object = this.tools[toolName]["inputs"][inputName];
-                            result += `  - id: ${stepName}__${inputName}\n    type: ${input_object["type"]}\n`;
+                            result += `  - id: ${inputSource.specifiedValue}\n    type: ${input_object["type"]}\n`;
 
                             if ("format" in input_object && input_object["format"] != "") {
                                 result += `    format: ${input_object["format"]}\n`;
@@ -875,21 +981,11 @@ $schemas:
                         var inputSource = this.steps[stepName].selectedInputSources[inputName];
 
                         inputResult += `      - id: ${inputName}\n`;
-                        if (inputSource == "Workflow_Input") {
-                            inputResult += `        source: ${stepName}__${inputName}\n`;
+                        if (inputSource.type == "Temp_File_Name") {
+                            inputResult += `        default: ${inputSource.specifiedValue}\n`;
                         }
                         else {
-                            if (inputSource == "Random_File_Name") {
-                                inputResult += `        default: temp_${this.generateRandomString()}\n`;
-                            }
-                            else {
-                                // if (inputSource == "Static_File_Name") {
-                                //     inputResult += `        default: \n`;
-                                // }
-                                // else {
-                                    inputResult += `        source: ${inputSource}\n`;
-                                // }
-                            }
+                            inputResult += `        source: ${inputSource.specifiedValue}\n`;
                         }
                     }
 
@@ -993,7 +1089,7 @@ $schemas:
 
                 return `- <em>${doc} Type: ${type}</em>`;
             },
-            generateRandomString: function() {
+            generateRandomFileName: function() {
                 // Adapted from https://stackoverflow.com/questions/1349404/generate-random-string-characters-in-javascript
                 var length           = 10;
                 var result           = '';
@@ -1004,7 +1100,7 @@ $schemas:
                     result += characters.charAt(Math.floor(Math.random() * charactersLength));
                 }
 
-                return result;
+                return `temp_${result}`;
             }
         }
     });
