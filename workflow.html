@@ -556,16 +556,10 @@ $schemas:
                                     selectedInputSources[input.id] = {type: "Other_Step", specifiedValue: input.source};
                                 }
                                 else {
-                                    console.log(input.id);
-                                    console.log(input.source);
-                                    console.log(newWorkflowInputs);
-
                                     if (newWorkflowInputs.includes(input.source)) {
-                                        console.log("got here1");
                                         var workflow_input = {type: `Existing_Workflow_Input: ${input.source}`, specifiedValue: input.source};
                                     }
                                     else {
-                                        console.log("got here2");
                                         var workflow_input = {type: "New_Workflow_Input", specifiedValue: input.id};
                                         newWorkflowInputs.push(input.source);
                                     }
