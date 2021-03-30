@@ -1,5 +1,5 @@
-calculation1__number_file:
+number_file:
     class: File
     path: 64.txt
     format: http://edamontology.org/format_1964
-calculation2__output_file: recursive_sqrt_result.txt
+output_file: recursive_sqrt_result.txt

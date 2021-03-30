@@ -42,8 +42,6 @@ inputs:
     type: File
     format: edam:format_1964
     secondaryFiles:
-#      - .a
-#      - .b
       - .c
       - .d
     doc: |-
