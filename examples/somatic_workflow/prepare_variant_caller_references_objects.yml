@@ -1,0 +1,7 @@
+ref_genome_version: hg38
+output_file_1000G: 1000G_phase1.snps.high_confidence.hg38.vcf
+vcf_url_1000G: ftp://gsapubftp-anonymous@ftp.broadinstitute.org/bundle/hg38/1000G_phase1.snps.high_confidence.hg38.vcf.gz
+output_file_dbsnp: dbsnp_146.hg38.vcf
+vcf_url_dbsnp: ftp://gsapubftp-anonymous@ftp.broadinstitute.org/bundle/hg38/dbsnp_146.hg38.vcf.gz
+output_file_indels: Mills_and_1000G_gold_standard.indels.hg38.vcf
+vcf_url_indels: ftp://gsapubftp-anonymous@ftp.broadinstitute.org/bundle/hg38/Mills_and_1000G_gold_standard.indels.hg38.vcf.gz
