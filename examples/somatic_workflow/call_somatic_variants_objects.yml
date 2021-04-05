@@ -1,30 +1,30 @@
-fastq_normal_1_url: https://osf.io/wsk7j/download
-fastq_normal_2_url: https://osf.io/kqeb6/download
-fastq_tumor_1_url: https://osf.io/zqp62/download
-fastq_tumor_2_url: https://osf.io/qtg8x/download
-trim_args: -q 20 -Q 20 --minimum-length 40 --threads 8
+fastq_normal_1_url: "https://osf.io/wsk7j/download"
+fastq_normal_2_url: "https://osf.io/kqeb6/download"
+fastq_tumor_1_url: "https://osf.io/zqp62/download"
+fastq_tumor_2_url: "https://osf.io/qtg8x/download"
+trim_args: "-q 20 -Q 20 --minimum-length 40 --threads 8"
 fasta_file:
     class: File
-    path: hg38.fa
+    path: "hg38.fa"
     format: http://edamontology.org/format_1929
-threads: 8
-read_group_string_normal: @RG\\tID:TCRBOA7.N.lane2\\tPL:ILLUMINA\\tLB:TCRBOA7-N\\tSM:TCRBOA7-N
-align_args: -k 15
-read_group_string_tumor: @RG\\tID:TCRBOA7.T.lane2\\tPL:ILLUMINA\\tLB:TCRBOA7-T\\tSM:TCRBOA7-T
+threads: "8"
+read_group_string_normal: "@RG\\tID:TCRBOA7.N.lane2\\tPL:ILLUMINA\\tLB:TCRBOA7-N\\tSM:TCRBOA7-N"
+align_args: "-k 15"
+read_group_string_tumor: "@RG\\tID:TCRBOA7.T.lane2\\tPL:ILLUMINA\\tLB:TCRBOA7-T\\tSM:TCRBOA7-T"
 known_sites_vcf_file_1:
     class: File
-    path: 1000G_phase1.snps.high_confidence.hg38.vcf
+    path: "1000G_phase1.snps.high_confidence.hg38.vcf"
     format: http://edamontology.org/format_3016
 known_sites_vcf_file_2:
     class: File
-    path: dbsnp_146.hg38.vcf
+    path: "dbsnp_146.hg38.vcf"
     format: http://edamontology.org/format_3016
 known_sites_vcf_file_3:
     class: File
-    path: Mills_and_1000G_gold_standard.indels.hg38.vcf
+    path: "Mills_and_1000G_gold_standard.indels.hg38.vcf"
     format: http://edamontology.org/format_3016
-normal_sample_id: TCRBOA7-N
-tumor_sample_id: TCRBOA7-T
-small_variants_output_file: TCRBOA7.snp_indels.vcf
-sv_exclude_template_url: https://raw.githubusercontent.com/dellytools/delly/master/excludeTemplates/human.hg38.excl.tsv
-structural_variants_output_file: TCRBOA7.sv.vcf
+normal_sample_id: "TCRBOA7-N"
+tumor_sample_id: "TCRBOA7-T"
+small_variants_output_file: "TCRBOA7.snp_indels.vcf"
+sv_exclude_template_url: "https://raw.githubusercontent.com/dellytools/delly/master/excludeTemplates/human.hg38.excl.tsv"
+structural_variants_output_file: "TCRBOA7.sv.vcf"

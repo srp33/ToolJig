@@ -1759,11 +1759,11 @@ $schemas:
                 for (i = 0; i<this.inputs.length; i++)
                 {
                     if (this.inputs[i].type == "string" || this.inputs[i].type == "int" || this.inputs[i].type == "Output_File")
-                        output += this.inputs[i].name + ": " + this.inputs[i].value + "\n";
+                        output += this.inputs[i].name + ": \"" + this.inputs[i].value + "\"\n";
                     else {
                         output += this.inputs[i].name + ":\n";
                         output += "    class: " + this.inputs[i].type + "\n";
-                        output += "    path: " + this.inputs[i].value + "\n";
+                        output += "    path: \"" + this.inputs[i].value + "\"\n";
 
                         if (this.inputs[i].type == "File" && this.inputs[i].format != "")
                             output += "    format: " + this.inputs[i].format.replace("edam:", "http://edamontology.org/") + "\n";
