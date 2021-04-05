@@ -478,15 +478,21 @@ $schemas:
 
                 for (let input of this.workflow_inputs)
                 {
-                    if (input.type == "string" || input.type == "int")
+                    if (input.type == "string") {
                         output += input.id + ": \"" + input.value + "\"\n";
+                    }
                     else {
-                        output += input.id + ":\n";
-                        output += "    class: " + input.type + "\n";
-                        output += "    path: \"" + input.value + "\"\n";
+                        if (input.type == "int") {
+                            output += input.id + ": " + input.value + "\n";
+                        }
+                        else {
+                            output += input.id + ":\n";
+                            output += "    class: " + input.type + "\n";
+                            output += "    path: \"" + input.value + "\"\n";
 
-                        if (input.type == "File" && input.format !== undefined && input.format !== "") {
-                            output += "    format: " + input.format.replace("edam:", "http://edamontology.org/") + "\n";
+                            if (input.type == "File" && input.format !== undefined && input.format !== "") {
+                                output += "    format: " + input.format.replace("edam:", "http://edamontology.org/") + "\n";
+                            }
                         }
                     }
                 }

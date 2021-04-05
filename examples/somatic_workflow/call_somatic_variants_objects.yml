@@ -7,7 +7,7 @@ fasta_file:
     class: File
     path: "hg38.fa"
     format: http://edamontology.org/format_1929
-threads: "8"
+threads: 8
 read_group_string_normal: "@RG\\tID:TCRBOA7.N.lane2\\tPL:ILLUMINA\\tLB:TCRBOA7-N\\tSM:TCRBOA7-N"
 align_args: "-k 15"
 read_group_string_tumor: "@RG\\tID:TCRBOA7.T.lane2\\tPL:ILLUMINA\\tLB:TCRBOA7-T\\tSM:TCRBOA7-T"
