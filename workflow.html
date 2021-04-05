@@ -268,6 +268,8 @@
             <hr style="border: 1px solid black;border-radius: 1px;" />
 
             <h4>Create input-object file:</h4>
+
+            <p>TODO: {{ workflow_inputs }}</p>
     
             Once you have created a valid CWL file, you can create an input-object file, which defines inputs that will be used when the workflow is executed in one particular instance. The boxes below correspond to the inputs for the overall workflow (not for step inputs that use outputs from other steps).
     
@@ -483,8 +485,9 @@ $schemas:
                         output += "    class: " + input.type + "\n";
                         output += "    path: " + input.value + "\n";
 
-                        if (input.type == "File" && input.format != "")
+                        if (input.type == "File" && input.format !== undefined && input.format !== "") {
                             output += "    format: " + input.format.replace("edam:", "http://edamontology.org/") + "\n";
+                        }
                     }
                 }
 
@@ -553,14 +556,14 @@ $schemas:
                             }
                             else {
                                 if (input.source.includes("/")) {
-                                    selectedInputSources[input.id] = {type: "Other_Step", specifiedValue: input.source};
+                                    selectedInputSources[input.id] = {type: `Other_Step_${input.source}`, specifiedValue: input.source};
                                 }
                                 else {
                                     if (newWorkflowInputs.includes(input.source)) {
                                         var workflow_input = {type: `Existing_Workflow_Input: ${input.source}`, specifiedValue: input.source};
                                     }
                                     else {
-                                        var workflow_input = {type: "New_Workflow_Input", specifiedValue: input.id};
+                                        var workflow_input = {type: "New_Workflow_Input", specifiedValue: input.source};
                                         newWorkflowInputs.push(input.source);
                                     }
 
@@ -692,7 +695,9 @@ $schemas:
 
                     for (let input of this.workflow_inputs) {
                         if (input.type == inputType) {
-                            inputSourceOptions.push({type: `Existing_Workflow_Input: ${input.id}`, text: `Use the <code>${input.id}</code> workflow input.`, theValue: input.id});
+                            if (input.format === undefined || input.format == "" || inputFormat === undefined || inputFormat == "" || input.format == inputFormat) {
+                                inputSourceOptions.push({type: `Existing_Workflow_Input: ${input.id}`, text: `Use the <code>${input.id}</code> workflow input.`, theValue: input.id});
+                            }
                         }
                     }
 
@@ -719,7 +724,7 @@ $schemas:
                                     if ("doc" in toolOutputs[otherStepOutputName])
                                         text += ` <em>Description: ${toolOutputs[otherStepOutputName]["doc"]}</em>`;
 
-                                    inputSourceOptions.push({type: "Other_Step", text: text, theValue: id});
+                                    inputSourceOptions.push({type: `Other_Step_${id}`, text: text, theValue: id});
                                 }
                             }
                         }
@@ -826,7 +831,7 @@ $schemas:
                 this.steps[this.newStepName] = {toolName: this.newStepToolName, selectedInputSources: selectedInputSources, useAsWorkflowOutputs: useAsWorkflowOutputs};
                 this.steps = Object.assign({}, this.steps, this.steps);
 
-                this.workflow_inputs = Object.assign([], this.workflow_inputs, this.parseWorkflowInputs());
+                this.workflow_inputs = this.parseWorkflowInputs();
 
                 this.newStepName = "";
                 this.newStepToolName = "";
@@ -847,7 +852,7 @@ $schemas:
                     for (let inputName in this.steps[otherStepName].selectedInputSources) {
                         var inputSource = this.steps[otherStepName].selectedInputSources[inputName];
                         
-                        if (inputSource.specifiedValue.split("/")[0] == stepName) {
+                        if (inputSource.specifiedValue.split("/")[0] == stepName && stepName != otherStepName) {
                             alert(`At least one output of the ${stepName} step is used as input to the ${otherStepName} step, so the ${stepName} step cannot be deleted at this time.`);
                             return;
                         }
@@ -886,12 +891,17 @@ $schemas:
             },
             parseWorkflowInputs() {
                 var inputs = [];
+                //var inputsAdded = [];
 
                 for (let stepName in this.steps) {
                     var toolName = this.steps[stepName].toolName;
 
                     for (let inputName in this.steps[stepName].selectedInputSources) {
                         var inputSource = this.steps[stepName].selectedInputSources[inputName];
+
+                        // if (inputsAdded.includes(inputSource.specifiedValue)) {
+                        //     continue;
+                        // }
 
                         if (inputSource.type == "New_Workflow_Input") {
                             var doc = "";
@@ -906,6 +916,8 @@ $schemas:
                                 "format": this.tools[toolName]["inputs"][inputName]["format"],
                                 "value": ""
                             });
+
+                            // inputsAdded.push(inputSource.specifiedValue);
                         }
                     }
                 }
@@ -914,12 +926,17 @@ $schemas:
             },
             parseWorkflowInputText() {
                 var result = "";
+                // var inputsAdded = [];
 
                 for (let stepName in this.steps) {
                     var toolName = this.steps[stepName].toolName;
 
                     for (let inputName in this.steps[stepName].selectedInputSources) {
                         var inputSource = this.steps[stepName].selectedInputSources[inputName];
+
+                        // if (inputsAdded.includes(inputSource.specifiedValue)) {
+                        //     continue;
+                        // }
 
                         if (inputSource.type == "New_Workflow_Input") {
                             var input_object = this.tools[toolName]["inputs"][inputName];
@@ -936,6 +953,8 @@ $schemas:
                                     result += `      - ${secondaryFile}\n`;
                                 }
                             }
+
+                            // inputsAdded.push(inputSource.specifiedValue);
                         }
                     }
                 }

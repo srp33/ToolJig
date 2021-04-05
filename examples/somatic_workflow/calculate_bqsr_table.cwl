@@ -16,38 +16,39 @@ requirements:
 inputs:
   bam_file:
     type: File
-    doc: |-
-      The BAM file to be analyzed.
     format: edam:format_2572
     secondaryFiles:
       - .bai
+    doc: |-
+      The BAM file to be analyzed.
   fasta_file:
     type: File
-    doc: |-
-      FASTA file for reference genome.
     format: edam:format_1929
     secondaryFiles:
       - .fai
       - .dict
+    doc: |-
+      FASTA file for reference genome.
   known_sites_vcf_file_1:
     type: File
+    format: edam:format_3016
     doc: |-
       A file that contains known variants sites. It will be used for recalibrating BAM files.
-    format: edam:format_3016
   known_sites_vcf_file_2:
     type: File
+    format: edam:format_3016
     doc: |-
       A file that contains known variants sites. It will be used for recalibrating BAM files.
-    format: edam:format_3016
   known_sites_vcf_file_3:
     type: File
+    format: edam:format_3016
     doc: |-
       A file that contains known variants sites. It will be used for recalibrating BAM files.
   output_file:
     type: string
     doc: |-
       Name of the output file that will be created.
-      #Output_File=edam:format_1964
+      #Output_File=format: edam:format_1964
   threads:
     type: int
     doc: |-
@@ -92,7 +93,7 @@ s:author:
     s:name: Stephen Piccolo
     s:identifier: https://orcid.org/0000-0003-2001-5640
  
-s:dateCreated: "2021-02-23"
+s:dateCreated: "2021-04-05"
 s:license: https://spdx.org/licenses/Apache-2.0
  
 $namespaces:
