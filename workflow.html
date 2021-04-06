@@ -811,13 +811,20 @@ $schemas:
                             let sourceOption = this.newStepToolInputs[i].inputSourceOptions[j];
 
                             if (sourceOption.theValue.trim() == "") {
-                                alert("A workflow input identifier cannot be blank.");
+                                alert(`A workflow input identifier cannot be blank, but at least one of the specified workflow input identifiers was blank.`);
                                 return;
                             }
 
-                            if (sourceOption.type == "New_Workflow_Input" && (newWorkflowInputNames.includes(sourceOption.theValue) || this.isWorkflowInputDuplicated(sourceOption.theValue))) {
-                                alert(`The ${sourceOption.theValue} workflow input identifier has already been used.`);
-                                return;
+                            if (sourceOption.type == "New_Workflow_Input") {
+                                if (/[^A-Za-z0-9_]+/.test(sourceOption.theValue)) {
+                                    alert(`Workflow input identifiers can only include letters, numbers, and underscores. The ${sourceOption.theValue} workflow input identifier violates this rule.`);
+                                    return;
+                                }
+
+                                if (newWorkflowInputNames.includes(sourceOption.theValue) || this.isWorkflowInputDuplicated(sourceOption.theValue)) {
+                                    alert(`The ${sourceOption.theValue} workflow input identifier has already been used.`);
+                                    return;
+                                }
                             }
 
                             selectedInputSources[this.newStepToolInputs[i].inputName] = {type: sourceOption.type, specifiedValue: sourceOption.theValue};
