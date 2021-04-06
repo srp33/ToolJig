@@ -136,7 +136,7 @@
         <div class="panel panel-default" ref="inputPanel">
             <h4 class="card-title">Manage inputs<sup><font color="red">*</font></sup>:</h4>
 
-            <p>In this section, you can manage inputs. These are arguments that will be passed to the command-line tool. You must specify at least one regular input (string, int, File, or Directory). Technically, an "Output File" is not an input. However, when creating a CWL tool description, you can specify an <em>input</em> that is the name of an output file that the tool will create; then you must specify a corresponding <em>output</em> so the file will be collected after the tool executes. To make that simpler, we provide an "Output File" option that takes care of both of these steps.</p>
+            <p>In this section, you can manage inputs. These are arguments that will be passed to the command-line tool. You must specify at least one regular input (string, int, or File)<!--(string, int, File, or Directory)-->. Technically, an "Output File" is not an input. However, when creating a CWL tool description, you can specify an <em>input</em> that is the name of an output file that the tool will create; then you must specify a corresponding <em>output</em> so the file will be collected after the tool executes. To make that simpler, we provide an "Output File" option that takes care of both of these steps.</p>
 
             <form v-on:submit.prevent="addInput">
                 <div class="form-group">
@@ -150,7 +150,7 @@
                         <option value="string">string</option>
                         <option value="int">int</option>
                         <option value="File">File</option>
-                        <option value="Directory">Directory</option>
+                        <!--<option value="Directory">Directory</option>-->
                         <option value="Output_File">Output File</option>
                     </select>
                 </div>
@@ -827,7 +827,7 @@
         <div class="panel panel-default" ref="outputPanel">
             <h4 class="card-title">Specify command template<sup><font color="red">*</font></sup>:</h4>
 
-            <p>Here you specify a template for executing the tool at the command line within the execution environment. Each input must be referenced at least once in the command template. For example, if you had defined an input string called "my_string", you would reference it in the command template as <code>$(inputs.my_string)</code>. You would follow a similar pattern for inputs that are integers or "output files." However, it is different for input files; the input object will have multiple attributes, and you must specify one of these. For example, if you had defined an input file called "my_file" and wanted to refer to the path of that file, you would specify it in the command template as $(inputs.my_file.path). Alternatively, if you wanted to refer only to the name of the file, you would use <code>$(inputs.my_file.basename)</code>. <a href="https://www.commonwl.org/v1.2/CommandLineTool.html#File" target="_blank">Other attributes</a> are available. The same is true for <a href="https://www.commonwl.org/v1.2/CommandLineTool.html#Directory" target="_blank">directories</a>.
+            <p>Here you specify a template for executing the tool at the command line within the execution environment. Each input must be referenced at least once in the command template. For example, if you had defined an input string called "my_string", you would reference it in the command template as <code>$(inputs.my_string)</code>. You would follow a similar pattern for inputs that are integers or "output files." However, it is different for input files; the input object will have multiple attributes, and you must specify one of these. For example, if you had defined an input file called "my_file" and wanted to refer to the path of that file, you would specify it in the command template as $(inputs.my_file.path). Alternatively, if you wanted to refer only to the name of the file, you would use <code>$(inputs.my_file.basename)</code>. <a href="https://www.commonwl.org/v1.2/CommandLineTool.html#File" target="_blank">Other attributes</a> are available.<!--The same is true for <a href="https://www.commonwl.org/v1.2/CommandLineTool.html#Directory" target="_blank">directories</a>.-->
 
             <div class="form-group">
                 <textarea v-model="command_template" id="command_template" rows=5 cols=100 placeholder="Please enter the command template." class="form-control" aria-describedby="helpBlock"></textarea>
@@ -1574,13 +1574,13 @@
         created() { this.text = this.value; },
         methods:{ updateVal() { this.$emit('input', this.text); } }
     });
-    Vue.component("Directory", {
-        props: ['name', 'doc', 'value'],
-        template: `<div class="form-group"><label>{{ name }}<sup><font color="red">*</font></sup>:</label><input type="text" @input="updateVal" v-model="text" class="form-control" aria-describedby="helpBlock" /><span id="helpBlock" class="form-text text-muted">{{ doc }}</span></div>`,
-        data() { return { text:null } },
-        created() { this.text = this.value; },
-        methods:{ updateVal() { this.$emit('input', this.text); } }
-    });
+    // Vue.component("Directory", {
+    //     props: ['name', 'doc', 'value'],
+    //     template: `<div class="form-group"><label>{{ name }}<sup><font color="red">*</font></sup>:</label><input type="text" @input="updateVal" v-model="text" class="form-control" aria-describedby="helpBlock" /><span id="helpBlock" class="form-text text-muted">{{ doc }}</span></div>`,
+    //     data() { return { text:null } },
+    //     created() { this.text = this.value; },
+    //     methods:{ updateVal() { this.$emit('input', this.text); } }
+    // });
     Vue.component("Output_File", {
         props: ['name', 'doc', 'value'],
         template: `<div class="form-group"><label>{{ name }}<sup><font color="red">*</font></sup>:</label><input type="text" @input="updateVal" v-model="text" class="form-control" aria-describedby="helpBlock" /><span id="helpBlock" class="form-text text-muted">{{ doc }}</span></div>`,
@@ -1668,10 +1668,12 @@
                         input_count += 1;
 
                 if (input_count == 0)
-                    this.overall_input_errors.push("You must specify at least one input. It may be any of the following input types: string, int, File, Directory.");
+                    //this.overall_input_errors.push("You must specify at least one input. It may be any of the following input types: string, int, File, or Directory.");
+                    this.overall_input_errors.push("You must specify at least one input. It may be any of the following input types: string, int, or File.");
 
                 for (i = 0; i < this.inputs.length; i++) {
-                    if (this.inputs[i].type == "File" || this.inputs[i].type == "Directory") {
+                    //if (this.inputs[i].type == "File" || this.inputs[i].type == "Directory") {
+                    if (this.inputs[i].type == "File") {
                         re = new RegExp(`\\$\\(inputs\\.${this.inputs[i].name}\\.(path|basename|dirname|nameroot|nameext)\\)`);
                         if (!re.test(this.command_template)) {
                             this.template_errors.push(`All inputs must be used at least once in the command template: ${this.inputs[i].name} was not used. It must be specified in the command template using $(inputs.${this.inputs[i].name}) followed by one of these attributes: .path, .basename, .dirname, .nameroot, .nameext.`);
