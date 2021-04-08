@@ -17,12 +17,12 @@ inputs:
   fastq_file_1:
     type: File
     doc: |-
-      FASTQ file for the first ends of paired-end reads.
+      FASTQ file (gzipped) for the first ends of paired-end reads.
     format: edam:format_1931
   fastq_file_2:
     type: File
     doc: |-
-      FASTQ file for the second ends of paired-end reads.
+      FASTQ file (gzipped) for the second ends of paired-end reads.
     format: edam:format_1931
   args:
     type: string
@@ -38,14 +38,14 @@ outputs:
     outputBinding:
       glob: "$(inputs.fastq_file_1.basename)"
     doc: |-
-      Trimmed FASTQ file for the first ends of paired-end reads.
+      Trimmed FASTQ file (gzipped) for the first ends of paired-end reads.
     format: edam:format_1931
   fastq_file_2:
     type: File
     outputBinding:
       glob: "$(inputs.fastq_file_2.basename)"
     doc: |-
-      Trimmed FASTQ file for the second ends of paired-end reads.
+      Trimmed FASTQ file (gzipped) for the second ends of paired-end reads.
     format: edam:format_1931
   standard_output:
     type: stdout

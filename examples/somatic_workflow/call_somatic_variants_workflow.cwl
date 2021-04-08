@@ -3,7 +3,7 @@ class: Workflow
 id: call_somatic_variants_workflow
 label: Calls somatic variants from tumor/normal genome pair
 doc: |-
-  This workflow accepts FASTQ files as input and executes the steps necessary to identify somatic variants that differ between the tumor genome and the normal genome.
+  This workflow accepts (gzipped) FASTQ files as input and executes the steps necessary to identify somatic variants that differ between the tumor genome and the normal genome.
 inputs:
   - id: fastq_normal_1_url
     type: string
@@ -64,7 +64,7 @@ steps:
     run: download_fastq_file.cwl
     in:
       - id: output_file
-        default: temp_vTfrPwwsfB
+        default: random__vTfrPwwsfB
       - id: url
         source: fastq_normal_1_url
     out:
@@ -73,7 +73,7 @@ steps:
     run: download_fastq_file.cwl
     in:
       - id: output_file
-        default: temp_qWtLvMHdyw
+        default: random__qWtLvMHdyw
       - id: url
         source: fastq_normal_2_url
     out:
@@ -82,7 +82,7 @@ steps:
     run: download_fastq_file.cwl
     in:
       - id: output_file
-        default: temp_VelzzCkqiY
+        default: random__VelzzCkqiY
       - id: url
         source: fastq_tumor_1_url
     out:
@@ -91,7 +91,7 @@ steps:
     run: download_fastq_file.cwl
     in:
       - id: output_file
-        default: temp_rcooFwXZhe
+        default: random__rcooFwXZhe
       - id: url
         source: fastq_tumor_2_url
     out:
@@ -134,7 +134,7 @@ steps:
       - id: args
         source: align_args
       - id: output_file
-        default: temp_hBKcbwOonA
+        default: random__hBKcbwOonA
     out:
       [output_file]
   align_tumor:
@@ -153,7 +153,7 @@ steps:
       - id: args
         source: align_args
       - id: output_file
-        default: temp_lrhltabkfX
+        default: random__lrhltabkfX
     out:
       [output_file]
   sort_normal:
@@ -162,7 +162,7 @@ steps:
       - id: bam_file
         source: align_normal/output_file
       - id: output_file
-        default: temp_neYomWvqhp
+        default: random__neYomWvqhp
       - id: threads
         source: threads
     out:
@@ -173,7 +173,7 @@ steps:
       - id: bam_file
         source: align_tumor/output_file
       - id: output_file
-        default: temp_JcgCrfPMxj
+        default: random__JcgCrfPMxj
       - id: threads
         source: threads
     out:
@@ -184,7 +184,7 @@ steps:
       - id: bam_file
         source: sort_normal/output_file
       - id: output_file
-        default: temp_KdvffionIQ
+        default: random__KdvffionIQ
       - id: threads
         source: threads
     out:
@@ -195,7 +195,7 @@ steps:
       - id: bam_file
         source: sort_tumor/output_file
       - id: output_file
-        default: temp_KZmwjXMREo
+        default: random__KZmwjXMREo
       - id: threads
         source: threads
     out:
@@ -214,7 +214,7 @@ steps:
       - id: known_sites_vcf_file_3
         source: known_sites_vcf_file_3
       - id: output_file
-        default: temp_vfyyXJFHsx
+        default: random__vfyyXJFHsx
       - id: threads
         source: threads
     out:
@@ -233,7 +233,7 @@ steps:
       - id: known_sites_vcf_file_3
         source: known_sites_vcf_file_3
       - id: output_file
-        default: temp_oBgniorjAJ
+        default: random__oBgniorjAJ
       - id: threads
         source: threads
     out:
@@ -248,7 +248,7 @@ steps:
       - id: fasta_file
         source: fasta_file
       - id: output_file
-        default: temp_PnHRVgazfT
+        default: random__PnHRVgazfT
       - id: threads
         source: threads
     out:
@@ -263,7 +263,7 @@ steps:
       - id: fasta_file
         source: fasta_file
       - id: output_file
-        default: temp_aIusVhJfJH
+        default: random__aIusVhJfJH
       - id: threads
         source: threads
     out:

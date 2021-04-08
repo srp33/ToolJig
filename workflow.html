@@ -15,7 +15,7 @@
 <!--Production version of Vue<script src="https://cdn.jsdelivr.net/npm/vue@2.6.11"></script>-->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/js-yaml/3.14.0/js-yaml.min.js"></script>
 
-<!--Here we define any custom CSS attributes that we want to be used.-->
+<!--Here we define any custom CSS attributes that we want to use.-->
 <style>
     .panel-color1 {
         cursor: pointer;
@@ -179,10 +179,6 @@
         <div class="panel panel-color1" ref="stepsPanel" v-if="Object.keys(tools).length > 0">
             <h4 class="card-title">Define workflow steps:</h4>
 
-            TODO
-            <p>{{ steps }}</p>
-            <p>{{ parseWorkflowInputs() }}</p>
-
             <p>Here you can define each step of the workflow.</p>
 
             <form v-on:submit.prevent="addUpdateStep">
@@ -205,9 +201,9 @@
                 <div class="form-group" v-if="newStepToolName.length > 0 && newStepName.length > 0">
                     <label for="step_inputs">Specify input source(s):</label>
 
-                    <p>The inputs for <code>{{ newStepToolName }}</code> are shown below. For each input, you will need to select a single source. You always have the option to create an input for the entire workflow and use that input as the source. In these cases, you will also need to specify a corresponding value in the input-object file. Alternatively, you can indicate that the output of a prior step will be used as input for this step.</p>
+                    <p>The inputs for <code>{{ newStepToolName }}</code> are shown below. For each input, you must select a single source. You always have the option to create an input for the entire workflow and use that as the source. In these cases, you also need to specify a corresponding value in the input-object file. Alternatively, you can indicate that the output of a prior step will be used as input for this step.</p>
 
-                    <p>A special case occurs when a step has an "output file" input. Normally, the user would specify the name of this "output file" and thus it would need to be a workflow input. However, naming this file is <em>only</em> necessary if the "output file" is used as an output for the entire workflow. If an "output file" from one step will <em>only</em> be used as an input for a subsequent step, you can indicate that a temporary file should be generated. <!--Alternatively, you can specify a static name for this file. In either case, it -->This relieves you from having to specify workflow inputs unnecessarily.</p>
+                    <p>A special case occurs when a step has an "output file" input. Normally, the user would specify the name of this "output file" and thus it would need to be a workflow input. However, naming this file is <em>only</em> necessary if the "output file" is used as an output for the entire workflow. If an "output file" from one step will <em>only</em> be used as an input for a subsequent step, you can indicate that a temporary file should be generated. <!--Alternatively, you can specify a static name for this file. In either case, it -->This relieves you from having to specify workflow inputs unnecessarily. The name of the temporary file can either be randomly generated (most commonly) or a name that you specify.</p>
 
                     <input_source_selector 
                         v-for="(input, index) in newStepToolInputs" 
@@ -269,8 +265,6 @@
 
             <h4>Create input-object file:</h4>
 
-            <p>TODO: {{ workflow_inputs }}</p>
-    
             Once you have created a valid CWL file, you can create an input-object file, which defines inputs that will be used when the workflow is executed in one particular instance. The boxes below correspond to the inputs for the overall workflow (not for step inputs that use outputs from other steps).
     
             <!--This defines how the dynamic input forms will be created.-->
@@ -335,8 +329,10 @@
                 <div v-for="inputSourceOption in inputSourceOptions">
                     <input type="radio" v-model="selectedInputSource" :value="inputSourceOption.type"> <span v-html="inputSourceOption.text"></span>
 
-                    <input :type="inputSourceOption.type == 'New_Workflow_Input' ? 'text' : 'hidden'" v-model="inputSourceOption.theValue" size="35">
+                    <input :type="inputSourceOption.type == 'New_Workflow_Input' || inputSourceOption.type == 'Specific_File_Name' ? 'text' : 'hidden'" v-model="inputSourceOption.theValue" size="35" v-on:input="onChangeInput(inputSourceOption.type)">
                 </div>
+
+                <p>TODO: {{ selectedInputSource }}</p>
             </div>
         `,
         computed: {
@@ -348,6 +344,11 @@
                     this.$emit('input', selectedInputSource);
                 }
             },
+        },
+        methods: {
+            onChangeInput: function(inputSourceOptionType) {
+                this.selectedInputSource = inputSourceOptionType;
+            }
         },
     });
 
@@ -394,7 +395,6 @@
             doc: "",
             author_name: "",
             author_orcid: "",
-            //author_orcid: "https://orcid.org/0000-0003-2001-5640",
             license: "Apache-2.0",
             tools: {},
             steps: {},
@@ -558,7 +558,11 @@ $schemas:
                         var selectedInputSources = {};
                         for (let input of step.in) {
                             if ("default" in input) {
-                                selectedInputSources[input.id] = {type: "Temp_File_Name", specifiedValue: this.generateRandomFileName()};
+                                var tempFileType = "Specific_File_Name";
+                                if (input.default.startsWith("random__"))
+                                    tempFileType = "Random_File_Name";
+
+                                selectedInputSources[input.id] = {type: tempFileType, specifiedValue: input.default};
                             }
                             else {
                                 if (input.source.includes("/")) {
@@ -708,7 +712,8 @@ $schemas:
                     }
 
                     if (inputDoc.includes("#Output_File=")) {
-                        inputSourceOptions.push({type: "Temp_File_Name", text: "Generate a temporary file.", theValue: this.generateRandomFileName()});
+                        inputSourceOptions.push({type: "Random_File_Name", text: "Generate a temporary file with a randomly generated name.", theValue: this.generateRandomFileName()});
+                        inputSourceOptions.push({type: "Specific_File_Name", text: "Generate a temporary file with the following name: ", theValue: ""});
                     }
 
                     for (let stepName in this.steps) {
@@ -811,7 +816,12 @@ $schemas:
                             let sourceOption = this.newStepToolInputs[i].inputSourceOptions[j];
 
                             if (sourceOption.theValue.trim() == "") {
-                                alert(`A workflow input identifier cannot be blank, but at least one of the specified workflow input identifiers was blank.`);
+                                if (sourceOption.type == "Specific_File_Name") {
+                                    alert(`Temporary file names cannot be blank.`);
+                                }
+                                else {
+                                    alert(`A workflow input identifier cannot be blank, but at least one of the specified workflow input identifiers was blank.`);
+                                }
                                 return;
                             }
 
@@ -904,17 +914,12 @@ $schemas:
             },
             parseWorkflowInputs() {
                 var inputs = [];
-                //var inputsAdded = [];
 
                 for (let stepName in this.steps) {
                     var toolName = this.steps[stepName].toolName;
 
                     for (let inputName in this.steps[stepName].selectedInputSources) {
                         var inputSource = this.steps[stepName].selectedInputSources[inputName];
-
-                        // if (inputsAdded.includes(inputSource.specifiedValue)) {
-                        //     continue;
-                        // }
 
                         if (inputSource.type == "New_Workflow_Input") {
                             var doc = "";
@@ -929,8 +934,6 @@ $schemas:
                                 "format": this.tools[toolName]["inputs"][inputName]["format"],
                                 "value": ""
                             });
-
-                            // inputsAdded.push(inputSource.specifiedValue);
                         }
                     }
                 }
@@ -939,17 +942,12 @@ $schemas:
             },
             parseWorkflowInputText() {
                 var result = "";
-                // var inputsAdded = [];
 
                 for (let stepName in this.steps) {
                     var toolName = this.steps[stepName].toolName;
 
                     for (let inputName in this.steps[stepName].selectedInputSources) {
                         var inputSource = this.steps[stepName].selectedInputSources[inputName];
-
-                        // if (inputsAdded.includes(inputSource.specifiedValue)) {
-                        //     continue;
-                        // }
 
                         if (inputSource.type == "New_Workflow_Input") {
                             var input_object = this.tools[toolName]["inputs"][inputName];
@@ -966,8 +964,6 @@ $schemas:
                                     result += `      - ${secondaryFile}\n`;
                                 }
                             }
-
-                            // inputsAdded.push(inputSource.specifiedValue);
                         }
                     }
                 }
@@ -1007,7 +1003,7 @@ $schemas:
                         var inputSource = this.steps[stepName].selectedInputSources[inputName];
 
                         inputResult += `      - id: ${inputName}\n`;
-                        if (inputSource.type == "Temp_File_Name") {
+                        if (inputSource.type == "Random_File_Name" || inputSource.type == "Specific_File_Name") {
                             inputResult += `        default: ${inputSource.specifiedValue}\n`;
                         }
                         else {
@@ -1126,7 +1122,7 @@ $schemas:
                     result += characters.charAt(Math.floor(Math.random() * charactersLength));
                 }
 
-                return `temp_${result}`;
+                return `random__${result}`;
             }
         }
     });

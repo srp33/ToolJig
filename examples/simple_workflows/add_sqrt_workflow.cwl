@@ -24,7 +24,7 @@ steps:
       - id: number2
         source: number2
       - id: output_file
-        default: temp_ZzutRAtezp
+        default: random__ZzutRAtezp
     out:
       [output_file]
   sqrt:

@@ -15,7 +15,7 @@
 <!--Production version of Vue<script src="https://cdn.jsdelivr.net/npm/vue@2.6.11"></script>-->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/js-yaml/3.14.0/js-yaml.min.js"></script>
 
-<!--Here we define any custom CSS attributes that we want to be used.-->
+<!--Here we define any custom CSS attributes that we want to use.-->
 <style>
     .panel-default {
         cursor: pointer;
@@ -1549,7 +1549,6 @@
     </div>
 </div>
 
-<!--This section provides the app's JavaScript logic.-->
 <script>
     // These components define the dynamic behavior of the job-input boxes that are created.
     // From example at https://www.raymondcamden.com/2018/10/31/working-with-dynamic-components-in-vuejs
@@ -1607,9 +1606,7 @@
             doc: "",
             dockerfile: "",
             author_name: "",
-            //author_name: "Stephen Piccolo",
             author_orcid: "",
-            //author_orcid: "https://orcid.org/0000-0003-2001-5640",
             license: "Apache-2.0",
             newInputName: "",
             newInputType: "string",
@@ -1620,18 +1617,15 @@
             newAuxName: "",
             newAuxContents: "",
             auxiliary_files: [],
-            //auxiliary_files: [{name: "test.py", contents: "abc\nabc\n\ndef"}, {name: "test.R", contents: "testing"}],
             stdout_file_name: "stdout.txt",
             stderr_file_name: "stderr.txt",
             outputs: [],
-            //outputs: [{ID: "ID", glob: "abc", doc: "def", secondaryFiles: [".txt"], format: "edam:format_3582"}],
             newOutputID: "",
             newOutputGlob: "",
             newOutputDoc: "",
             newOutputSecondary: "",
             newOutputFileFormat: "",
             command_template: ""
-            //command_template: "$(inputs.a_string) $(inputs.an_integer) $(inputs.a_data_file.path) $(inputs.some_directory.path) $(inputs.an_output_file) test.R test.py"
         },
 
         // Computed attributes build content dynamically for display in the app.
@@ -1792,7 +1786,6 @@ $schemas:
             }
         },
 
-        // These are functions to make the logic a bit modular.
         methods: {
             onUploadFile: function(e) {
                 var files = e.target.files || e.dataTransfer.files;
@@ -2039,7 +2032,7 @@ $schemas:
 
                 this.newInputDoc = x.doc;
                 this.newInputSecondary = x.secondaryFiles.join(",");
-                this.newInputFileFormat = x.format;
+                this.newInputFileFormat = x.format.replace("format: ", "");
                 this.$refs.newInputName.focus();
                 this.$refs.inputPanel.scrollIntoView();
             },

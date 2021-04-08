@@ -24,7 +24,7 @@ steps:
       - id: number_file
         source: number_file
       - id: output_file
-        default: temp_kkRlosRALc
+        default: random__kkRlosRALc
     out:
       [output_file]
   sum_files:

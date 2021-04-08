@@ -22,7 +22,7 @@ inputs:
   url:
     type: string
     doc: |-
-      URL of file to be download.
+      URL of the file to be downloaded. This file must be in FASTQ format and must be compressed using the gzip utility.
 arguments:
   - shellQuote: false
     valueFrom: |-

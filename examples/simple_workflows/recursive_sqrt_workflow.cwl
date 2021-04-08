@@ -21,7 +21,7 @@ steps:
       - id: number_file
         source: number_file
       - id: output_file
-        default: temp_RmAxPgNnvI
+        default: random__RmAxPgNnvI
     out:
       [output_file]
   calculation2:
