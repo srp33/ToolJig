@@ -26,5 +26,5 @@ known_sites_vcf_file_3:
 normal_sample_id: "TCRBOA7-N"
 tumor_sample_id: "TCRBOA7-T"
 small_variants_output_file: "TCRBOA7.snp_indels.vcf"
-sv_exclude_template_url: "https://raw.githubusercontent.com/dellytools/delly/master/excludeTemplates/human.hg38.excl.tsv"
-structural_variants_output_file: "TCRBOA7.sv.vcf"
+delly_exclude_template_url: "https://raw.githubusercontent.com/dellytools/delly/master/excludeTemplates/human.hg38.excl.tsv"
+sv_output_file: "TCRBOA7.sv.vcf"

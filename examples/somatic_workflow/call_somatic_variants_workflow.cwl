@@ -48,9 +48,9 @@ inputs:
     type: string
   - id: small_variants_output_file
     type: string
-  - id: sv_exclude_template_url
+  - id: delly_exclude_template_url
     type: string
-  - id: structural_variants_output_file
+  - id: sv_output_file
     type: string
 outputs:
   - id: call_small_variants__output_file
@@ -64,7 +64,7 @@ steps:
     run: download_fastq_file.cwl
     in:
       - id: output_file
-        default: random__vTfrPwwsfB
+        default: fastq_normal_1.fastq.gz
       - id: url
         source: fastq_normal_1_url
     out:
@@ -73,7 +73,7 @@ steps:
     run: download_fastq_file.cwl
     in:
       - id: output_file
-        default: random__qWtLvMHdyw
+        default: fastq_normal_2.fastq.gz
       - id: url
         source: fastq_normal_2_url
     out:
@@ -82,7 +82,7 @@ steps:
     run: download_fastq_file.cwl
     in:
       - id: output_file
-        default: random__VelzzCkqiY
+        default: fastq_tumor_1.fastq.gz
       - id: url
         source: fastq_tumor_1_url
     out:
@@ -91,7 +91,7 @@ steps:
     run: download_fastq_file.cwl
     in:
       - id: output_file
-        default: random__rcooFwXZhe
+        default: fastq_tumor_2.fastq.gz
       - id: url
         source: fastq_tumor_2_url
     out:
@@ -134,7 +134,7 @@ steps:
       - id: args
         source: align_args
       - id: output_file
-        default: random__hBKcbwOonA
+        default: aligned_normal.bam
     out:
       [output_file]
   align_tumor:
@@ -153,7 +153,7 @@ steps:
       - id: args
         source: align_args
       - id: output_file
-        default: random__lrhltabkfX
+        default: aligned_tumor.bam
     out:
       [output_file]
   sort_normal:
@@ -162,7 +162,7 @@ steps:
       - id: bam_file
         source: align_normal/output_file
       - id: output_file
-        default: random__neYomWvqhp
+        default: sorted_normal.bam
       - id: threads
         source: threads
     out:
@@ -173,7 +173,7 @@ steps:
       - id: bam_file
         source: align_tumor/output_file
       - id: output_file
-        default: random__JcgCrfPMxj
+        default: sorted_tumor.bam
       - id: threads
         source: threads
     out:
@@ -184,7 +184,7 @@ steps:
       - id: bam_file
         source: sort_normal/output_file
       - id: output_file
-        default: random__KdvffionIQ
+        default: dups_marked_normal.bam
       - id: threads
         source: threads
     out:
@@ -195,7 +195,7 @@ steps:
       - id: bam_file
         source: sort_tumor/output_file
       - id: output_file
-        default: random__KZmwjXMREo
+        default: dups_marked_tumor.bam
       - id: threads
         source: threads
     out:
@@ -214,7 +214,7 @@ steps:
       - id: known_sites_vcf_file_3
         source: known_sites_vcf_file_3
       - id: output_file
-        default: random__vfyyXJFHsx
+        default: random__iVBcjXmFTy
       - id: threads
         source: threads
     out:
@@ -233,7 +233,7 @@ steps:
       - id: known_sites_vcf_file_3
         source: known_sites_vcf_file_3
       - id: output_file
-        default: random__oBgniorjAJ
+        default: random__TNHumTCAVr
       - id: threads
         source: threads
     out:
@@ -248,7 +248,7 @@ steps:
       - id: fasta_file
         source: fasta_file
       - id: output_file
-        default: random__PnHRVgazfT
+        default: final_normal.bam
       - id: threads
         source: threads
     out:
@@ -257,13 +257,13 @@ steps:
     run: apply_bqsr_bam.cwl
     in:
       - id: bam_file
-        source: apply_bqsr_normal/output_file
+        source: mark_dups_tumor/output_file
       - id: bqsr_table_file
         source: calculate_bqsr_tumor/output_file
       - id: fasta_file
         source: fasta_file
       - id: output_file
-        default: random__aIusVhJfJH
+        default: final_tumor.bam
       - id: threads
         source: threads
     out:
@@ -297,16 +297,16 @@ steps:
       - id: tumor_bam_file
         source: apply_bqsr_tumor/output_file
       - id: exclude_template_url
-        source: sv_exclude_template_url
+        source: delly_exclude_template_url
       - id: output_file
-        source: structural_variants_output_file
+        source: sv_output_file
     out:
       [output_file]
 s:author:
   - class: s:Person
     s:name: Stephen Piccolo
     s:identifier: https://orcid.org/0000-0003-2001-5640
-s:dateCreated: "2021-04-05"
+s:dateCreated: "2021-04-08"
 s:license: https://spdx.org/licenses/Apache-2.0
 $namespaces:
   s: https://schema.org/

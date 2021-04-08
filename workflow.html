@@ -331,8 +331,6 @@
 
                     <input :type="inputSourceOption.type == 'New_Workflow_Input' || inputSourceOption.type == 'Specific_File_Name' ? 'text' : 'hidden'" v-model="inputSourceOption.theValue" size="35" v-on:input="onChangeInput(inputSourceOption.type)">
                 </div>
-
-                <p>TODO: {{ selectedInputSource }}</p>
             </div>
         `,
         computed: {
