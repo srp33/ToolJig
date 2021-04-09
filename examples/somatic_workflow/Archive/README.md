@@ -1,0 +1,1 @@
+I am keeping these files for archival purposes. It includes an earlier version of the command-line tools and `run` script for calling somatic variants. However, this version is a "less effective" way of invoking these tools.
