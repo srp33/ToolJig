@@ -28,6 +28,7 @@ inputs:
       - .fai
       - .pac
       - .sa
+      - .dict
   fastq_file_1:
     type: File
     doc: |-

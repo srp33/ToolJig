@@ -25,6 +25,7 @@ inputs:
       - .fai
       - .pac
       - .sa
+      - .dict
   - id: threads
     type: int
   - id: read_group_string_normal
