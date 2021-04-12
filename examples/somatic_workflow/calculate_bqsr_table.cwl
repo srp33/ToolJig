@@ -32,23 +32,29 @@ inputs:
   known_sites_vcf_file_1:
     type: File
     format: edam:format_3016
+    secondaryFiles:
+      - .idx
     doc: |-
       A file that contains known variants sites. It will be used for recalibrating BAM files.
   known_sites_vcf_file_2:
     type: File
     format: edam:format_3016
+    secondaryFiles:
+      - .idx
     doc: |-
       A file that contains known variants sites. It will be used for recalibrating BAM files.
   known_sites_vcf_file_3:
     type: File
     format: edam:format_3016
+    secondaryFiles:
+      - .idx
     doc: |-
       A file that contains known variants sites. It will be used for recalibrating BAM files.
   output_file:
     type: string
     doc: |-
       Name of the output file that will be created.
-      #Output_File=format: edam:format_1964
+      #Output_File=format: format: edam:format_1964
   threads:
     type: int
     doc: |-
@@ -78,7 +84,7 @@ outputs:
       glob: "$(inputs.output_file)"
     doc: |-
       Output file matching the name specified in the "output_file" input.
-    format: edam:format_1964
+    format: format: edam:format_1964
   standard_output:
     type: stdout
     format: edam:format_1964
@@ -93,7 +99,7 @@ s:author:
     s:name: Stephen Piccolo
     s:identifier: https://orcid.org/0000-0003-2001-5640
  
-s:dateCreated: "2021-04-05"
+s:dateCreated: "2021-04-12"
 s:license: https://spdx.org/licenses/Apache-2.0
  
 $namespaces:
