@@ -54,7 +54,7 @@ inputs:
     type: string
     doc: |-
       Name of the output file that will be created.
-      #Output_File=format: format: edam:format_1964
+      #Output_File=format: edam:format_1964
   threads:
     type: int
     doc: |-
@@ -84,7 +84,7 @@ outputs:
       glob: "$(inputs.output_file)"
     doc: |-
       Output file matching the name specified in the "output_file" input.
-    format: format: edam:format_1964
+    format: edam:format_1964
   standard_output:
     type: stdout
     format: edam:format_1964
