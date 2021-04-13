@@ -37,12 +37,18 @@ inputs:
   - id: known_sites_vcf_file_1
     type: File
     format: edam:format_3016
+    secondaryFiles:
+      - .idx
   - id: known_sites_vcf_file_2
     type: File
     format: edam:format_3016
+    secondaryFiles:
+      - .idx
   - id: known_sites_vcf_file_3
     type: File
     format: edam:format_3016
+    secondaryFiles:
+      - .idx
   - id: normal_sample_id
     type: string
   - id: tumor_sample_id
@@ -307,7 +313,7 @@ s:author:
   - class: s:Person
     s:name: Stephen Piccolo
     s:identifier: https://orcid.org/0000-0003-2001-5640
-s:dateCreated: "2021-04-08"
+s:dateCreated: "2021-04-13"
 s:license: https://spdx.org/licenses/Apache-2.0
 $namespaces:
   s: https://schema.org/
