@@ -20,7 +20,12 @@ inputs:
       FASTA file containing reference genome.
     format: edam:format_1929
     secondaryFiles:
+      - .amb
+      - .ann
+      - .bwt
       - .fai
+      - .pac
+      - .sa
       - .dict
   normal_bam_file:
     type: File

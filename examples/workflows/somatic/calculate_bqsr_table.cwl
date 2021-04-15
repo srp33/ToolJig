@@ -25,7 +25,12 @@ inputs:
     type: File
     format: edam:format_1929
     secondaryFiles:
+      - .amb
+      - .ann
+      - .bwt
       - .fai
+      - .pac
+      - .sa
       - .dict
     doc: |-
       FASTA file for reference genome.
