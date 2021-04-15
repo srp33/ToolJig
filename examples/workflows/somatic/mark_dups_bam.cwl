@@ -17,6 +17,8 @@ inputs:
   bam_file:
     type: File
     format: edam:format_2572
+    secondaryFiles:
+      - .bai
     doc: |-
       The BAM file to be marked.
   output_file:
@@ -58,7 +60,7 @@ s:author:
     s:name: Stephen Piccolo
     s:identifier: https://orcid.org/0000-0003-2001-5640
  
-s:dateCreated: "2021-03-03"
+s:dateCreated: "2021-04-15"
 s:license: https://spdx.org/licenses/Apache-2.0
  
 $namespaces:

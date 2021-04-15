@@ -703,8 +703,13 @@ $schemas:
 
                     for (let input of this.workflow_inputs) {
                         if (input.type == inputType) {
+                            var inputSecondary = toolInputs[inputName]["secondaryFiles"];
+
+                            // If format and/or secondary files are specified for an existing workflow input, they must match the format and/or secondary files for this input to be a match.
                             if (input.format === undefined || input.format == "" || inputFormat === undefined || inputFormat == "" || input.format == inputFormat) {
-                                inputSourceOptions.push({type: `Existing_Workflow_Input: ${input.id}`, text: `Use the <code>${input.id}</code> workflow input.`, theValue: input.id});
+                                if (input.secondaryFiles === undefined || inputSecondary === undefined || input.secondaryFiles.toString() == inputSecondary.toString()) {
+                                    inputSourceOptions.push({type: `Existing_Workflow_Input: ${input.id}`, text: `Use the <code>${input.id}</code> workflow input.`, theValue: input.id});
+                                }
                             }
                         }
                     }
@@ -930,6 +935,7 @@ $schemas:
                                 "type": this.tools[toolName]["inputs"][inputName]["type"],
                                 "doc": doc,
                                 "format": this.tools[toolName]["inputs"][inputName]["format"],
+                                "secondaryFiles": this.tools[toolName]["inputs"][inputName]["secondaryFiles"],
                                 "value": ""
                             });
                         }
