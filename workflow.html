@@ -694,6 +694,12 @@ $schemas:
                     
                     var inputType = toolInputs[inputName]["type"];
                     var inputFormat = toolInputs[inputName]["format"];
+                    var inputSecondary = toolInputs[inputName]["secondaryFiles"];
+
+                    if (inputFormat === undefined)
+                        inputFormat = "";
+                    if (inputSecondary === undefined)
+                        inputSecondary = [];
 
                     // These are outputs from other steps that could be connected to the inputs for this step.
                     // They appear in the dropdown menus.
@@ -703,13 +709,14 @@ $schemas:
 
                     for (let input of this.workflow_inputs) {
                         if (input.type == inputType) {
-                            var inputSecondary = toolInputs[inputName]["secondaryFiles"];
+                            if (input.format === undefined)
+                                input.format = "";
+                            if (input.secondaryFiles === undefined)
+                                input.secondaryFiles = [];
 
                             // If format and/or secondary files are specified for an existing workflow input, they must match the format and/or secondary files for this input to be a match.
-                            if (input.format === undefined || input.format == "" || inputFormat === undefined || inputFormat == "" || input.format == inputFormat) {
-                                if (input.secondaryFiles === undefined || inputSecondary === undefined || input.secondaryFiles.toString() == inputSecondary.toString()) {
-                                    inputSourceOptions.push({type: `Existing_Workflow_Input: ${input.id}`, text: `Use the <code>${input.id}</code> workflow input.`, theValue: input.id});
-                                }
+                            if (input.format == inputFormat && input.secondaryFiles.toString() == inputSecondary.toString()) {
+                                inputSourceOptions.push({type: `Existing_Workflow_Input: ${input.id}`, text: `Use the <code>${input.id}</code> workflow input.`, theValue: input.id});
                             }
                         }
                     }
@@ -729,8 +736,14 @@ $schemas:
                         for (let otherStepOutputName in toolOutputs) {
                             if (toolOutputs[otherStepOutputName]["type"] == inputType) {
                                 var otherStepOutputFormat = toolOutputs[otherStepOutputName]["format"];
+                                var otherStepOutputSecondary = toolOutputs[otherStepOutputName]["secondaryFiles"];
 
-                                if (inputFormat == "" || otherStepOutputFormat == "" || inputFormat == otherStepOutputFormat) {
+                                if (otherStepOutputFormat === undefined)
+                                    otherStepOutputFormat = "";
+                                if (otherStepOutputSecondary === undefined)
+                                    otherStepOutputSecondary = [];
+
+                                if (inputFormat == otherStepOutputFormat && inputSecondary.toString() == otherStepOutputSecondary.toString()) {
                                     var id = `${stepName}/${otherStepOutputName}`;
                                     var text = `Use the <code>${otherStepOutputName}</code> output of the <code>${stepName}</code> step.`;
 
