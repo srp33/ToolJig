@@ -108,13 +108,13 @@
         <div class="panel panel-color1" ref="inputPanel">
             <h4 class="card-title">Specify basics<sup><font color="red">*</font></sup>:</h4>
 
-            <p>This section enables you to create a CWL workflow. Please fill in the information as requested below.</p>    
+            <p>This section enables you to create a CWL workflow. Please fill in the information as requested below.   
 
             <div class="form-group">
                 <label for="workflow_id">Workflow identifier:</label>
                 <input v-model="workflow_id" id="workflow_id" type="text" placeholder="Please enter a unique identifier." class="form-control" aria-describedby="helpBlock" />
                 <div id="helpBlock" class="form-text text-muted">
-                    This identifier must contain only letters, numbers, and underscores. This identifier will be used within the name of the CWL document that is generated.
+                    This identifier must contain only letters, numbers, and underscores. This identifier will be used within the name of the CWL document that is generated. <a v-on:click="var example = 'add_sqrt_workflow'; if (workflow_id == example) { workflow_id = example_cache['workflow_id']; } else { example_cache['workflow_id'] = workflow_id; workflow_id = example; }">Show/hide example</a>.</p>
                 </div>
             </div>
 
@@ -122,7 +122,7 @@
                 <label for="workflow_label">Label:</label>
                 <input v-model="workflow_label" id="workflow_label" type="text" placeholder="Please enter a short description of the workflow." class="form-control" aria-describedby="helpBlock" />
                 <div id="helpBlock" class="form-text text-muted">
-                    This description will inform workflow users about its purpose and function.
+                    This description will inform workflow users about its purpose and function. <a v-on:click="var example = 'Add two numbers, then take square root'; if (workflow_label == example) { workflow_label = example_cache['workflow_label']; } else { example_cache['workflow_label'] = workflow_label; workflow_label = example; }">Show/hide example</a>.
                 </div>
             </div>
 
@@ -130,7 +130,7 @@
                 <label for="doc">Description:</label>
                 <textarea v-model="doc" id="doc" rows=5 cols=100 placeholder="You may enter a longer description of the workflow." class="form-control" aria-describedby="helpBlock"></textarea>
                 <div id="helpBlock" class="form-text text-muted">
-                    This optional description can provide more detailed documentation about the workflow.
+                    This optional description can provide more detailed documentation about the workflow. <a v-on:click="var example = 'This workflow accepts two integers, adds them, calculates the square root of that number, and then stores the square root in a file.'; if (doc == example) { doc = example_cache['doc']; } else { example_cache['doc'] = doc; doc = example; }">Show/hide example</a>.
                 </div>
             </div>
 
@@ -146,7 +146,7 @@
                 <label for="author_orcid">Author's ORCID identifier:</label>
                 <input v-model="author_orcid" id="author_orcid" type="text" placeholder="Please enter the author's ORCID identifier." class="form-control" aria-describedby="helpBlock" />
                 <div id="helpBlock" class="form-text text-muted">
-                    This is optional. Specifying the author's <a href="https://orcid.org" target="_blank">ORCID identifier</a> enables others who may use the workflow to obtain more information about the author.
+                    This is optional. Specifying the author's <a href="https://orcid.org" target="_blank">ORCID identifier</a> enables others who may use the workflow to obtain more information about the author. <a v-on:click="var example = 'https://orcid.org/0000-0003-2001-1234'; if (author_orcid == example) { author_orcid = example_cache['author_orcid']; } else { example_cache['author_orcid'] = author_orcid; author_orcid = example; }">Show/hide example</a>.
                 </div>
             </div>
 
@@ -195,6 +195,7 @@
                 <div class="form-group">
                     <label for="step_tool">Please specify a name for this step:</label>
                     <input v-model="newStepName" id="newStepName" ref="newStepName" type="text" placeholder="Only letters, numbers, and underscores are allowed." class="form-control" />
+                    <a v-on:click="var example = 'add'; if (newStepName == example) { newStepName = example_cache['newStepName']; } else { example_cache['newStepName'] = newStepName; newStepName = example; }">Show/hide example</a>.
                 </div>
 
                 <div class="form-group" v-if="newStepToolName.length > 0 && newStepName.length > 0">
@@ -255,9 +256,12 @@
         <div class="panel panel-color1" ref="downloadPanel" v-if="cwl">
             <pre v-text="cwl" v-if="cwl"></pre>
 
-            <p><div class="form-group">
-                <button class="btn btn-info" variant="outline-primary" v-on:click="downloadCwl" v-if="cwl.length > 0">Download CWL file</button>
-            </div></p>
+            <p v-if="cwl.length > 0">
+                <div class="form-group">
+                    <button class="btn btn-info" variant="outline-primary" v-on:click="downloadCwl">Download CWL file</button>
+                </div>
+                <div>ToolJig does not have a way to save your CWL file, so be sure to download it before you close the app. If you wish to edit the CWL file later, you can upload it back into ToolJig.</div>
+            </p>
 
             <hr style="border: 1px solid black;border-radius: 1px;" />
 
@@ -400,7 +404,8 @@
             newStepToolName: "",
             newStepToolInputs: [],
             newStepToolOutputs: [],
-            newStepToolOutputsChecked: []
+            newStepToolOutputsChecked: [],
+            example_cache: {}
         },
         computed: {
             cwl: function() {

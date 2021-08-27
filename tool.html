@@ -64,7 +64,7 @@
                 <label for="tool_id">Tool identifier:</label>
                 <input v-model="tool_id" id="tool_id" type="text" placeholder="Please enter a unique identifier." class="form-control" aria-describedby="helpBlock" />
                 <div id="helpBlock" class="form-text text-muted">
-                    This identifier must contain only letters, numbers, and underscores. This identifier will be used within the name of the CWL document that is generated.
+                    This identifier must contain only letters, numbers, and underscores. This identifier will be used within the name of the CWL document that is generated. <a v-on:click="var example = 'deseq2'; if (tool_id == example) { tool_id = example_cache['tool_id']; } else { example_cache['tool_id'] = tool_id; tool_id = example; }">Show/hide example</a>.
                 </div>
             </div>
 
@@ -72,7 +72,7 @@
                 <label for="tool_label">Label:</label>
                 <input v-model="tool_label" id="tool_label" type="text" placeholder="Please enter a short description of the tool." class="form-control" aria-describedby="helpBlock" />
                 <div id="helpBlock" class="form-text text-muted">
-                    This description will inform tool users about its purpose and function.
+                    This description will inform tool users about its purpose and function. <a v-on:click="var example = 'DESeq2 example'; if (tool_label == example) { tool_label = example_cache['tool_label']; } else { example_cache['tool_label'] = tool_label; tool_label = example; }">Show/hide example</a>.
                 </div>
             </div>
 
@@ -80,7 +80,7 @@
                 <label for="doc">Description:</label>
                 <textarea v-model="doc" id="doc" rows=5 cols=100 placeholder="You may enter a longer description of the tool." class="form-control" aria-describedby="helpBlock"></textarea>
                 <div id="helpBlock" class="form-text text-muted">
-                    This optional description can provide more detailed documentation about the tool. 
+                    This optional description can provide more detailed documentation about the tool. <a v-on:click="var example = 'This tool demonstrates how to perform a differential-expression analysis using the Bioconductor DESeq2 package. We use a container image that provides core Bioconductor components (release version 3.10) and use R code to install the DESeq2 packages as well as two helper packages.'; if (doc == example) { doc = example_cache['doc']; } else { example_cache['doc'] = doc; doc = example; }">Show/hide example</a>.
                 </div>
             </div>
 
@@ -88,7 +88,7 @@
                 <label for="dockerfile">Dockerfile:</label>
                 <textarea v-model="dockerfile" id="dockerfile" rows=5 cols=100 placeholder="Please enter the contents of a Dockerfile." class="form-control" style="font-family:monospace;" aria-describedby="helpBlock"></textarea>
                 <div id="helpBlock" class="form-text text-muted">
-                    A <a href="https://docs.docker.com/develop/develop-images/dockerfile_best-practices/">Dockerfile</a> provides instructions for building a Docker image, which can be used as the operating-system environment for the tool. <a href="https://osf.io/fsd7t/" target="_blank">This article</a> describes what Dockerfiles are and how to create them.
+                    A <a href="https://docs.docker.com/develop/develop-images/dockerfile_best-practices/">Dockerfile</a> provides instructions for building a Docker image, which can be used as the operating-system environment for the tool. <a href="https://osf.io/fsd7t/" target="_blank">This article</a> describes what Dockerfiles are and how to create them. <a v-on:click="var example = 'FROM bioconductor/bioconductor_docker:RELEASE_3_11\nRUN R -e \'BiocManager::install(c(&quot;DESeq2&quot;))\'\nRUN R -e &quot;install.packages(c(\'dplyr\', \'readr\'), repos=\'https://cloud.r-project.org\')&quot;'; if (dockerfile == example) { dockerfile = example_cache['dockerfile']; } else { example_cache['dockerfile'] = dockerfile; dockerfile = example; }">Show/hide example</a>.
                 </div>
             </div>
 
@@ -104,7 +104,7 @@
                 <label for="author_orcid">Author's ORCID identifier:</label>
                 <input v-model="author_orcid" id="author_orcid" type="text" placeholder="Please enter the author's ORCID identifier." class="form-control" aria-describedby="helpBlock" />
                 <div id="helpBlock" class="form-text text-muted">
-                    This is optional. Specifying the author's <a href="https://orcid.org" target="_blank">ORCID identifier</a> enables others who may use the tool to obtain more information about the author.
+                    This is optional. Specifying the author's <a href="https://orcid.org" target="_blank">ORCID identifier</a> enables others who may use the tool to obtain more information about the author. <a v-on:click="var example = 'https://orcid.org/0000-0003-2001-1234'; if (author_orcid == example) { author_orcid = example_cache['author_orcid']; } else { example_cache['author_orcid'] = author_orcid; author_orcid = example; }">Show/hide example</a>.
                 </div>
             </div>
 
@@ -136,7 +136,7 @@
         <div class="panel panel-default" ref="inputPanel">
             <h4 class="card-title">Manage inputs<sup><font color="red">*</font></sup>:</h4>
 
-            <p>In this section, you can manage inputs. These are arguments that will be passed to the command-line tool. You must specify at least one regular input (string, int, or File)<!--(string, int, File, or Directory)-->. Technically, an "Output File" is not an input. However, when creating a CWL tool description, you can specify an <em>input</em> that is the name of an output file that the tool will create; then you must specify a corresponding <em>output</em> so the file will be collected after the tool executes. To make that simpler, we provide an "Output File" option that takes care of both of these steps.</p>
+            <p>In this section, you can manage inputs. These are arguments that will be passed to the command-line tool. You must specify at least one regular input (string, int, or File)<!--(string, int, File, or Directory)-->. Technically, an "Output File" is not an input. However, when creating a CWL tool description, you can specify an <em>input</em> that is the name of an output file that the tool will create; then you must specify a corresponding <em>output</em> so the file will be collected after the tool executes. To make that simpler, we provide an "Output File" option that takes care of both of these steps. <a v-on:click="var example_name = 'read_counts_url'; var example_doc = 'The URL of a tab-separated-value file containing RNA-Sequencing read counts (unnormalized). Rows should represent genes. Columns should represent biological samples. The header line should contain sample identifiers. The first column should contain gene identifiers.'; if (newInputName == example_name && newInputDoc == example_doc) { newInputName = example_cache['newInputName']; newInputDoc = example_cache['newInputDoc'] } else { example_cache['newInputName'] = newInputName; example_cache['newInputDoc'] = newInputDoc; newInputName = example_name; newInputDoc = example_doc; }">Show/hide example</a>.</p>
 
             <form v-on:submit.prevent="addInput">
                 <div class="form-group">
@@ -784,7 +784,7 @@
         <div class="panel panel-default" ref="auxPanel">
             <h4 class="card-title">Manage auxiliary files:</h4>
 
-            <p>In this section, you can manage auxiliary files (optional). Auxiliary files are stored within the execution environment and thus can be used in the command template (see below).Auxiliary files often include analysis scripts or configuration files (in CWL tool descriptions, they are stored under InitialWorkDirRequirement).
+            <p>In this section, you can manage auxiliary files (optional). Auxiliary files are stored within the execution environment and thus can be used in the command template (see below). Auxiliary files often include analysis scripts or configuration files (in CWL tool descriptions, they are stored under InitialWorkDirRequirement). <a v-on:click="var example_name = 'run_deseq2_analysis.R'; var example_contents = 'library(dplyr)\nlibrary(readr)\nlibrary(DESeq2)\n\nread_counts_url = commandArgs()[8]\nphenotypes_url = commandArgs()[9]\ndesign_formula = commandArgs()[10]\nout_file_name = commandArgs()[11]\n\n# Read the data\ncount_data = read_tsv(read_counts_url)\nphenotypes_data = read_tsv(phenotypes_url)\n\n# The readr package does not allow row names, so we pull those from the first column.\n# The readr package assigns a column name of X1 when the first column name is missing.\ncount_row_names = pull(count_data, X1)\ncount_data = select(count_data, -X1)\ncount_data = as.matrix(count_data)\nrownames(count_data) = count_row_names\n\nphenotypes_row_names = pull(phenotypes_data, X1)\nphenotypes_data = select(phenotypes_data, -X1)\nphenotypes_data = as.data.frame(phenotypes_data)\nrownames(phenotypes_data) = phenotypes_row_names\n\n# These are the analysis steps.\ndds <- DESeqDataSetFromMatrix(countData = count_data,\n           colData = phenotypes_data,\n           design = as.formula(design_formula))\ndds <- DESeq(dds)\nres <- results(dds)\n\n# Now save the results, sorted by adjusted P-value.\nwrite.table(res[order(res$padj),], out_file_name, sep=&quot;\\t&quot;, row.names=TRUE, col.names=NA, quote=FALSE)'; if (newAuxName == example_name && newAuxContents == example_contents) { newAuxName = example_cache['newAuxName']; newAuxContents = example_cache['newAuxContents'] } else { example_cache['newAuxName'] = newAuxName; example_cache['newAuxContents'] = newAuxContents; newAuxName = example_name; newAuxContents = example_contents; }">Show/hide example</a>.
 
             <form v-on:submit.prevent="addAuxiliaryFile">
                 <div class="form-group">
@@ -827,7 +827,7 @@
         <div class="panel panel-default" ref="outputPanel">
             <h4 class="card-title">Specify command template<sup><font color="red">*</font></sup>:</h4>
 
-            <p>Here you specify a template for executing the tool at the command line within the execution environment. Each input must be referenced at least once in the command template. For example, if you had defined an input string called "my_string", you would reference it in the command template as <code>$(inputs.my_string)</code>. You would follow a similar pattern for inputs that are integers or "output files." However, it is different for input files; the input object will have multiple attributes, and you must specify one of these. For example, if you had defined an input file called "my_file" and wanted to refer to the path of that file, you would specify it in the command template as $(inputs.my_file.path). Alternatively, if you wanted to refer only to the name of the file, you would use <code>$(inputs.my_file.basename)</code>. <a href="https://www.commonwl.org/v1.2/CommandLineTool.html#File" target="_blank">Other attributes</a> are available.<!--The same is true for <a href="https://www.commonwl.org/v1.2/CommandLineTool.html#Directory" target="_blank">directories</a>.-->
+            <p>Here you specify a template for executing the tool at the command line within the execution environment. Each input must be referenced at least once in the command template. For example, if you had defined an input string called "my_string", you would reference it in the command template as <code>$(inputs.my_string)</code>. You would follow a similar pattern for inputs that are integers or "output files." However, it is different for input files; the input object will have multiple attributes, and you must specify one of these. For example, if you had defined an input file called "my_file" and wanted to refer to the path of that file, you would specify it in the command template as $(inputs.my_file.path). Alternatively, if you wanted to refer only to the name of the file, you would use <code>$(inputs.my_file.basename)</code>. <a href="https://www.commonwl.org/v1.2/CommandLineTool.html#File" target="_blank">Other attributes</a> are available. <a v-on:click="var example = 'Rscript run_deseq2_analysis.R &quot;$(inputs.read_counts_url)&quot; &quot;$(inputs.phenotypes_url)&quot; &quot;$(inputs.design_formula)&quot; &quot;$(inputs.output_file)&quot;'; if (command_template == example) { command_template = example_cache['command_template']; } else { example_cache['command_template'] = command_template; command_template = example; }">Show/hide example</a>.
 
             <div class="form-group">
                 <textarea v-model="command_template" id="command_template" rows=5 cols=100 placeholder="Please enter the command template." class="form-control" aria-describedby="helpBlock"></textarea>
@@ -859,26 +859,26 @@
                 <input v-model="stderr_file_name" id="stderr_file_name" ref="stderr_file_name" type="text" class="form-control" placeholder="Enter a file name in which standard error will be stored after the tool executes." />
             </div>
 
-            <p>Here you can specify any output files that will be generated by the tool and that you wish to collect after the tool executes. <em>These are separate from any "Output Files" you may have declared in the Inputs section.</em> Please enter a unique identifier and a file pattern that represents the output file that you wish to collect. The file pattern can include <a href="https://en.wikipedia.org/wiki/Wildcard_character#File_and_directory_patterns" target="_blank">UNIX-like wildcard characters</a>. If the file will always have the same name, you can just enter the name of that file. Alternatively, you can enter an expression that references the inputs. For example, if you had specified an input file named "fastq_file" and wished to collect an output file of the same name, you would specify the output expression as <code>$(inputs.fastq_file.basename)</code>. The ".basename" portion refers to the name of the input file and excludes the rest of the path. Other properties can be found <a href="https://www.commonwl.org/v1.2/CommandLineTool.html#File" target="_blank">here</a>.
+            <p>Here you can specify any output files that will be generated by the tool and that you wish to collect after the tool executes. <em>These are separate from any "Output Files" you may have declared in the Inputs section.</em> Please enter a unique identifier and a file pattern that represents the output file that you wish to collect. The file pattern can include <a href="https://en.wikipedia.org/wiki/Wildcard_character#File_and_directory_patterns" target="_blank">UNIX-like wildcard characters</a>. If the file will always have the same name, you can just enter the name of that file. Alternatively, you can enter an expression that references the inputs. For example, if you had specified an input file named "bam_file" and wished to collect an output file of the same name, you would specify the output expression as <code>$(inputs.bam_file.basename)</code>. The ".basename" portion refers to the name of the input file and excludes the rest of the path. Other properties can be found <a href="https://www.commonwl.org/v1.2/CommandLineTool.html#File" target="_blank">here</a>.
 
             <form v-on:submit.prevent="addOutput">
                 <div class="form-group">
-                    <label for="outputID">Identifier:</label>
+                    <label for="outputID">Identifier:</label> (<a v-on:click="var example = 'output_bam_file'; if (newOutputID == example) { newOutputID = example_cache['newOutputID']; } else { example_cache['newOutputID'] = newOutputID; newOutputID = example; }">Show/hide example</a>)
                     <input v-model="newOutputID" id="outputID" ref="newOutputID" type="text" class="form-control" placeholder="Please enter a unique identifier for this output file." />
                 </div>
 
                 <div class="form-group">
-                    <label for="outputGlob">Wildcard expression:</label>
+                    <label for="outputGlob">Wildcard expression:</label> (<a v-on:click="var example = '$(inputs.bam_file.basename)'; if (newOutputGlob == example) { newOutputGlob = example_cache['newOutputGlob']; } else { example_cache['newOutputGlob'] = newOutputGlob; newOutputGlob = example; }">Show/hide example</a>)
                     <input v-model="newOutputGlob" id="outputGlob" ref="newOutputGlob" type="text" class="form-control" placeholder="Please enter an expression for this output file." />
                 </div>
 
                 <div class="form-group">
-                    <label for="outputDoc">Documentation:</label>
+                    <label for="outputDoc">Documentation:</label> (<a v-on:click="var example = 'A sorted BAM file.'; if (newOutputDoc == example) { newOutputDoc = example_cache['newOutputDoc']; } else { example_cache['newOutputDoc'] = newOutputDoc; newOutputDoc = example; }">Show/hide example</a>)
                     <input v-model="newOutputDoc" id="outputDoc" ref="newOutputDoc" type="text" class="form-control" placeholder="Provide a short description of this output file." />
                 </div>
 
                 <div class="form-group">
-                    <label for="outputSecondary">Secondary file(s):</label>
+                    <label for="outputSecondary">Secondary file(s):</label> (<a v-on:click="var example = '.bai'; if (newOutputSecondary == example) { newOutputSecondary = example_cache['newOutputSecondary']; } else { example_cache['newOutputSecondary'] = newOutputSecondary; newOutputSecondary = example; }">Show/hide example</a>)
                     <input v-model="newOutputSecondary" id="outputSecondary" ref="newOutputSecondary" type="text" class="form-control" placeholder="Indicate any secondary files (separated by commas) that should accompany this file (example: .ann,.bwt). Spaces will be removed." />
                 </div>
 
@@ -1504,11 +1504,14 @@
 
         <pre v-text="cwl" v-if="cwl"></pre>
         
-        <p><div class="form-group">
-            <!--<button class="btn btn-info" variant="outline-primary" v-on:click="downloadCwl" :disabled="this.basics_errors.length > 0 || this.template_errors.length > 0 || this.overall_input_errors.length > 0 || this.overall_output_errors.length > 0">Download CWL file</button>-->
-            <button class="btn btn-info" variant="outline-primary" v-on:click="downloadCwl" v-if="this.cwl.length > 0">Download CWL file</button>
-        <!--<a v-bind:href="encoded_cwl">Download</a>-->
-        </div></p>
+        <p v-if="this.cwl.length > 0">
+            <div class="form-group">
+                <button class="btn btn-info" variant="outline-primary" v-on:click="downloadCwl">Download CWL file</button>
+            </div>
+            <div>
+                ToolJig does not have a way to save your CWL file, so be sure to download it before you close the app. If you wish to edit the CWL file later, you can upload it back into ToolJig.
+            </div>
+        </p>
 
         <hr style="border: 1px solid black;border-radius: 1px;" />
 
@@ -1625,7 +1628,8 @@
             newOutputDoc: "",
             newOutputSecondary: "",
             newOutputFileFormat: "",
-            command_template: ""
+            command_template: "",
+            example_cache: {}
         },
 
         // Computed attributes build content dynamically for display in the app.
